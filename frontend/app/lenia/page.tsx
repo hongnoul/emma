@@ -78,7 +78,7 @@ export default function LeniaScenesPage() {
       <header className="space-y-1">
         <h1 className="text-2xl font-bold">Lenia × Atlas (prototype, prod data)</h1>
         <p className="text-xs text-slate-400">
-          source: {PROD_UPSTREAM} (via {PROD} proxy) · focal {FOCAL} · contest {CONTEST} · path {FOCAL}→{RIVAL} ·
+          source: {PROD_UPSTREAM}{PROD !== PROD_UPSTREAM ? ` (via ${PROD} proxy)` : ""} · focal {FOCAL} · contest {CONTEST} · path {FOCAL}→{RIVAL} ·
           each canvas is a live simulation: hue = atlas type, brightness = field mass
         </p>
         <div className="flex gap-4 text-xs pt-2">
