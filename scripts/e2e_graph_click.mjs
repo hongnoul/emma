@@ -127,34 +127,33 @@ try {
   check("side panel shows identifier", panel.includes("DEMO-MONDO:0000001"));
 
   // Click an inferred SHARES_MECHANISM edge at its midpoint.
-  const epos = await evalJs(call, `
+  const edgeKeys = await evalJs(call, `
     (() => {
       const s = window.__atlasSigma, g = s.getGraph();
-      const key = g.edges().find(k => k.startsWith("DEMO-EDGE") && g.getEdgeAttribute(k, "color") === "#f59e0b"
+      return g.edges().filter(k => k.startsWith("DEMO-EDGE") && g.getEdgeAttribute(k, "color") === "#f59e0b"
         && !g.getNodeAttribute(g.source(k), "hidden") && !g.getNodeAttribute(g.target(k), "hidden"));
-      if (!key) return null;
-      const sa = s.getNodeDisplayData(g.source(key)), ta = s.getNodeDisplayData(g.target(key));
-      const p = s.framedGraphToViewport({ x: (sa.x + ta.x) / 2, y: (sa.y + ta.y) / 2 });
-      const r = s.getContainer().getBoundingClientRect();
-      return { x: r.left + p.x, y: r.top + p.y, key };
     })()`);
-  if (epos) {
-    // Thin line target: walk several points along the edge until the panel updates.
+  if (edgeKeys && edgeKeys.length) {
+    // Thin line targets and FA2 layouts vary: try several edges and several
+    // points along each until a click lands on one.
     let gotEvidence = false;
-    for (const frac of [0.5, 0.4, 0.6, 0.3, 0.7, 0.45, 0.55]) {
-      const pt = await evalJs(call, `
-        (() => {
-          const s = window.__atlasSigma, g = s.getGraph();
-          const key = ${JSON.stringify(epos.key)};
-          const sa = s.getNodeDisplayData(g.source(key)), ta = s.getNodeDisplayData(g.target(key));
-          const p = s.framedGraphToViewport({ x: sa.x + (ta.x - sa.x) * ${frac}, y: sa.y + (ta.y - sa.y) * ${frac} });
-          const r = s.getContainer().getBoundingClientRect();
-          return { x: r.left + p.x, y: r.top + p.y };
-        })()`);
-      await clickAt(call, pt.x, pt.y);
-      await sleep(400);
-      panel = await evalJs(call, "document.querySelector('aside')?.innerText ?? ''");
-      if (panel.includes("p(valid)") || panel.includes("DIRECT / CURATED") || panel.includes("ATLAS-INFERRED")) { gotEvidence = true; break; }
+    outer: for (const key of edgeKeys) {
+      for (const frac of [0.5, 0.4, 0.6, 0.3, 0.7]) {
+        const pt = await evalJs(call, `
+          (() => {
+            const s = window.__atlasSigma, g = s.getGraph();
+            const key = ${JSON.stringify(key)};
+            const sa = s.getNodeDisplayData(g.source(key)), ta = s.getNodeDisplayData(g.target(key));
+            const p = s.framedGraphToViewport({ x: sa.x + (ta.x - sa.x) * ${frac}, y: sa.y + (ta.y - sa.y) * ${frac} });
+            const r = s.getContainer().getBoundingClientRect();
+            return { x: r.left + p.x, y: r.top + p.y };
+          })()`);
+        if (pt.x < 220 || pt.x > 845 || pt.y < 160 || pt.y > 700) continue; // off-canvas
+        await clickAt(call, pt.x, pt.y);
+        await sleep(350);
+        panel = await evalJs(call, "document.querySelector('aside')?.innerText ?? ''");
+        if (panel.includes("p(valid)") || panel.includes("ATLAS-INFERRED") || panel.includes("DIRECT / CURATED")) { gotEvidence = true; break outer; }
+      }
     }
     check("edge click shows provenance + p(valid)", gotEvidence);
   } else {
