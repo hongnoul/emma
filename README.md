@@ -219,6 +219,7 @@ the live OpenAPI schema.
 
 - **API**: https://rare-disease-atlas-api.fly.dev (`/docs`, `/v1/meta`)
 - **Frontend**: https://rare-disease-atlas-khaki.vercel.app
+- **Hackathon teammate kit**: `docs/TEAMMATES.md` (parallel lanes + anchor IDs) and `frontend/public/starter.html` (zero-build, works from `file://`, no keys)
 - Redeploy: `scripts/deploy.sh` (rebuild generation -> `fly deploy`; frontend `vercel --prod`)
 
 ### Deployment details
