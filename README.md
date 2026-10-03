@@ -163,6 +163,24 @@ backend and the data model.
 Pages: `/` (search) · `/disease/[id]` · `/graph/[id]` (sigma.js, ForceAtlas2) ·
 `/connection/[a]/[b]` · `/opportunities/[id]` · `/evals`.
 
+## Real data (Phase 1 pipeline, working)
+
+`backend/pipeline/` implements the Phase 1 slice of the ingestion design:
+Monarch Initiative v3 (aggregating MONDO, OMIM, Orphanet, HPOA) + PubMed
+E-utilities, for a 10-disease lysosomal storage cluster.
+
+```bash
+cd backend && .venv/bin/python -m pipeline.run        # fetch->judge->gate->publish
+# (--no-judge to skip Laya; --refresh to bypass the raw cache in data/raw/)
+ATLAS_GRAPH_PATH=data/graph.real.json .venv/bin/uvicorn app.main:app --port 8000
+```
+
+Produces `data/graph.real.json` (~210 nodes: real MONDO diseases, HGNC genes,
+HPO phenotypes with frequency, live PubMed publications) with
+SHARES_MECHANISM candidates derived from phenotype overlap and judged by
+local Laya. Generations are archived under `data/generations/`. The default
+`data/graph.json` demo dataset is untouched; switch via the env var.
+
 ## Continuous ingestion (design)
 
 `docs/ingestion-pipeline.md` is the production design for the fetch→parse→

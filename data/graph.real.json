@@ -1,0 +1,4991 @@
+{
+ "_notice": "REAL DATA generation built by backend/pipeline from Monarch Initiative (aggregating MONDO, OMIM, Orphanet, HPOA) and PubMed. Inferred edges are atlas hypotheses judged by a local Laya model; they are not established facts.",
+ "generation": "20261003T215417Z",
+ "cluster_seed": [
+  "MONDO:0018150",
+  "MONDO:0010526",
+  "MONDO:0009756",
+  "MONDO:0009757",
+  "MONDO:0009499",
+  "MONDO:0018868",
+  "MONDO:0009650",
+  "MONDO:0009290",
+  "MONDO:0010100",
+  "MONDO:0010006"
+ ],
+ "nodes": [
+  {
+   "id": "MONDO:0018150",
+   "type": "Disease",
+   "name": "Gaucher disease",
+   "description": "Gaucher disease (GD) is a lysosomal storage disorder encompassing three main forms (types 1, 2 and 3), a fetal form and a variant with cardiac involvement (Gaucher disease - ophthalmoplegia - cardiovascular calcification or Gaucher-like disease).",
+   "identifier": "MONDO:0018150"
+  },
+  {
+   "id": "HGNC:4177",
+   "type": "Gene",
+   "name": "GBA1",
+   "description": "Gene GBA1 (HGNC:4177).",
+   "identifier": "HGNC:4177"
+  },
+  {
+   "id": "HP:0001298",
+   "type": "Phenotype",
+   "name": "Encephalopathy",
+   "description": "HPO term HP:0001298.",
+   "identifier": "HP:0001298"
+  },
+  {
+   "id": "HP:0002240",
+   "type": "Phenotype",
+   "name": "Hepatomegaly",
+   "description": "HPO term HP:0002240.",
+   "identifier": "HP:0002240"
+  },
+  {
+   "id": "HP:0002659",
+   "type": "Phenotype",
+   "name": "Increased susceptibility to fractures",
+   "description": "HPO term HP:0002659.",
+   "identifier": "HP:0002659"
+  },
+  {
+   "id": "HP:0002797",
+   "type": "Phenotype",
+   "name": "Osteolysis",
+   "description": "HPO term HP:0002797.",
+   "identifier": "HP:0002797"
+  },
+  {
+   "id": "HP:0010885",
+   "type": "Phenotype",
+   "name": "Avascular necrosis",
+   "description": "HPO term HP:0010885.",
+   "identifier": "HP:0010885"
+  },
+  {
+   "id": "HP:0002793",
+   "type": "Phenotype",
+   "name": "Abnormal pattern of respiration",
+   "description": "HPO term HP:0002793.",
+   "identifier": "HP:0002793"
+  },
+  {
+   "id": "HP:0000823",
+   "type": "Phenotype",
+   "name": "Delayed puberty",
+   "description": "HPO term HP:0000823.",
+   "identifier": "HP:0000823"
+  },
+  {
+   "id": "HP:0000938",
+   "type": "Phenotype",
+   "name": "Osteopenia",
+   "description": "HPO term HP:0000938.",
+   "identifier": "HP:0000938"
+  },
+  {
+   "id": "HP:0001971",
+   "type": "Phenotype",
+   "name": "Hypersplenism",
+   "description": "HPO term HP:0001971.",
+   "identifier": "HP:0001971"
+  },
+  {
+   "id": "HP:0002039",
+   "type": "Phenotype",
+   "name": "Anorexia",
+   "description": "HPO term HP:0002039.",
+   "identifier": "HP:0002039"
+  },
+  {
+   "id": "HP:0012378",
+   "type": "Phenotype",
+   "name": "Fatigue",
+   "description": "HPO term HP:0012378.",
+   "identifier": "HP:0012378"
+  },
+  {
+   "id": "HP:0000939",
+   "type": "Phenotype",
+   "name": "Osteoporosis",
+   "description": "HPO term HP:0000939.",
+   "identifier": "HP:0000939"
+  },
+  {
+   "id": "HP:0001510",
+   "type": "Phenotype",
+   "name": "Growth delay",
+   "description": "HPO term HP:0001510.",
+   "identifier": "HP:0001510"
+  },
+  {
+   "id": "HP:0001744",
+   "type": "Phenotype",
+   "name": "Splenomegaly",
+   "description": "HPO term HP:0001744.",
+   "identifier": "HP:0001744"
+  },
+  {
+   "id": "HP:0002653",
+   "type": "Phenotype",
+   "name": "Bone pain",
+   "description": "HPO term HP:0002653.",
+   "identifier": "HP:0002653"
+  },
+  {
+   "id": "HP:0002750",
+   "type": "Phenotype",
+   "name": "Delayed skeletal maturation",
+   "description": "HPO term HP:0002750.",
+   "identifier": "HP:0002750"
+  },
+  {
+   "id": "HP:0000486",
+   "type": "Phenotype",
+   "name": "Strabismus",
+   "description": "HPO term HP:0000486.",
+   "identifier": "HP:0000486"
+  },
+  {
+   "id": "HP:0002015",
+   "type": "Phenotype",
+   "name": "Dysphagia",
+   "description": "HPO term HP:0002015.",
+   "identifier": "HP:0002015"
+  },
+  {
+   "id": "HP:0003656",
+   "type": "Phenotype",
+   "name": "Decreased beta-glucocerebrosidase level",
+   "description": "HPO term HP:0003656.",
+   "identifier": "HP:0003656"
+  },
+  {
+   "id": "HP:0000602",
+   "type": "Phenotype",
+   "name": "Ophthalmoplegia",
+   "description": "HPO term HP:0000602.",
+   "identifier": "HP:0000602"
+  },
+  {
+   "id": "MONDO:0010526",
+   "type": "Disease",
+   "name": "Fabry disease",
+   "description": "Fabry disease (FD) is a progressive, inherited, multisystemic lysosomal storage disease characterized by specific neurological, cutaneous, renal, cardiovascular, cochleo-vestibular and cerebrovascular manifestations.",
+   "identifier": "MONDO:0010526"
+  },
+  {
+   "id": "HGNC:4296",
+   "type": "Gene",
+   "name": "GLA",
+   "description": "Gene GLA (HGNC:4296).",
+   "identifier": "HGNC:4296"
+  },
+  {
+   "id": "HP:0000083",
+   "type": "Phenotype",
+   "name": "Renal insufficiency",
+   "description": "HPO term HP:0000083.",
+   "identifier": "HP:0000083"
+  },
+  {
+   "id": "HP:0000100",
+   "type": "Phenotype",
+   "name": "Nephrotic syndrome",
+   "description": "HPO term HP:0000100.",
+   "identifier": "HP:0000100"
+  },
+  {
+   "id": "HP:0000365",
+   "type": "Phenotype",
+   "name": "Hearing impairment",
+   "description": "HPO term HP:0000365.",
+   "identifier": "HP:0000365"
+  },
+  {
+   "id": "HP:0001482",
+   "type": "Phenotype",
+   "name": "Subcutaneous nodule",
+   "description": "HPO term HP:0001482.",
+   "identifier": "HP:0001482"
+  },
+  {
+   "id": "HP:0001903",
+   "type": "Phenotype",
+   "name": "Anemia",
+   "description": "HPO term HP:0001903.",
+   "identifier": "HP:0001903"
+  },
+  {
+   "id": "HP:0002024",
+   "type": "Phenotype",
+   "name": "Malabsorption",
+   "description": "HPO term HP:0002024.",
+   "identifier": "HP:0002024"
+  },
+  {
+   "id": "HP:0034864",
+   "type": "Phenotype",
+   "name": "Decreased alpha-galactosidase A activity",
+   "description": "HPO term HP:0034864.",
+   "identifier": "HP:0034864"
+  },
+  {
+   "id": "HP:0100579",
+   "type": "Phenotype",
+   "name": "Mucosal telangiectasiae",
+   "description": "HPO term HP:0100579.",
+   "identifier": "HP:0100579"
+  },
+  {
+   "id": "HP:0000962",
+   "type": "Phenotype",
+   "name": "Hyperkeratosis",
+   "description": "HPO term HP:0000962.",
+   "identifier": "HP:0000962"
+  },
+  {
+   "id": "HP:0000966",
+   "type": "Phenotype",
+   "name": "Hypohidrosis",
+   "description": "HPO term HP:0000966.",
+   "identifier": "HP:0000966"
+  },
+  {
+   "id": "HP:0001014",
+   "type": "Phenotype",
+   "name": "Angiokeratoma",
+   "description": "HPO term HP:0001014.",
+   "identifier": "HP:0001014"
+  },
+  {
+   "id": "HP:0001131",
+   "type": "Phenotype",
+   "name": "Corneal dystrophy",
+   "description": "HPO term HP:0001131.",
+   "identifier": "HP:0001131"
+  },
+  {
+   "id": "HP:0001369",
+   "type": "Phenotype",
+   "name": "Arthritis",
+   "description": "HPO term HP:0001369.",
+   "identifier": "HP:0001369"
+  },
+  {
+   "id": "HP:0001635",
+   "type": "Phenotype",
+   "name": "Congestive heart failure",
+   "description": "HPO term HP:0001635.",
+   "identifier": "HP:0001635"
+  },
+  {
+   "id": "HP:0002829",
+   "type": "Phenotype",
+   "name": "Arthralgia",
+   "description": "HPO term HP:0002829.",
+   "identifier": "HP:0002829"
+  },
+  {
+   "id": "HP:0003326",
+   "type": "Phenotype",
+   "name": "Myalgia",
+   "description": "HPO term HP:0003326.",
+   "identifier": "HP:0003326"
+  },
+  {
+   "id": "HP:0033595",
+   "type": "Phenotype",
+   "name": "Elevated circulating globotriaosylceramide concentration",
+   "description": "HPO term HP:0033595.",
+   "identifier": "HP:0033595"
+  },
+  {
+   "id": "HP:0100585",
+   "type": "Phenotype",
+   "name": "Telangiectasia of the skin",
+   "description": "HPO term HP:0100585.",
+   "identifier": "HP:0100585"
+  },
+  {
+   "id": "HP:0000524",
+   "type": "Phenotype",
+   "name": "Conjunctival telangiectasia",
+   "description": "HPO term HP:0000524.",
+   "identifier": "HP:0000524"
+  },
+  {
+   "id": "MONDO:0009756",
+   "type": "Disease",
+   "name": "Niemann-Pick disease type A",
+   "description": "Niemann-Pick disease type A is a very severe subtype of Niemann-Pick disease, an autosomal recessive lysosomal disease, and is characterized clinically by onset in infancy or early childhood with failure to thrive, hepatosplenomegaly, and rapidly progressive neurodegenerative disorders.",
+   "identifier": "MONDO:0009756"
+  },
+  {
+   "id": "HGNC:11120",
+   "type": "Gene",
+   "name": "SMPD1",
+   "description": "Gene SMPD1 (HGNC:11120).",
+   "identifier": "HGNC:11120"
+  },
+  {
+   "id": "HP:0008872",
+   "type": "Phenotype",
+   "name": "Feeding difficulties in infancy",
+   "description": "HPO term HP:0008872.",
+   "identifier": "HP:0008872"
+  },
+  {
+   "id": "HP:0004322",
+   "type": "Phenotype",
+   "name": "Short stature",
+   "description": "HPO term HP:0004322.",
+   "identifier": "HP:0004322"
+  },
+  {
+   "id": "HP:0001252",
+   "type": "Phenotype",
+   "name": "Hypotonia",
+   "description": "HPO term HP:0001252.",
+   "identifier": "HP:0001252"
+  },
+  {
+   "id": "HP:0002063",
+   "type": "Phenotype",
+   "name": "Rigidity",
+   "description": "HPO term HP:0002063.",
+   "identifier": "HP:0002063"
+  },
+  {
+   "id": "HP:0001982",
+   "type": "Phenotype",
+   "name": "Sea-blue histiocytosis",
+   "description": "HPO term HP:0001982.",
+   "identifier": "HP:0001982"
+  },
+  {
+   "id": "HP:0004333",
+   "type": "Phenotype",
+   "name": "Bone-marrow foam cells",
+   "description": "HPO term HP:0004333.",
+   "identifier": "HP:0004333"
+  },
+  {
+   "id": "HP:0002013",
+   "type": "Phenotype",
+   "name": "Vomiting",
+   "description": "HPO term HP:0002013.",
+   "identifier": "HP:0002013"
+  },
+  {
+   "id": "HP:0002207",
+   "type": "Phenotype",
+   "name": "Diffuse reticular or finely nodular infiltrations",
+   "description": "HPO term HP:0002207.",
+   "identifier": "HP:0002207"
+  },
+  {
+   "id": "HP:0002205",
+   "type": "Phenotype",
+   "name": "Recurrent respiratory infections",
+   "description": "HPO term HP:0002205.",
+   "identifier": "HP:0002205"
+  },
+  {
+   "id": "HP:0002305",
+   "type": "Phenotype",
+   "name": "Athetosis",
+   "description": "HPO term HP:0002305.",
+   "identifier": "HP:0002305"
+  },
+  {
+   "id": "HP:0010729",
+   "type": "Phenotype",
+   "name": "Cherry red spot of the macula",
+   "description": "HPO term HP:0010729.",
+   "identifier": "HP:0010729"
+  },
+  {
+   "id": "HP:0031964",
+   "type": "Phenotype",
+   "name": "Elevated circulating alanine aminotransferase concentration",
+   "description": "HPO term HP:0031964.",
+   "identifier": "HP:0031964"
+  },
+  {
+   "id": "HP:0003609",
+   "type": "Phenotype",
+   "name": "Foam cells with lamellar inclusion bodies",
+   "description": "HPO term HP:0003609.",
+   "identifier": "HP:0003609"
+  },
+  {
+   "id": "HP:0003202",
+   "type": "Phenotype",
+   "name": "Skeletal muscle atrophy",
+   "description": "HPO term HP:0003202.",
+   "identifier": "HP:0003202"
+  },
+  {
+   "id": "HP:0000991",
+   "type": "Phenotype",
+   "name": "Xanthomatosis",
+   "description": "HPO term HP:0000991.",
+   "identifier": "HP:0000991"
+  },
+  {
+   "id": "HP:0002376",
+   "type": "Phenotype",
+   "name": "Developmental regression",
+   "description": "HPO term HP:0002376.",
+   "identifier": "HP:0002376"
+  },
+  {
+   "id": "HP:6001380",
+   "type": "Phenotype",
+   "name": "Elevated circulating lysosphingomyelin concentration",
+   "description": "HPO term HP:6001380.",
+   "identifier": "HP:6001380"
+  },
+  {
+   "id": "HP:0002019",
+   "type": "Phenotype",
+   "name": "Constipation",
+   "description": "HPO term HP:0002019.",
+   "identifier": "HP:0002019"
+  },
+  {
+   "id": "MONDO:0009757",
+   "type": "Disease",
+   "name": "Niemann-Pick disease, type C1",
+   "description": "Type C Niemann-Pick disease associated with a mutation in the gene NPC1, encoding Niemann-Pick C1 protein.",
+   "identifier": "MONDO:0009757"
+  },
+  {
+   "id": "HGNC:7897",
+   "type": "Gene",
+   "name": "NPC1",
+   "description": "Gene NPC1 (HGNC:7897).",
+   "identifier": "HGNC:7897"
+  },
+  {
+   "id": "HP:6001353",
+   "type": "Phenotype",
+   "name": "Elevated circulating C-triol concentration",
+   "description": "HPO term HP:6001353.",
+   "identifier": "HP:6001353"
+  },
+  {
+   "id": "HP:0002066",
+   "type": "Phenotype",
+   "name": "Gait ataxia",
+   "description": "HPO term HP:0002066.",
+   "identifier": "HP:0002066"
+  },
+  {
+   "id": "HP:0002185",
+   "type": "Phenotype",
+   "name": "Neurofibrillary tangles",
+   "description": "HPO term HP:0002185.",
+   "identifier": "HP:0002185"
+  },
+  {
+   "id": "HP:0001251",
+   "type": "Phenotype",
+   "name": "Ataxia",
+   "description": "HPO term HP:0001251.",
+   "identifier": "HP:0001251"
+  },
+  {
+   "id": "HP:0003349",
+   "type": "Phenotype",
+   "name": "Low cholesterol esterification rate",
+   "description": "HPO term HP:0003349.",
+   "identifier": "HP:0003349"
+  },
+  {
+   "id": "HP:0006579",
+   "type": "Phenotype",
+   "name": "Prolonged neonatal jaundice",
+   "description": "HPO term HP:0006579.",
+   "identifier": "HP:0006579"
+  },
+  {
+   "id": "HP:0000511",
+   "type": "Phenotype",
+   "name": "Vertical supranuclear gaze palsy",
+   "description": "HPO term HP:0000511.",
+   "identifier": "HP:0000511"
+  },
+  {
+   "id": "HP:6000158",
+   "type": "Phenotype",
+   "name": "Unesterified cholesterol accumulation in cultured fibroblasts",
+   "description": "HPO term HP:6000158.",
+   "identifier": "HP:6000158"
+  },
+  {
+   "id": "HP:0001791",
+   "type": "Phenotype",
+   "name": "Fetal ascites",
+   "description": "HPO term HP:0001791.",
+   "identifier": "HP:0001791"
+  },
+  {
+   "id": "HP:0001260",
+   "type": "Phenotype",
+   "name": "Dysarthria",
+   "description": "HPO term HP:0001260.",
+   "identifier": "HP:0001260"
+  },
+  {
+   "id": "HP:0002371",
+   "type": "Phenotype",
+   "name": "Loss of speech",
+   "description": "HPO term HP:0002371.",
+   "identifier": "HP:0002371"
+  },
+  {
+   "id": "HP:0001263",
+   "type": "Phenotype",
+   "name": "Global developmental delay",
+   "description": "HPO term HP:0001263.",
+   "identifier": "HP:0001263"
+  },
+  {
+   "id": "HP:0000709",
+   "type": "Phenotype",
+   "name": "Psychosis",
+   "description": "HPO term HP:0000709.",
+   "identifier": "HP:0000709"
+  },
+  {
+   "id": "HP:0002529",
+   "type": "Phenotype",
+   "name": "Neuronal loss in central nervous system",
+   "description": "HPO term HP:0002529.",
+   "identifier": "HP:0002529"
+  },
+  {
+   "id": "HP:0002524",
+   "type": "Phenotype",
+   "name": "Cataplexy",
+   "description": "HPO term HP:0002524.",
+   "identifier": "HP:0002524"
+  },
+  {
+   "id": "HP:0001257",
+   "type": "Phenotype",
+   "name": "Spasticity",
+   "description": "HPO term HP:0001257.",
+   "identifier": "HP:0001257"
+  },
+  {
+   "id": "MONDO:0009499",
+   "type": "Disease",
+   "name": "Krabbe disease",
+   "description": "A lysosomal disorder that affects the white matter of the central and peripheral nervous systems. It includes infantile, late-infantile/juvenile and adult forms.",
+   "identifier": "MONDO:0009499"
+  },
+  {
+   "id": "HGNC:4115",
+   "type": "Gene",
+   "name": "GALC",
+   "description": "Gene GALC (HGNC:4115).",
+   "identifier": "HGNC:4115"
+  },
+  {
+   "id": "HP:0002922",
+   "type": "Phenotype",
+   "name": "Increased CSF protein concentration",
+   "description": "HPO term HP:0002922.",
+   "identifier": "HP:0002922"
+  },
+  {
+   "id": "HP:0030215",
+   "type": "Phenotype",
+   "name": "Inappropriate crying",
+   "description": "HPO term HP:0030215.",
+   "identifier": "HP:0030215"
+  },
+  {
+   "id": "HP:0033031",
+   "type": "Phenotype",
+   "name": "Hyperpyrexia",
+   "description": "HPO term HP:0033031.",
+   "identifier": "HP:0033031"
+  },
+  {
+   "id": "HP:0034322",
+   "type": "Phenotype",
+   "name": "Reduced tissue galactocerebrosidase activity",
+   "description": "HPO term HP:0034322.",
+   "identifier": "HP:0034322"
+  },
+  {
+   "id": "HP:0002493",
+   "type": "Phenotype",
+   "name": "Upper motor neuron dysfunction",
+   "description": "HPO term HP:0002493.",
+   "identifier": "HP:0002493"
+  },
+  {
+   "id": "HP:0000737",
+   "type": "Phenotype",
+   "name": "Irritability",
+   "description": "HPO term HP:0000737.",
+   "identifier": "HP:0000737"
+  },
+  {
+   "id": "HP:0001268",
+   "type": "Phenotype",
+   "name": "Mental deterioration",
+   "description": "HPO term HP:0001268.",
+   "identifier": "HP:0001268"
+  },
+  {
+   "id": "HP:0001955",
+   "type": "Phenotype",
+   "name": "Unexplained fevers",
+   "description": "HPO term HP:0001955.",
+   "identifier": "HP:0001955"
+  },
+  {
+   "id": "HP:0002344",
+   "type": "Phenotype",
+   "name": "Progressive neurologic deterioration",
+   "description": "HPO term HP:0002344.",
+   "identifier": "HP:0002344"
+  },
+  {
+   "id": "HP:0004302",
+   "type": "Phenotype",
+   "name": "Functional motor deficit",
+   "description": "HPO term HP:0004302.",
+   "identifier": "HP:0004302"
+  },
+  {
+   "id": "HP:0007141",
+   "type": "Phenotype",
+   "name": "Sensorimotor neuropathy",
+   "description": "HPO term HP:0007141.",
+   "identifier": "HP:0007141"
+  },
+  {
+   "id": "HP:0000649",
+   "type": "Phenotype",
+   "name": "Abnormality of visual evoked potentials",
+   "description": "HPO term HP:0000649.",
+   "identifier": "HP:0000649"
+  },
+  {
+   "id": "HP:0012379",
+   "type": "Phenotype",
+   "name": "Abnormal circulating enzyme concentration or activity",
+   "description": "HPO term HP:0012379.",
+   "identifier": "HP:0012379"
+  },
+  {
+   "id": "HP:0009830",
+   "type": "Phenotype",
+   "name": "Peripheral neuropathy",
+   "description": "HPO term HP:0009830.",
+   "identifier": "HP:0009830"
+  },
+  {
+   "id": "HP:0011968",
+   "type": "Phenotype",
+   "name": "Feeding difficulties",
+   "description": "HPO term HP:0011968.",
+   "identifier": "HP:0011968"
+  },
+  {
+   "id": "HP:0000505",
+   "type": "Phenotype",
+   "name": "Visual impairment",
+   "description": "HPO term HP:0000505.",
+   "identifier": "HP:0000505"
+  },
+  {
+   "id": "HP:0000708",
+   "type": "Phenotype",
+   "name": "Atypical behavior",
+   "description": "HPO term HP:0000708.",
+   "identifier": "HP:0000708"
+  },
+  {
+   "id": "HP:0003457",
+   "type": "Phenotype",
+   "name": "EMG abnormality",
+   "description": "HPO term HP:0003457.",
+   "identifier": "HP:0003457"
+  },
+  {
+   "id": "MONDO:0018868",
+   "type": "Disease",
+   "name": "metachromatic leukodystrophy",
+   "description": "A rare lysosomal storage disorder characterized by intralysosomal accumulation of sulfatides in various tissues, leading to progressive deterioration of motor and neurocognitive function.",
+   "identifier": "MONDO:0018868"
+  },
+  {
+   "id": "HGNC:9498",
+   "type": "Gene",
+   "name": "PSAP",
+   "description": "Gene PSAP (HGNC:9498).",
+   "identifier": "HGNC:9498"
+  },
+  {
+   "id": "HGNC:713",
+   "type": "Gene",
+   "name": "ARSA",
+   "description": "Gene ARSA (HGNC:713).",
+   "identifier": "HGNC:713"
+  },
+  {
+   "id": "HP:0006970",
+   "type": "Phenotype",
+   "name": "Periventricular leukomalacia",
+   "description": "HPO term HP:0006970.",
+   "identifier": "HP:0006970"
+  },
+  {
+   "id": "HP:0000726",
+   "type": "Phenotype",
+   "name": "Dementia",
+   "description": "HPO term HP:0000726.",
+   "identifier": "HP:0000726"
+  },
+  {
+   "id": "HP:0000746",
+   "type": "Phenotype",
+   "name": "Delusion",
+   "description": "HPO term HP:0000746.",
+   "identifier": "HP:0000746"
+  },
+  {
+   "id": "HP:0002354",
+   "type": "Phenotype",
+   "name": "Memory impairment",
+   "description": "HPO term HP:0002354.",
+   "identifier": "HP:0002354"
+  },
+  {
+   "id": "HP:0002415",
+   "type": "Phenotype",
+   "name": "Leukodystrophy",
+   "description": "HPO term HP:0002415.",
+   "identifier": "HP:0002415"
+  },
+  {
+   "id": "HP:0012433",
+   "type": "Phenotype",
+   "name": "Abnormal social behavior",
+   "description": "HPO term HP:0012433.",
+   "identifier": "HP:0012433"
+  },
+  {
+   "id": "HP:0001324",
+   "type": "Phenotype",
+   "name": "Muscle weakness",
+   "description": "HPO term HP:0001324.",
+   "identifier": "HP:0001324"
+  },
+  {
+   "id": "HP:0001332",
+   "type": "Phenotype",
+   "name": "Dystonia",
+   "description": "HPO term HP:0001332.",
+   "identifier": "HP:0001332"
+  },
+  {
+   "id": "HP:0002312",
+   "type": "Phenotype",
+   "name": "Clumsiness",
+   "description": "HPO term HP:0002312.",
+   "identifier": "HP:0002312"
+  },
+  {
+   "id": "HP:0004343",
+   "type": "Phenotype",
+   "name": "Abnormal glycosphingolipid metabolism",
+   "description": "HPO term HP:0004343.",
+   "identifier": "HP:0004343"
+  },
+  {
+   "id": "HP:0000738",
+   "type": "Phenotype",
+   "name": "Hallucinations",
+   "description": "HPO term HP:0000738.",
+   "identifier": "HP:0000738"
+  },
+  {
+   "id": "HP:0030081",
+   "type": "Phenotype",
+   "name": "Punctate periventricular T2 hyperintense foci",
+   "description": "HPO term HP:0030081.",
+   "identifier": "HP:0030081"
+  },
+  {
+   "id": "HP:0000020",
+   "type": "Phenotype",
+   "name": "Urinary incontinence",
+   "description": "HPO term HP:0000020.",
+   "identifier": "HP:0000020"
+  },
+  {
+   "id": "HP:0000648",
+   "type": "Phenotype",
+   "name": "Optic atrophy",
+   "description": "HPO term HP:0000648.",
+   "identifier": "HP:0000648"
+  },
+  {
+   "id": "HP:0001290",
+   "type": "Phenotype",
+   "name": "Generalized hypotonia",
+   "description": "HPO term HP:0001290.",
+   "identifier": "HP:0001290"
+  },
+  {
+   "id": "HP:0002359",
+   "type": "Phenotype",
+   "name": "Frequent falls",
+   "description": "HPO term HP:0002359.",
+   "identifier": "HP:0002359"
+  },
+  {
+   "id": "HP:0000762",
+   "type": "Phenotype",
+   "name": "Decreased nerve conduction velocity",
+   "description": "HPO term HP:0000762.",
+   "identifier": "HP:0000762"
+  },
+  {
+   "id": "MONDO:0009650",
+   "type": "Disease",
+   "name": "mucolipidosis type II",
+   "description": "Mucolipidosis II (MLII) is a slowly progressive lysosomal disorder characterized by growth retardation, skeletal abnormalities, facial dysmorphism, stiff skin, developmental delay and cardiomegaly.",
+   "identifier": "MONDO:0009650"
+  },
+  {
+   "id": "HGNC:29670",
+   "type": "Gene",
+   "name": "GNPTAB",
+   "description": "Gene GNPTAB (HGNC:29670).",
+   "identifier": "HGNC:29670"
+  },
+  {
+   "id": "HP:0001072",
+   "type": "Phenotype",
+   "name": "Thickened skin",
+   "description": "HPO term HP:0001072.",
+   "identifier": "HP:0001072"
+  },
+  {
+   "id": "HP:0001270",
+   "type": "Phenotype",
+   "name": "Motor delay",
+   "description": "HPO term HP:0001270.",
+   "identifier": "HP:0001270"
+  },
+  {
+   "id": "HP:0001537",
+   "type": "Phenotype",
+   "name": "Umbilical hernia",
+   "description": "HPO term HP:0001537.",
+   "identifier": "HP:0001537"
+  },
+  {
+   "id": "HP:0001538",
+   "type": "Phenotype",
+   "name": "Protuberant abdomen",
+   "description": "HPO term HP:0001538.",
+   "identifier": "HP:0001538"
+  },
+  {
+   "id": "HP:0002474",
+   "type": "Phenotype",
+   "name": "Expressive language delay",
+   "description": "HPO term HP:0002474.",
+   "identifier": "HP:0002474"
+  },
+  {
+   "id": "HP:0006596",
+   "type": "Phenotype",
+   "name": "Restricted chest movement",
+   "description": "HPO term HP:0006596.",
+   "identifier": "HP:0006596"
+  },
+  {
+   "id": "HP:0008897",
+   "type": "Phenotype",
+   "name": "Postnatal growth retardation",
+   "description": "HPO term HP:0008897.",
+   "identifier": "HP:0008897"
+  },
+  {
+   "id": "HP:0000212",
+   "type": "Phenotype",
+   "name": "Gingival overgrowth",
+   "description": "HPO term HP:0000212.",
+   "identifier": "HP:0000212"
+  },
+  {
+   "id": "HP:0030680",
+   "type": "Phenotype",
+   "name": "Abnormal cardiovascular system morphology",
+   "description": "HPO term HP:0030680.",
+   "identifier": "HP:0030680"
+  },
+  {
+   "id": "HP:0031650",
+   "type": "Phenotype",
+   "name": "Abnormal atrioventricular valve physiology",
+   "description": "HPO term HP:0031650.",
+   "identifier": "HP:0031650"
+  },
+  {
+   "id": "HP:0000280",
+   "type": "Phenotype",
+   "name": "Coarse facial features",
+   "description": "HPO term HP:0000280.",
+   "identifier": "HP:0000280"
+  },
+  {
+   "id": "HP:0001609",
+   "type": "Phenotype",
+   "name": "Hoarse voice",
+   "description": "HPO term HP:0001609.",
+   "identifier": "HP:0001609"
+  },
+  {
+   "id": "HP:0002540",
+   "type": "Phenotype",
+   "name": "Inability to walk",
+   "description": "HPO term HP:0002540.",
+   "identifier": "HP:0002540"
+  },
+  {
+   "id": "HP:0002870",
+   "type": "Phenotype",
+   "name": "Obstructive sleep apnea",
+   "description": "HPO term HP:0002870.",
+   "identifier": "HP:0002870"
+  },
+  {
+   "id": "HP:0005280",
+   "type": "Phenotype",
+   "name": "Depressed nasal bridge",
+   "description": "HPO term HP:0005280.",
+   "identifier": "HP:0005280"
+  },
+  {
+   "id": "HP:0000388",
+   "type": "Phenotype",
+   "name": "Otitis media",
+   "description": "HPO term HP:0000388.",
+   "identifier": "HP:0000388"
+  },
+  {
+   "id": "HP:0000774",
+   "type": "Phenotype",
+   "name": "Narrow chest",
+   "description": "HPO term HP:0000774.",
+   "identifier": "HP:0000774"
+  },
+  {
+   "id": "HP:0001363",
+   "type": "Phenotype",
+   "name": "Craniosynostosis",
+   "description": "HPO term HP:0001363.",
+   "identifier": "HP:0001363"
+  },
+  {
+   "id": "HP:0001376",
+   "type": "Phenotype",
+   "name": "Limitation of joint mobility",
+   "description": "HPO term HP:0001376.",
+   "identifier": "HP:0001376"
+  },
+  {
+   "id": "MONDO:0009290",
+   "type": "Disease",
+   "name": "glycogen storage disease II",
+   "description": "Glycogen storage disease due to acid maltase deficiency (AMD) is an autosomal recessive trait leading to metabolic myopathy that affects cardiac and respiratory muscles in addition to skeletal muscle and other tissues. AMD represents a wide spectrum of clinical presentations caused by an accumulation of glycogen in lysosomes: Glycogen storage disease due to acid maltase deficiency, infantile onset",
+   "identifier": "MONDO:0009290"
+  },
+  {
+   "id": "HGNC:4065",
+   "type": "Gene",
+   "name": "GAA",
+   "description": "Gene GAA (HGNC:4065).",
+   "identifier": "HGNC:4065"
+  },
+  {
+   "id": "HP:0001508",
+   "type": "Phenotype",
+   "name": "Failure to thrive",
+   "description": "HPO term HP:0001508.",
+   "identifier": "HP:0001508"
+  },
+  {
+   "id": "HP:0025336",
+   "type": "Phenotype",
+   "name": "Delayed ability to sit",
+   "description": "HPO term HP:0025336.",
+   "identifier": "HP:0025336"
+  },
+  {
+   "id": "HP:0040329",
+   "type": "Phenotype",
+   "name": "Multifocal hyperintensity of cerebral white matter on MRI",
+   "description": "HPO term HP:0040329.",
+   "identifier": "HP:0040329"
+  },
+  {
+   "id": "HP:0001639",
+   "type": "Phenotype",
+   "name": "Hypertrophic cardiomyopathy",
+   "description": "HPO term HP:0001639.",
+   "identifier": "HP:0001639"
+  },
+  {
+   "id": "HP:0001712",
+   "type": "Phenotype",
+   "name": "Left ventricular hypertrophy",
+   "description": "HPO term HP:0001712.",
+   "identifier": "HP:0001712"
+  },
+  {
+   "id": "HP:0010471",
+   "type": "Phenotype",
+   "name": "Oligosacchariduria",
+   "description": "HPO term HP:0010471.",
+   "identifier": "HP:0010471"
+  },
+  {
+   "id": "HP:0025335",
+   "type": "Phenotype",
+   "name": "Delayed ability to stand",
+   "description": "HPO term HP:0025335.",
+   "identifier": "HP:0025335"
+  },
+  {
+   "id": "HP:0032092",
+   "type": "Phenotype",
+   "name": "Left ventricular outflow tract obstruction",
+   "description": "HPO term HP:0032092.",
+   "identifier": "HP:0032092"
+  },
+  {
+   "id": "HP:0001640",
+   "type": "Phenotype",
+   "name": "Cardiomegaly",
+   "description": "HPO term HP:0001640.",
+   "identifier": "HP:0001640"
+  },
+  {
+   "id": "HP:0003236",
+   "type": "Phenotype",
+   "name": "Elevated circulating creatine kinase activity",
+   "description": "HPO term HP:0003236.",
+   "identifier": "HP:0003236"
+  },
+  {
+   "id": "HP:0008947",
+   "type": "Phenotype",
+   "name": "Floppy infant",
+   "description": "HPO term HP:0008947.",
+   "identifier": "HP:0008947"
+  },
+  {
+   "id": "HP:0025435",
+   "type": "Phenotype",
+   "name": "Increased circulating lactate dehydrogenase concentration",
+   "description": "HPO term HP:0025435.",
+   "identifier": "HP:0025435"
+  },
+  {
+   "id": "HP:0034932",
+   "type": "Phenotype",
+   "name": "Decreased circulating acid maltase activity",
+   "description": "HPO term HP:0034932.",
+   "identifier": "HP:0034932"
+  },
+  {
+   "id": "HP:0009073",
+   "type": "Phenotype",
+   "name": "Progressive proximal muscle weakness",
+   "description": "HPO term HP:0009073.",
+   "identifier": "HP:0009073"
+  },
+  {
+   "id": "HP:0000183",
+   "type": "Phenotype",
+   "name": "Tongue muscle weakness",
+   "description": "HPO term HP:0000183.",
+   "identifier": "HP:0000183"
+  },
+  {
+   "id": "MONDO:0010100",
+   "type": "Disease",
+   "name": "Tay-Sachs disease",
+   "description": "GM2 gangliosidosis, variant B or Tay-Sachs disease is marked by accumulation of G2 gangliosides due to hexosaminidase A deficiency.",
+   "identifier": "MONDO:0010100"
+  },
+  {
+   "id": "HGNC:4878",
+   "type": "Gene",
+   "name": "HEXA",
+   "description": "Gene HEXA (HGNC:4878).",
+   "identifier": "HGNC:4878"
+  },
+  {
+   "id": "HP:0002191",
+   "type": "Phenotype",
+   "name": "Progressive spasticity",
+   "description": "HPO term HP:0002191.",
+   "identifier": "HP:0002191"
+  },
+  {
+   "id": "HP:0003495",
+   "type": "Phenotype",
+   "name": "GM2-ganglioside accumulation",
+   "description": "HPO term HP:0003495.",
+   "identifier": "HP:0003495"
+  },
+  {
+   "id": "HP:0010969",
+   "type": "Phenotype",
+   "name": "Abnormality of glycolipid metabolism",
+   "description": "HPO term HP:0010969.",
+   "identifier": "HP:0010969"
+  },
+  {
+   "id": "HP:0000736",
+   "type": "Phenotype",
+   "name": "Short attention span",
+   "description": "HPO term HP:0000736.",
+   "identifier": "HP:0000736"
+  },
+  {
+   "id": "HP:0001288",
+   "type": "Phenotype",
+   "name": "Gait disturbance",
+   "description": "HPO term HP:0001288.",
+   "identifier": "HP:0001288"
+  },
+  {
+   "id": "HP:0001347",
+   "type": "Phenotype",
+   "name": "Hyperreflexia",
+   "description": "HPO term HP:0001347.",
+   "identifier": "HP:0001347"
+  },
+  {
+   "id": "HP:0002171",
+   "type": "Phenotype",
+   "name": "Gliosis",
+   "description": "HPO term HP:0002171.",
+   "identifier": "HP:0002171"
+  },
+  {
+   "id": "HP:0002311",
+   "type": "Phenotype",
+   "name": "Incoordination",
+   "description": "HPO term HP:0002311.",
+   "identifier": "HP:0002311"
+  },
+  {
+   "id": "HP:0011951",
+   "type": "Phenotype",
+   "name": "Aspiration pneumonia",
+   "description": "HPO term HP:0011951.",
+   "identifier": "HP:0011951"
+  },
+  {
+   "id": "HP:0012696",
+   "type": "Phenotype",
+   "name": "Abnormal thalamic MRI signal intensity",
+   "description": "HPO term HP:0012696.",
+   "identifier": "HP:0012696"
+  },
+  {
+   "id": "MONDO:0010006",
+   "type": "Disease",
+   "name": "Sandhoff disease",
+   "description": "A lysosomal disorder from the GM2 gangliosidosis family, caused by biallelic pathogenic variants in the HEXB gene, characterized by GM2 ganglioside accumulation in the nervous system and progressive central nervous system degeneration.",
+   "identifier": "MONDO:0010006"
+  },
+  {
+   "id": "HGNC:4879",
+   "type": "Gene",
+   "name": "HEXB",
+   "description": "Gene HEXB (HGNC:4879).",
+   "identifier": "HGNC:4879"
+  },
+  {
+   "id": "HP:0033978",
+   "type": "Phenotype",
+   "name": "Reduced beta-hexosaminidase B activity",
+   "description": "HPO term HP:0033978.",
+   "identifier": "HP:0033978"
+  },
+  {
+   "id": "HP:0002333",
+   "type": "Phenotype",
+   "name": "Motor deterioration",
+   "description": "HPO term HP:0002333.",
+   "identifier": "HP:0002333"
+  },
+  {
+   "id": "HP:0100022",
+   "type": "Phenotype",
+   "name": "Abnormality of movement",
+   "description": "HPO term HP:0100022.",
+   "identifier": "HP:0100022"
+  },
+  {
+   "id": "HP:0001250",
+   "type": "Phenotype",
+   "name": "Seizure",
+   "description": "HPO term HP:0001250.",
+   "identifier": "HP:0001250"
+  },
+  {
+   "id": "HP:0002808",
+   "type": "Phenotype",
+   "name": "Kyphosis",
+   "description": "HPO term HP:0002808.",
+   "identifier": "HP:0002808"
+  },
+  {
+   "id": "HP:0007272",
+   "type": "Phenotype",
+   "name": "Progressive psychomotor deterioration",
+   "description": "HPO term HP:0007272.",
+   "identifier": "HP:0007272"
+  },
+  {
+   "id": "HP:0000256",
+   "type": "Phenotype",
+   "name": "Macrocephaly",
+   "description": "HPO term HP:0000256.",
+   "identifier": "HP:0000256"
+  },
+  {
+   "id": "HP:0000618",
+   "type": "Phenotype",
+   "name": "Blindness",
+   "description": "HPO term HP:0000618.",
+   "identifier": "HP:0000618"
+  },
+  {
+   "id": "HP:0008936",
+   "type": "Phenotype",
+   "name": "Axial hypotonia",
+   "description": "HPO term HP:0008936.",
+   "identifier": "HP:0008936"
+  },
+  {
+   "id": "HP:0012758",
+   "type": "Phenotype",
+   "name": "Neurodevelopmental delay",
+   "description": "HPO term HP:0012758.",
+   "identifier": "HP:0012758"
+  },
+  {
+   "id": "PMID:28218669",
+   "type": "Publication",
+   "name": "A Review of Gaucher Disease Pathophysiology, Clinical Presentation and Treatments.",
+   "description": "International journal of molecular sciences (2017). Real publication via PubMed.",
+   "identifier": "PMID:28218669",
+   "year": 2017
+  },
+  {
+   "id": "PMID:39767201",
+   "type": "Publication",
+   "name": "An Overview of Gaucher Disease.",
+   "description": "Diagnostics (Basel, Switzerland) (2024). Real publication via PubMed.",
+   "identifier": "PMID:39767201",
+   "year": 2024
+  },
+  {
+   "id": "PMID:20301446",
+   "type": "Publication",
+   "name": "Gaucher Disease.",
+   "description": " (1993). Real publication via PubMed.",
+   "identifier": "PMID:20301446",
+   "year": 1993
+  },
+  {
+   "id": "PMID:33172708",
+   "type": "Publication",
+   "name": "[Fabry disease: A review].",
+   "description": "La Revue de medecine interne (2021). Real publication via PubMed.",
+   "identifier": "PMID:33172708",
+   "year": 2021
+  },
+  {
+   "id": "PMID:40840785",
+   "type": "Publication",
+   "name": "Fabry disease cardiomyopathy: A state-of-the-art review.",
+   "description": "Progress in cardiovascular diseases (2025). Real publication via PubMed.",
+   "identifier": "PMID:40840785",
+   "year": 2025
+  },
+  {
+   "id": "PMID:20301469",
+   "type": "Publication",
+   "name": "Fabry Disease.",
+   "description": " (1993). Real publication via PubMed.",
+   "identifier": "PMID:20301469",
+   "year": 1993
+  },
+  {
+   "id": "PMID:20301544",
+   "type": "Publication",
+   "name": "Acid Sphingomyelinase Deficiency.",
+   "description": " (1993). Real publication via PubMed.",
+   "identifier": "PMID:20301544",
+   "year": 1993
+  },
+  {
+   "id": "PMID:38826605",
+   "type": "Publication",
+   "name": "A Rare Case of Niemann-Pick Disease Type-A.",
+   "description": "Cureus (2024). Real publication via PubMed.",
+   "identifier": "PMID:38826605",
+   "year": 2024
+  },
+  {
+   "id": "PMID:41208004",
+   "type": "Publication",
+   "name": "Exploring the boundaries of Niemann-Pick disease type A/B: a report of a case and review of literature.",
+   "description": "Molecular and cellular pediatrics (2025). Real publication via PubMed.",
+   "identifier": "PMID:41208004",
+   "year": 2025
+  },
+  {
+   "id": "PMID:26007685",
+   "type": "Publication",
+   "name": "Misexpression of the Niemann-Pick disease type C1 (NPC1)-like protein in Arabidopsis causes sphingolipid accumulation and reproductive defects.",
+   "description": "Planta (2015). Real publication via PubMed.",
+   "identifier": "PMID:26007685",
+   "year": 2015
+  },
+  {
+   "id": "PMID:39838105",
+   "type": "Publication",
+   "name": "Cholesterol mobilization regulates dendritic cell maturation and the immunogenic response to cancer.",
+   "description": "Nature immunology (2025). Real publication via PubMed.",
+   "identifier": "PMID:39838105",
+   "year": 2025
+  },
+  {
+   "id": "PMID:31500175",
+   "type": "Publication",
+   "name": "Current Challenges in Understanding the Cellular and Molecular Mechanisms in Niemann-Pick Disease Type C1.",
+   "description": "International journal of molecular sciences (2019). Real publication via PubMed.",
+   "identifier": "PMID:31500175",
+   "year": 2019
+  },
+  {
+   "id": "PMID:32965986",
+   "type": "Publication",
+   "name": "Krabbe Disease.",
+   "description": " (2023). Real publication via PubMed.",
+   "identifier": "PMID:32965986",
+   "year": 2023
+  },
+  {
+   "id": "PMID:27638593",
+   "type": "Publication",
+   "name": "Expression of individual mutations and haplotypes in the galactocerebrosidase gene identified by the newborn screening program in New York State and in confirmed cases of Krabbe's disease.",
+   "description": "Journal of neuroscience research (2016). Real publication via PubMed.",
+   "identifier": "PMID:27638593",
+   "year": 2016
+  },
+  {
+   "id": "PMID:26795590",
+   "type": "Publication",
+   "name": "Newborn screening for Krabbe disease in New York State: the first eight years' experience.",
+   "description": "Genetics in medicine : official journal of the American College of Medical Genetics (2016). Real publication via PubMed.",
+   "identifier": "PMID:26795590",
+   "year": 2016
+  },
+  {
+   "id": "PMID:26462614",
+   "type": "Publication",
+   "name": "Mutation Update of ARSA and PSAP Genes Causing Metachromatic Leukodystrophy.",
+   "description": "Human mutation (2016). Real publication via PubMed.",
+   "identifier": "PMID:26462614",
+   "year": 2016
+  },
+  {
+   "id": "PMID:33195324",
+   "type": "Publication",
+   "name": "Metachromatic Leukodystrophy: Diagnosis, Modeling, and Treatment Approaches.",
+   "description": "Frontiers in medicine (2020). Real publication via PubMed.",
+   "identifier": "PMID:33195324",
+   "year": 2020
+  },
+  {
+   "id": "PMID:38239149",
+   "type": "Publication",
+   "name": "Progress in leukodystrophies with zebrafish.",
+   "description": "Development, growth & differentiation (2024). Real publication via PubMed.",
+   "identifier": "PMID:38239149",
+   "year": 2024
+  },
+  {
+   "id": "PMID:34172897",
+   "type": "Publication",
+   "name": "Mucolipidosis type II and type III: a systematic review of 843 published cases.",
+   "description": "Genetics in medicine : official journal of the American College of Medical Genetics (2021). Real publication via PubMed.",
+   "identifier": "PMID:34172897",
+   "year": 2021
+  },
+  {
+   "id": "PMID:34341521",
+   "type": "Publication",
+   "name": "Pathogenic variants in GNPTAB and GNPTG encoding distinct subunits of GlcNAc-1-phosphotransferase differentially impact bone resorption in patients with mucolipidosis type II and III.",
+   "description": "Genetics in medicine : official journal of the American College of Medical Genetics (2021). Real publication via PubMed.",
+   "identifier": "PMID:34341521",
+   "year": 2021
+  },
+  {
+   "id": "PMID:30882951",
+   "type": "Publication",
+   "name": "The lysosomal storage disorders mucolipidosis type II, type III alpha/beta, and type III gamma: Update on GNPTAB and GNPTG mutations.",
+   "description": "Human mutation (2019). Real publication via PubMed.",
+   "identifier": "PMID:30882951",
+   "year": 2019
+  },
+  {
+   "id": "PMID:23884227",
+   "type": "Publication",
+   "name": "Three patients with glycogen storage disease type II and the mutational spectrum of GAA in Korean patients.",
+   "description": "Annals of clinical and laboratory science (2013). Real publication via PubMed.",
+   "identifier": "PMID:23884227",
+   "year": 2013
+  },
+  {
+   "id": "PMID:17915575",
+   "type": "Publication",
+   "name": "Molecular genetics of late onset glycogen storage disease II in Italy.",
+   "description": "Acta myologica : myopathies and cardiomyopathies : official journal of the Mediterranean Society of Myology (2007). Real publication via PubMed.",
+   "identifier": "PMID:17915575",
+   "year": 2007
+  },
+  {
+   "id": "PMID:36969713",
+   "type": "Publication",
+   "name": "Pompe Disease: a Clinical, Diagnostic, and Therapeutic Overview.",
+   "description": "Current treatment options in neurology (2022). Real publication via PubMed.",
+   "identifier": "PMID:36969713",
+   "year": 2022
+  },
+  {
+   "id": "PMID:31634902",
+   "type": "Publication",
+   "name": "Search-and-replace genome editing without double-strand breaks or donor DNA.",
+   "description": "Nature (2019). Real publication via PubMed.",
+   "identifier": "PMID:31634902",
+   "year": 2019
+  },
+  {
+   "id": "PMID:35145305",
+   "type": "Publication",
+   "name": "AAV gene therapy for Tay-Sachs disease.",
+   "description": "Nature medicine (2022). Real publication via PubMed.",
+   "identifier": "PMID:35145305",
+   "year": 2022
+  },
+  {
+   "id": "PMID:40710901",
+   "type": "Publication",
+   "name": "Advances in Diagnosis, Pathological Mechanisms, Clinical Impact, and Future Therapeutic Perspectives in Tay-Sachs Disease.",
+   "description": "Neurology international (2025). Real publication via PubMed.",
+   "identifier": "PMID:40710901",
+   "year": 2025
+  },
+  {
+   "id": "PMID:40769205",
+   "type": "Publication",
+   "name": "Microglia-neuron crosstalk through Hex-GM2-MGL2 maintains brain homeostasis.",
+   "description": "Nature (2025). Real publication via PubMed.",
+   "identifier": "PMID:40769205",
+   "year": 2025
+  },
+  {
+   "id": "PMID:35420740",
+   "type": "Publication",
+   "name": "Sandhoff Disease.",
+   "description": " (1993). Real publication via PubMed.",
+   "identifier": "PMID:35420740",
+   "year": 1993
+  },
+  {
+   "id": "PMID:38253667",
+   "type": "Publication",
+   "name": "Innate immune sensing of lysosomal dysfunction drives multiple lysosomal storage disorders.",
+   "description": "Nature cell biology (2024). Real publication via PubMed.",
+   "identifier": "PMID:38253667",
+   "year": 2024
+  }
+ ],
+ "edges": [
+  {
+   "id": "EDGE-0001",
+   "source": "MONDO:0018150",
+   "target": "HGNC:4177",
+   "rel_type": "CAUSED_BY",
+   "provenance": "curated",
+   "description": "Gaucher disease is caused by variants in GBA1 (per omim via Monarch).",
+   "source_db": "omim",
+   "source_id": "omim:MONDO:0018150->HGNC:4177",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "[omim via Monarch] Gaucher disease is recorded as caused by variants in GBA1. PubMed context: 1. Int J Mol Sci. 2017 Feb 17;18(2):441. doi: 10.3390/ijms18020441. A Review of Gaucher Disease Pathophysiology, Clinical Presentation and Treatments. Stirnemann J(1), Belmatoug N(2), Camou F(3), Serratrice C(4), Froissart R(5), Caillaud C(6), Levade T(7), Astudillo L(8), Serratrice J(9), Brassier A(10), Rose C(11), Billette de Villemeur T(12), Berger MG(13). Author information: (1)Department of I",
+   "edge_valid": 0.8771,
+   "rel_probs": {
+    "asserted": 0.7832,
+    "weaker_association": 0.0782,
+    "different_relationship": 0.0709,
+    "unsupported": 0.0677
+   },
+   "evidence_level": {
+    "expected": 1.499,
+    "probs": {
+     "hypothesis": 0.022,
+     "supported": 0.5308,
+     "replicated": 0.3736,
+     "clinical": 0.0736
+    }
+   },
+   "contradicted": 0.0297,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0002",
+   "source": "MONDO:0018150",
+   "target": "HP:0001298",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Encephalopathy (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0001298",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0003",
+   "source": "MONDO:0018150",
+   "target": "HP:0002240",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Hepatomegaly (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0002240",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0004",
+   "source": "MONDO:0018150",
+   "target": "HP:0002659",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Increased susceptibility to fractures (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0002659",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0005",
+   "source": "MONDO:0018150",
+   "target": "HP:0002797",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Osteolysis (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0002797",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0006",
+   "source": "MONDO:0018150",
+   "target": "HP:0010885",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Avascular necrosis (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0010885",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0007",
+   "source": "MONDO:0018150",
+   "target": "HP:0002793",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Abnormal pattern of respiration (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0002793",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0008",
+   "source": "MONDO:0018150",
+   "target": "HP:0000823",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Delayed puberty (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0000823",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0009",
+   "source": "MONDO:0018150",
+   "target": "HP:0000938",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Osteopenia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0000938",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0010",
+   "source": "MONDO:0018150",
+   "target": "HP:0001971",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Hypersplenism (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0001971",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0011",
+   "source": "MONDO:0018150",
+   "target": "HP:0002039",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Anorexia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0002039",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0012",
+   "source": "MONDO:0018150",
+   "target": "HP:0012378",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Fatigue (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0012378",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0013",
+   "source": "MONDO:0018150",
+   "target": "HP:0000939",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Osteoporosis (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0000939",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0014",
+   "source": "MONDO:0018150",
+   "target": "HP:0001510",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Growth delay (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0001510",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0015",
+   "source": "MONDO:0018150",
+   "target": "HP:0001744",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Splenomegaly (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0001744",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0016",
+   "source": "MONDO:0018150",
+   "target": "HP:0002653",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Bone pain (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0002653",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0017",
+   "source": "MONDO:0018150",
+   "target": "HP:0002750",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Delayed skeletal maturation (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0002750",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0018",
+   "source": "MONDO:0018150",
+   "target": "HP:0000486",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Strabismus (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0000486",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0019",
+   "source": "MONDO:0018150",
+   "target": "HP:0002015",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Dysphagia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0002015",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0020",
+   "source": "MONDO:0018150",
+   "target": "HP:0003656",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Decreased beta-glucocerebrosidase level (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0003656",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0021",
+   "source": "MONDO:0018150",
+   "target": "HP:0000602",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Gaucher disease presents with Ophthalmoplegia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018150->HP:0000602",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0022",
+   "source": "MONDO:0010526",
+   "target": "HGNC:4296",
+   "rel_type": "CAUSED_BY",
+   "provenance": "curated",
+   "description": "Fabry disease is caused by variants in GLA (per omim via Monarch).",
+   "source_db": "omim",
+   "source_id": "omim:MONDO:0010526->HGNC:4296",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "[omim via Monarch] Fabry disease is recorded as caused by variants in GLA. PubMed context: 1. Rev Med Interne. 2021 Feb;42(2):110-119. doi: 10.1016/j.revmed.2020.08.019. Epub 2020 Nov 7. [Fabry disease: A review]. [Article in French] Michaud M(1), Mauhin W(2), Belmatoug N(3), Bedreddine N(4), Garnotel R(5), Catros F(6), Lidove O(7), Gaches F(6). Author information: (1)Centre de comp\u00e9tence des maladies lysosomales de l'adulte, h\u00f4pital Joseph-Ducuing, 31076 Toulouse, France; Service de m\u00e9",
+   "edge_valid": 0.8469,
+   "rel_probs": {
+    "asserted": 0.7119,
+    "weaker_association": 0.1067,
+    "different_relationship": 0.0905,
+    "unsupported": 0.0909
+   },
+   "evidence_level": {
+    "expected": 1.427,
+    "probs": {
+     "hypothesis": 0.0489,
+     "supported": 0.6134,
+     "replicated": 0.1999,
+     "clinical": 0.1378
+    }
+   },
+   "contradicted": 0.0725,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0023",
+   "source": "MONDO:0010526",
+   "target": "HP:0000083",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Renal insufficiency (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0000083",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0024",
+   "source": "MONDO:0010526",
+   "target": "HP:0000100",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Nephrotic syndrome (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0000100",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0025",
+   "source": "MONDO:0010526",
+   "target": "HP:0000365",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Hearing impairment (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0000365",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0026",
+   "source": "MONDO:0010526",
+   "target": "HP:0001482",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Subcutaneous nodule (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0001482",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0027",
+   "source": "MONDO:0010526",
+   "target": "HP:0001903",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Anemia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0001903",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0028",
+   "source": "MONDO:0010526",
+   "target": "HP:0002024",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Malabsorption (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0002024",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0029",
+   "source": "MONDO:0010526",
+   "target": "HP:0034864",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Decreased alpha-galactosidase A activity (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0034864",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0030",
+   "source": "MONDO:0010526",
+   "target": "HP:0100579",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Mucosal telangiectasiae (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0100579",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0031",
+   "source": "MONDO:0010526",
+   "target": "HP:0000962",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Hyperkeratosis (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0000962",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0032",
+   "source": "MONDO:0010526",
+   "target": "HP:0000966",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Hypohidrosis (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0000966",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0033",
+   "source": "MONDO:0010526",
+   "target": "HP:0001014",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Angiokeratoma (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0001014",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0034",
+   "source": "MONDO:0010526",
+   "target": "HP:0001131",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Corneal dystrophy (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0001131",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0035",
+   "source": "MONDO:0010526",
+   "target": "HP:0001369",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Arthritis (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0001369",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0036",
+   "source": "MONDO:0010526",
+   "target": "HP:0001635",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Congestive heart failure (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0001635",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0037",
+   "source": "MONDO:0010526",
+   "target": "HP:0002829",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Arthralgia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0002829",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0038",
+   "source": "MONDO:0010526",
+   "target": "HP:0003326",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Myalgia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0003326",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0039",
+   "source": "MONDO:0010526",
+   "target": "HP:0012378",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Fatigue (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0012378",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0040",
+   "source": "MONDO:0010526",
+   "target": "HP:0033595",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Elevated circulating globotriaosylceramide concentration (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0033595",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0041",
+   "source": "MONDO:0010526",
+   "target": "HP:0100585",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Telangiectasia of the skin (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0100585",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0042",
+   "source": "MONDO:0010526",
+   "target": "HP:0000524",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Fabry disease presents with Conjunctival telangiectasia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010526->HP:0000524",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0043",
+   "source": "MONDO:0009756",
+   "target": "HGNC:11120",
+   "rel_type": "CAUSED_BY",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A is caused by variants in SMPD1 (per omim via Monarch).",
+   "source_db": "omim",
+   "source_id": "omim:MONDO:0009756->HGNC:11120",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "[omim via Monarch] Niemann-Pick disease type A is recorded as caused by variants in SMPD1. PubMed context: 1. Acid Sphingomyelinase Deficiency. Wasserstein MP(1), Schuchman EH(2). In: Adam MP, Bick S, Mirzaa GM, Wallace SE, Amemiya A, editors. GeneReviews(\u00ae) [Internet]. Seattle (WA): University of Washington, Seattle; 1993\u20132026. 2006 Dec 7 [updated 2023 Apr 27]. Author information: (1)Professor & Chief, Division of Pediatric Genetic Medicine, Albert Einstein College of Medicine, New York, New York (2)F",
+   "edge_valid": 0.9143,
+   "rel_probs": {
+    "asserted": 0.7805,
+    "weaker_association": 0.0842,
+    "different_relationship": 0.0698,
+    "unsupported": 0.0655
+   },
+   "evidence_level": {
+    "expected": 1.297,
+    "probs": {
+     "hypothesis": 0.0474,
+     "supported": 0.656,
+     "replicated": 0.2491,
+     "clinical": 0.0475
+    }
+   },
+   "contradicted": 0.0015,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0044",
+   "source": "MONDO:0009756",
+   "target": "HP:0008872",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Feeding difficulties in infancy.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0008872",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0045",
+   "source": "MONDO:0009756",
+   "target": "HP:0004322",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Short stature.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0004322",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0046",
+   "source": "MONDO:0009756",
+   "target": "HP:0001252",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Hypotonia.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0001252",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0047",
+   "source": "MONDO:0009756",
+   "target": "HP:0002063",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Rigidity.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0002063",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0048",
+   "source": "MONDO:0009756",
+   "target": "HP:0000939",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Osteoporosis.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0000939",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0049",
+   "source": "MONDO:0009756",
+   "target": "HP:0001982",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Sea-blue histiocytosis.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0001982",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0050",
+   "source": "MONDO:0009756",
+   "target": "HP:0004333",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Bone-marrow foam cells.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0004333",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0051",
+   "source": "MONDO:0009756",
+   "target": "HP:0002013",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Vomiting.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0002013",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0052",
+   "source": "MONDO:0009756",
+   "target": "HP:0002207",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Diffuse reticular or finely nodular infiltrations.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0002207",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0053",
+   "source": "MONDO:0009756",
+   "target": "HP:0002205",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Recurrent respiratory infections.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0002205",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0054",
+   "source": "MONDO:0009756",
+   "target": "HP:0002305",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Athetosis.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0002305",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0055",
+   "source": "MONDO:0009756",
+   "target": "HP:0010729",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Cherry red spot of the macula.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0010729",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0056",
+   "source": "MONDO:0009756",
+   "target": "HP:0002240",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Hepatomegaly.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0002240",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0057",
+   "source": "MONDO:0009756",
+   "target": "HP:0031964",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Elevated circulating alanine aminotransferase concentration.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0031964",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0058",
+   "source": "MONDO:0009756",
+   "target": "HP:0003609",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Foam cells with lamellar inclusion bodies.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0003609",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0059",
+   "source": "MONDO:0009756",
+   "target": "HP:0003202",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Skeletal muscle atrophy.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0003202",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0060",
+   "source": "MONDO:0009756",
+   "target": "HP:0000991",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Xanthomatosis.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0000991",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0061",
+   "source": "MONDO:0009756",
+   "target": "HP:0002376",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Developmental regression.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0002376",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0062",
+   "source": "MONDO:0009756",
+   "target": "HP:6001380",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Elevated circulating lysosphingomyelin concentration.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:6001380",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0063",
+   "source": "MONDO:0009756",
+   "target": "HP:0002019",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A presents with Constipation.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009756->HP:0002019",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0064",
+   "source": "MONDO:0009757",
+   "target": "HGNC:7897",
+   "rel_type": "CAUSED_BY",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 is caused by variants in NPC1 (per omim via Monarch).",
+   "source_db": "omim",
+   "source_id": "omim:MONDO:0009757->HGNC:7897",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "[omim via Monarch] Niemann-Pick disease, type C1 is recorded as caused by variants in NPC1. PubMed context: 1. Planta. 2015 Oct;242(4):921-33. doi: 10.1007/s00425-015-2322-4. Epub 2015 May 26. Misexpression of the Niemann-Pick disease type C1 (NPC1)-like protein in Arabidopsis causes sphingolipid accumulation and reproductive defects. Feldman MJ(1), Poirier BC, Lange BM. Author information: (1)Donald Danforth Plant Science Center, 975 North Warson Road, St. Louis, MO, 63132, USA. Misexpression of the At",
+   "edge_valid": 0.9232,
+   "rel_probs": {
+    "asserted": 0.8763,
+    "weaker_association": 0.0436,
+    "different_relationship": 0.0412,
+    "unsupported": 0.0388
+   },
+   "evidence_level": {
+    "expected": 1.308,
+    "probs": {
+     "hypothesis": 0.0466,
+     "supported": 0.6366,
+     "replicated": 0.2791,
+     "clinical": 0.0378
+    }
+   },
+   "contradicted": 0.0014,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0065",
+   "source": "MONDO:0009757",
+   "target": "HP:6001353",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Elevated circulating C-triol concentration.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:6001353",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0066",
+   "source": "MONDO:0009757",
+   "target": "HP:0002066",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Gait ataxia.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0002066",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0067",
+   "source": "MONDO:0009757",
+   "target": "HP:0001252",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Hypotonia.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0001252",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0068",
+   "source": "MONDO:0009757",
+   "target": "HP:0002185",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Neurofibrillary tangles.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0002185",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0069",
+   "source": "MONDO:0009757",
+   "target": "HP:0001251",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Ataxia.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0001251",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0070",
+   "source": "MONDO:0009757",
+   "target": "HP:0003349",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Low cholesterol esterification rate.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0003349",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0071",
+   "source": "MONDO:0009757",
+   "target": "HP:0006579",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Prolonged neonatal jaundice.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0006579",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0072",
+   "source": "MONDO:0009757",
+   "target": "HP:0000511",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Vertical supranuclear gaze palsy.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0000511",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0073",
+   "source": "MONDO:0009757",
+   "target": "HP:6000158",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Unesterified cholesterol accumulation in cultured fibroblasts.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:6000158",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0074",
+   "source": "MONDO:0009757",
+   "target": "HP:0001791",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Fetal ascites.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0001791",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0075",
+   "source": "MONDO:0009757",
+   "target": "HP:0001744",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Splenomegaly.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0001744",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0076",
+   "source": "MONDO:0009757",
+   "target": "HP:0001982",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Sea-blue histiocytosis.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0001982",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0077",
+   "source": "MONDO:0009757",
+   "target": "HP:0004333",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Bone-marrow foam cells.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0004333",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0078",
+   "source": "MONDO:0009757",
+   "target": "HP:0001260",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Dysarthria.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0001260",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0079",
+   "source": "MONDO:0009757",
+   "target": "HP:0002371",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Loss of speech.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0002371",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0080",
+   "source": "MONDO:0009757",
+   "target": "HP:0001263",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Global developmental delay.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0001263",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0081",
+   "source": "MONDO:0009757",
+   "target": "HP:0000709",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Psychosis.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0000709",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0082",
+   "source": "MONDO:0009757",
+   "target": "HP:0002529",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Neuronal loss in central nervous system.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0002529",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0083",
+   "source": "MONDO:0009757",
+   "target": "HP:0002524",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Cataplexy.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0002524",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0084",
+   "source": "MONDO:0009757",
+   "target": "HP:0001257",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 presents with Spasticity.",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009757->HP:0001257",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0085",
+   "source": "MONDO:0009499",
+   "target": "HGNC:4115",
+   "rel_type": "CAUSED_BY",
+   "provenance": "curated",
+   "description": "Krabbe disease is caused by variants in GALC (per omim via Monarch).",
+   "source_db": "omim",
+   "source_id": "omim:MONDO:0009499->HGNC:4115",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "[omim via Monarch] Krabbe disease is recorded as caused by variants in GALC. PubMed context: 1. Krabbe Disease. Jain M(1), De Jesus O(2). In: StatPearls [Internet]. Treasure Island (FL): StatPearls Publishing; 2023 Jan\u2013. 2023 Aug 23. Author information: (1)Maulana Azad Medical College (2)University of Puerto Rico, Medical Sciences Campus, Neurosurgery Section Krabbe disease is an autosomal recessive neurodegenerative disorder. The gene mutation occurs at chromosome 14, which codes for a l",
+   "edge_valid": 0.9152,
+   "rel_probs": {
+    "asserted": 0.8097,
+    "weaker_association": 0.0718,
+    "different_relationship": 0.0639,
+    "unsupported": 0.0545
+   },
+   "evidence_level": {
+    "expected": 1.532,
+    "probs": {
+     "hypothesis": 0.0267,
+     "supported": 0.5226,
+     "replicated": 0.3431,
+     "clinical": 0.1077
+    }
+   },
+   "contradicted": 0.0288,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0086",
+   "source": "MONDO:0009499",
+   "target": "HP:0002922",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Increased CSF protein concentration (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0002922",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0087",
+   "source": "MONDO:0009499",
+   "target": "HP:0030215",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Inappropriate crying (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0030215",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0088",
+   "source": "MONDO:0009499",
+   "target": "HP:0033031",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Hyperpyrexia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0033031",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0089",
+   "source": "MONDO:0009499",
+   "target": "HP:0034322",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Reduced tissue galactocerebrosidase activity (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0034322",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0090",
+   "source": "MONDO:0009499",
+   "target": "HP:0002493",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Upper motor neuron dysfunction (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0002493",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0091",
+   "source": "MONDO:0009499",
+   "target": "HP:0000737",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Irritability (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0000737",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0092",
+   "source": "MONDO:0009499",
+   "target": "HP:0001257",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Spasticity (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0001257",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0093",
+   "source": "MONDO:0009499",
+   "target": "HP:0001268",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Mental deterioration (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0001268",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0094",
+   "source": "MONDO:0009499",
+   "target": "HP:0001955",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Unexplained fevers (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0001955",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0095",
+   "source": "MONDO:0009499",
+   "target": "HP:0002344",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Progressive neurologic deterioration (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0002344",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0096",
+   "source": "MONDO:0009499",
+   "target": "HP:0004302",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Functional motor deficit (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0004302",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0097",
+   "source": "MONDO:0009499",
+   "target": "HP:0007141",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Sensorimotor neuropathy (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0007141",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0098",
+   "source": "MONDO:0009499",
+   "target": "HP:0000649",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Abnormality of visual evoked potentials (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0000649",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0099",
+   "source": "MONDO:0009499",
+   "target": "HP:0012379",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Abnormal circulating enzyme concentration or activity (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0012379",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0100",
+   "source": "MONDO:0009499",
+   "target": "HP:0000365",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Hearing impairment (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0000365",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0101",
+   "source": "MONDO:0009499",
+   "target": "HP:0009830",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Peripheral neuropathy (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0009830",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0102",
+   "source": "MONDO:0009499",
+   "target": "HP:0011968",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Feeding difficulties (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0011968",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0103",
+   "source": "MONDO:0009499",
+   "target": "HP:0000505",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Visual impairment (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0000505",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0104",
+   "source": "MONDO:0009499",
+   "target": "HP:0000708",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with Atypical behavior (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0000708",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0105",
+   "source": "MONDO:0009499",
+   "target": "HP:0003457",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Krabbe disease presents with EMG abnormality (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009499->HP:0003457",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0106",
+   "source": "MONDO:0018868",
+   "target": "HGNC:9498",
+   "rel_type": "CAUSED_BY",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy is caused by variants in PSAP (per omim via Monarch).",
+   "source_db": "omim",
+   "source_id": "omim:MONDO:0018868->HGNC:9498",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "[omim via Monarch] metachromatic leukodystrophy is recorded as caused by variants in PSAP. PubMed context: 1. Hum Mutat. 2016 Jan;37(1):16-27. doi: 10.1002/humu.22919. Epub 2015 Nov 4. Mutation Update of ARSA and PSAP Genes Causing Metachromatic Leukodystrophy. Cesani M(1), Lorioli L(1)(2), Grossi S(3), Amico G(3), Fumagalli F(1)(4), Spiga I(5), Filocamo M(3), Biffi A(1). Author information: (1)San Raffaele Telethon Institute for Gene Therapy, Division of Regenerative Medicine, Stem Cells and Gene Ther",
+   "edge_valid": 0.8702,
+   "rel_probs": {
+    "asserted": 0.7419,
+    "weaker_association": 0.1053,
+    "different_relationship": 0.073,
+    "unsupported": 0.0798
+   },
+   "evidence_level": {
+    "expected": 1.387,
+    "probs": {
+     "hypothesis": 0.0348,
+     "supported": 0.6181,
+     "replicated": 0.273,
+     "clinical": 0.0741
+    }
+   },
+   "contradicted": 0.0421,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0107",
+   "source": "MONDO:0018868",
+   "target": "HGNC:713",
+   "rel_type": "CAUSED_BY",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy is caused by variants in ARSA (per omim via Monarch).",
+   "source_db": "omim",
+   "source_id": "omim:MONDO:0018868->HGNC:713",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "[omim via Monarch] metachromatic leukodystrophy is recorded as caused by variants in ARSA. PubMed context: 1. Hum Mutat. 2016 Jan;37(1):16-27. doi: 10.1002/humu.22919. Epub 2015 Nov 4. Mutation Update of ARSA and PSAP Genes Causing Metachromatic Leukodystrophy. Cesani M(1), Lorioli L(1)(2), Grossi S(3), Amico G(3), Fumagalli F(1)(4), Spiga I(5), Filocamo M(3), Biffi A(1). Author information: (1)San Raffaele Telethon Institute for Gene Therapy, Division of Regenerative Medicine, Stem Cells and Gene Ther",
+   "edge_valid": 0.861,
+   "rel_probs": {
+    "asserted": 0.7154,
+    "weaker_association": 0.1148,
+    "different_relationship": 0.082,
+    "unsupported": 0.0878
+   },
+   "evidence_level": {
+    "expected": 1.4,
+    "probs": {
+     "hypothesis": 0.0357,
+     "supported": 0.6022,
+     "replicated": 0.289,
+     "clinical": 0.0732
+    }
+   },
+   "contradicted": 0.0452,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0108",
+   "source": "MONDO:0018868",
+   "target": "HP:0006970",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Periventricular leukomalacia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0006970",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0109",
+   "source": "MONDO:0018868",
+   "target": "HP:0012379",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Abnormal circulating enzyme concentration or activity (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0012379",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0110",
+   "source": "MONDO:0018868",
+   "target": "HP:0000726",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Dementia (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0000726",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0111",
+   "source": "MONDO:0018868",
+   "target": "HP:0000746",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Delusion (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0000746",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0112",
+   "source": "MONDO:0018868",
+   "target": "HP:0002354",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Memory impairment (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0002354",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0113",
+   "source": "MONDO:0018868",
+   "target": "HP:0002415",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Leukodystrophy (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0002415",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0114",
+   "source": "MONDO:0018868",
+   "target": "HP:0012433",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Abnormal social behavior (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0012433",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0115",
+   "source": "MONDO:0018868",
+   "target": "HP:0001324",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Muscle weakness (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0001324",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0116",
+   "source": "MONDO:0018868",
+   "target": "HP:0001332",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Dystonia (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0001332",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0117",
+   "source": "MONDO:0018868",
+   "target": "HP:0002312",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Clumsiness (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0002312",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0118",
+   "source": "MONDO:0018868",
+   "target": "HP:0002922",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Increased CSF protein concentration (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0002922",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0119",
+   "source": "MONDO:0018868",
+   "target": "HP:0004343",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Abnormal glycosphingolipid metabolism (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0004343",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0120",
+   "source": "MONDO:0018868",
+   "target": "HP:0000738",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Hallucinations (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0000738",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0121",
+   "source": "MONDO:0018868",
+   "target": "HP:0030081",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Punctate periventricular T2 hyperintense foci (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0030081",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0122",
+   "source": "MONDO:0018868",
+   "target": "HP:0000020",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Urinary incontinence (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0000020",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0123",
+   "source": "MONDO:0018868",
+   "target": "HP:0000648",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Optic atrophy (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0000648",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0124",
+   "source": "MONDO:0018868",
+   "target": "HP:0001290",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Generalized hypotonia (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0001290",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0125",
+   "source": "MONDO:0018868",
+   "target": "HP:0002359",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Frequent falls (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0002359",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0126",
+   "source": "MONDO:0018868",
+   "target": "HP:0002376",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Developmental regression (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0002376",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0127",
+   "source": "MONDO:0018868",
+   "target": "HP:0000762",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy presents with Decreased nerve conduction velocity (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0018868->HP:0000762",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0128",
+   "source": "MONDO:0009650",
+   "target": "HGNC:29670",
+   "rel_type": "CAUSED_BY",
+   "provenance": "curated",
+   "description": "mucolipidosis type II is caused by variants in GNPTAB (per omim via Monarch).",
+   "source_db": "omim",
+   "source_id": "omim:MONDO:0009650->HGNC:29670",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "[omim via Monarch] mucolipidosis type II is recorded as caused by variants in GNPTAB. PubMed context: 1. Genet Med. 2021 Nov;23(11):2047-2056. doi: 10.1038/s41436-021-01244-4. Epub 2021 Jun 25. Mucolipidosis type II and type III: a systematic review of 843 published cases. Dogterom EJ(1), Wagenmakers MAEM(2), Wilke M(3), Demirdas S(3), Muschol NM(4), Pohl S(5), Meijden JCV(1), Rizopoulos D(6), Ploeg ATV(1), Oussoren E(7). Author information: (1)Department of Pediatrics, Center for Lysosomal and Me",
+   "edge_valid": 0.8665,
+   "rel_probs": {
+    "asserted": 0.7277,
+    "weaker_association": 0.0958,
+    "different_relationship": 0.0956,
+    "unsupported": 0.0809
+   },
+   "evidence_level": {
+    "expected": 1.564,
+    "probs": {
+     "hypothesis": 0.031,
+     "supported": 0.4996,
+     "replicated": 0.3442,
+     "clinical": 0.1252
+    }
+   },
+   "contradicted": 0.0506,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0129",
+   "source": "MONDO:0009650",
+   "target": "HP:0001072",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Thickened skin (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0001072",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0130",
+   "source": "MONDO:0009650",
+   "target": "HP:0001270",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Motor delay (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0001270",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0131",
+   "source": "MONDO:0009650",
+   "target": "HP:0001537",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Umbilical hernia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0001537",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0132",
+   "source": "MONDO:0009650",
+   "target": "HP:0001538",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Protuberant abdomen (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0001538",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0133",
+   "source": "MONDO:0009650",
+   "target": "HP:0002474",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Expressive language delay (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0002474",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0134",
+   "source": "MONDO:0009650",
+   "target": "HP:0004322",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Short stature (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0004322",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0135",
+   "source": "MONDO:0009650",
+   "target": "HP:0006596",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Restricted chest movement (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0006596",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0136",
+   "source": "MONDO:0009650",
+   "target": "HP:0008897",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Postnatal growth retardation (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0008897",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0137",
+   "source": "MONDO:0009650",
+   "target": "HP:0000212",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Gingival overgrowth (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0000212",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0138",
+   "source": "MONDO:0009650",
+   "target": "HP:0030680",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Abnormal cardiovascular system morphology (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0030680",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0139",
+   "source": "MONDO:0009650",
+   "target": "HP:0031650",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Abnormal atrioventricular valve physiology (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0031650",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0140",
+   "source": "MONDO:0009650",
+   "target": "HP:0000280",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Coarse facial features (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0000280",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0141",
+   "source": "MONDO:0009650",
+   "target": "HP:0001609",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Hoarse voice (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0001609",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0142",
+   "source": "MONDO:0009650",
+   "target": "HP:0002540",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Inability to walk (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0002540",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0143",
+   "source": "MONDO:0009650",
+   "target": "HP:0002870",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Obstructive sleep apnea (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0002870",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0144",
+   "source": "MONDO:0009650",
+   "target": "HP:0005280",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Depressed nasal bridge (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0005280",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0145",
+   "source": "MONDO:0009650",
+   "target": "HP:0000388",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Otitis media (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0000388",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0146",
+   "source": "MONDO:0009650",
+   "target": "HP:0000774",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Narrow chest (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0000774",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0147",
+   "source": "MONDO:0009650",
+   "target": "HP:0001363",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Craniosynostosis (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0001363",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0148",
+   "source": "MONDO:0009650",
+   "target": "HP:0001376",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "mucolipidosis type II presents with Limitation of joint mobility (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009650->HP:0001376",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0149",
+   "source": "MONDO:0009290",
+   "target": "HGNC:4065",
+   "rel_type": "CAUSED_BY",
+   "provenance": "curated",
+   "description": "glycogen storage disease II is caused by variants in GAA (per omim via Monarch).",
+   "source_db": "omim",
+   "source_id": "omim:MONDO:0009290->HGNC:4065",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "[omim via Monarch] glycogen storage disease II is recorded as caused by variants in GAA. PubMed context: 1. Ann Clin Lab Sci. 2013 Summer;43(3):311-6. Three patients with glycogen storage disease type II and the mutational spectrum of GAA in Korean patients. Park HD(1), Lee DH, Choi TY, Lee YK, Lee SY, Kim JW, Ki CS, Lee YW. Author information: (1)Department of Laboratory Medicine & Genetics, Samsung Medical Center, Sungkyunkwan University School of Medicine, 50 Irwon-Dong, Gangnam-Gu, Seoul, 135-710",
+   "edge_valid": 0.8816,
+   "rel_probs": {
+    "asserted": 0.7991,
+    "weaker_association": 0.0739,
+    "different_relationship": 0.0651,
+    "unsupported": 0.062
+   },
+   "evidence_level": {
+    "expected": 1.445,
+    "probs": {
+     "hypothesis": 0.0242,
+     "supported": 0.5667,
+     "replicated": 0.3489,
+     "clinical": 0.0602
+    }
+   },
+   "contradicted": 0.0313,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0150",
+   "source": "MONDO:0009290",
+   "target": "HP:0012379",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Abnormal circulating enzyme concentration or activity (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0012379",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0151",
+   "source": "MONDO:0009290",
+   "target": "HP:0031964",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Elevated circulating alanine aminotransferase concentration (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0031964",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0152",
+   "source": "MONDO:0009290",
+   "target": "HP:0001508",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Failure to thrive (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0001508",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0153",
+   "source": "MONDO:0009290",
+   "target": "HP:0002240",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Hepatomegaly (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0002240",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0154",
+   "source": "MONDO:0009290",
+   "target": "HP:0025336",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Delayed ability to sit (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0025336",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0155",
+   "source": "MONDO:0009290",
+   "target": "HP:0040329",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Multifocal hyperintensity of cerebral white matter on MRI (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0040329",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0156",
+   "source": "MONDO:0009290",
+   "target": "HP:0001324",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Muscle weakness (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0001324",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0157",
+   "source": "MONDO:0009290",
+   "target": "HP:0001639",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Hypertrophic cardiomyopathy (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0001639",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0158",
+   "source": "MONDO:0009290",
+   "target": "HP:0001712",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Left ventricular hypertrophy (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0001712",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0159",
+   "source": "MONDO:0009290",
+   "target": "HP:0008872",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Feeding difficulties in infancy (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0008872",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0160",
+   "source": "MONDO:0009290",
+   "target": "HP:0010471",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Oligosacchariduria (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0010471",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0161",
+   "source": "MONDO:0009290",
+   "target": "HP:0025335",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Delayed ability to stand (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0025335",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0162",
+   "source": "MONDO:0009290",
+   "target": "HP:0032092",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Left ventricular outflow tract obstruction (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0032092",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0163",
+   "source": "MONDO:0009290",
+   "target": "HP:0001640",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Cardiomegaly (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0001640",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0164",
+   "source": "MONDO:0009290",
+   "target": "HP:0003236",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Elevated circulating creatine kinase activity (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0003236",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0165",
+   "source": "MONDO:0009290",
+   "target": "HP:0008947",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Floppy infant (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0008947",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0166",
+   "source": "MONDO:0009290",
+   "target": "HP:0025435",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Increased circulating lactate dehydrogenase concentration (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0025435",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0167",
+   "source": "MONDO:0009290",
+   "target": "HP:0034932",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Decreased circulating acid maltase activity (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0034932",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0168",
+   "source": "MONDO:0009290",
+   "target": "HP:0009073",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Progressive proximal muscle weakness (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0009073",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0169",
+   "source": "MONDO:0009290",
+   "target": "HP:0000183",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "glycogen storage disease II presents with Tongue muscle weakness (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0009290->HP:0000183",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0170",
+   "source": "MONDO:0010100",
+   "target": "HGNC:4878",
+   "rel_type": "CAUSED_BY",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease is caused by variants in HEXA (per omim via Monarch).",
+   "source_db": "omim",
+   "source_id": "omim:MONDO:0010100->HGNC:4878",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "[omim via Monarch] Tay-Sachs disease is recorded as caused by variants in HEXA. PubMed context: 1. Nature. 2019 Dec;576(7785):149-157. doi: 10.1038/s41586-019-1711-4. Epub 2019 Oct 21. Search-and-replace genome editing without double-strand breaks or donor DNA. Anzalone AV(1)(2)(3), Randolph PB(1)(2)(3), Davis JR(1)(2)(3), Sousa AA(1)(2)(3), Koblan LW(1)(2)(3), Levy JM(1)(2)(3), Chen PJ(1)(2)(3), Wilson C(1)(2)(3), Newby GA(1)(2)(3), Raguram A(1)(2)(3), Liu DR(4)(5)(6). Author information: (",
+   "edge_valid": 0.8701,
+   "rel_probs": {
+    "asserted": 0.6371,
+    "weaker_association": 0.1389,
+    "different_relationship": 0.111,
+    "unsupported": 0.113
+   },
+   "evidence_level": {
+    "expected": 1.329,
+    "probs": {
+     "hypothesis": 0.0441,
+     "supported": 0.649,
+     "replicated": 0.2407,
+     "clinical": 0.0662
+    }
+   },
+   "contradicted": 0.0362,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0171",
+   "source": "MONDO:0010100",
+   "target": "HP:0001324",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Muscle weakness (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0001324",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0172",
+   "source": "MONDO:0010100",
+   "target": "HP:0002191",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Progressive spasticity (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0002191",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0173",
+   "source": "MONDO:0010100",
+   "target": "HP:0003495",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with GM2-ganglioside accumulation (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0003495",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0174",
+   "source": "MONDO:0010100",
+   "target": "HP:0010969",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Abnormality of glycolipid metabolism (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0010969",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0175",
+   "source": "MONDO:0010100",
+   "target": "HP:0012379",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Abnormal circulating enzyme concentration or activity (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0012379",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0176",
+   "source": "MONDO:0010100",
+   "target": "HP:0003202",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Skeletal muscle atrophy (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0003202",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0177",
+   "source": "MONDO:0010100",
+   "target": "HP:0000505",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Visual impairment (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0000505",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0178",
+   "source": "MONDO:0010100",
+   "target": "HP:0000708",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Atypical behavior (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0000708",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0179",
+   "source": "MONDO:0010100",
+   "target": "HP:0000736",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Short attention span (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0000736",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0180",
+   "source": "MONDO:0010100",
+   "target": "HP:0001288",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Gait disturbance (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0001288",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0181",
+   "source": "MONDO:0010100",
+   "target": "HP:0001347",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Hyperreflexia (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0001347",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0182",
+   "source": "MONDO:0010100",
+   "target": "HP:0002015",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Dysphagia (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0002015",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0183",
+   "source": "MONDO:0010100",
+   "target": "HP:0002171",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Gliosis (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0002171",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0184",
+   "source": "MONDO:0010100",
+   "target": "HP:0002311",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Incoordination (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0002311",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0185",
+   "source": "MONDO:0010100",
+   "target": "HP:0002312",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Clumsiness (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0002312",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0186",
+   "source": "MONDO:0010100",
+   "target": "HP:0002359",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Frequent falls (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0002359",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0187",
+   "source": "MONDO:0010100",
+   "target": "HP:0002376",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Developmental regression (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0002376",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0188",
+   "source": "MONDO:0010100",
+   "target": "HP:0010729",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Cherry red spot of the macula (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0010729",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0189",
+   "source": "MONDO:0010100",
+   "target": "HP:0011951",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Aspiration pneumonia (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0011951",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0190",
+   "source": "MONDO:0010100",
+   "target": "HP:0012696",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease presents with Abnormal thalamic MRI signal intensity (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010100->HP:0012696",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0191",
+   "source": "MONDO:0010006",
+   "target": "HGNC:4879",
+   "rel_type": "CAUSED_BY",
+   "provenance": "curated",
+   "description": "Sandhoff disease is caused by variants in HEXB (per omim via Monarch).",
+   "source_db": "omim",
+   "source_id": "omim:MONDO:0010006->HGNC:4879",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "[omim via Monarch] Sandhoff disease is recorded as caused by variants in HEXB. PubMed context: 1. Nature. 2025 Oct;646(8086):913-924. doi: 10.1038/s41586-025-09477-y. Epub 2025 Aug 6. Microglia-neuron crosstalk through Hex-GM2-MGL2 maintains brain homeostasis. Frosch M(1), Shimizu T(1), Wogram E(1), Amann L(1), Gruber L(2)(3), Groisman AI(4), Fliegauf M(1)(5), Schwabenland M(1), Chhatbar C(1), Zechel S(6), Rosewich H(7)(8), G\u00e4rtner J(8), Quintana FJ(9)(10), Buescher JM(11), Blank T(1), Bind",
+   "edge_valid": 0.8782,
+   "rel_probs": {
+    "asserted": 0.8419,
+    "weaker_association": 0.0613,
+    "different_relationship": 0.0498,
+    "unsupported": 0.047
+   },
+   "evidence_level": {
+    "expected": 1.253,
+    "probs": {
+     "hypothesis": 0.0566,
+     "supported": 0.7001,
+     "replicated": 0.1768,
+     "clinical": 0.0665
+    }
+   },
+   "contradicted": 0.0212,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0192",
+   "source": "MONDO:0010006",
+   "target": "HP:0033978",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Reduced beta-hexosaminidase B activity (Obligate).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0033978",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0193",
+   "source": "MONDO:0010006",
+   "target": "HP:0000365",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Hearing impairment (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0000365",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0194",
+   "source": "MONDO:0010006",
+   "target": "HP:0002333",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Motor deterioration (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0002333",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0195",
+   "source": "MONDO:0010006",
+   "target": "HP:0010729",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Cherry red spot of the macula (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0010729",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0196",
+   "source": "MONDO:0010006",
+   "target": "HP:0100022",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Abnormality of movement (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0100022",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0197",
+   "source": "MONDO:0010006",
+   "target": "HP:0001250",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Seizure (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0001250",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0198",
+   "source": "MONDO:0010006",
+   "target": "HP:0001251",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Ataxia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0001251",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0199",
+   "source": "MONDO:0010006",
+   "target": "HP:0001508",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Failure to thrive (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0001508",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0200",
+   "source": "MONDO:0010006",
+   "target": "HP:0002808",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Kyphosis (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0002808",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0201",
+   "source": "MONDO:0010006",
+   "target": "HP:0004343",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Abnormal glycosphingolipid metabolism (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0004343",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0202",
+   "source": "MONDO:0010006",
+   "target": "HP:0007272",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Progressive psychomotor deterioration (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0007272",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0203",
+   "source": "MONDO:0010006",
+   "target": "HP:0000256",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Macrocephaly (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0000256",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0204",
+   "source": "MONDO:0010006",
+   "target": "HP:0000618",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Blindness (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0000618",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0205",
+   "source": "MONDO:0010006",
+   "target": "HP:0002376",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Developmental regression (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0002376",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0206",
+   "source": "MONDO:0010006",
+   "target": "HP:0008936",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Axial hypotonia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0008936",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0207",
+   "source": "MONDO:0010006",
+   "target": "HP:0012758",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Neurodevelopmental delay (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0012758",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0208",
+   "source": "MONDO:0010006",
+   "target": "HP:0001347",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Hyperreflexia (Very frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0001347",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0209",
+   "source": "MONDO:0010006",
+   "target": "HP:0001744",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Splenomegaly (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0001744",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0210",
+   "source": "MONDO:0010006",
+   "target": "HP:0002205",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Recurrent respiratory infections (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0002205",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0211",
+   "source": "MONDO:0010006",
+   "target": "HP:0002240",
+   "rel_type": "HAS_PHENOTYPE",
+   "provenance": "curated",
+   "description": "Sandhoff disease presents with Hepatomegaly (Frequent).",
+   "source_db": "hpoa",
+   "source_id": "hpoa:MONDO:0010006->HP:0002240",
+   "supporting_publications": [],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0212",
+   "source": "MONDO:0018150",
+   "target": "PMID:28218669",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Gaucher disease literature: A Review of Gaucher Disease Pathophysiology, Clinical Presentation and Treatments.",
+   "source_db": "pubmed",
+   "source_id": "PMID:28218669",
+   "supporting_publications": [
+    "PMID:28218669"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0213",
+   "source": "MONDO:0018150",
+   "target": "PMID:39767201",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Gaucher disease literature: An Overview of Gaucher Disease.",
+   "source_db": "pubmed",
+   "source_id": "PMID:39767201",
+   "supporting_publications": [
+    "PMID:39767201"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0214",
+   "source": "MONDO:0018150",
+   "target": "PMID:20301446",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Gaucher disease literature: Gaucher Disease.",
+   "source_db": "pubmed",
+   "source_id": "PMID:20301446",
+   "supporting_publications": [
+    "PMID:20301446"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0215",
+   "source": "MONDO:0010526",
+   "target": "PMID:33172708",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Fabry disease literature: [Fabry disease: A review].",
+   "source_db": "pubmed",
+   "source_id": "PMID:33172708",
+   "supporting_publications": [
+    "PMID:33172708"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0216",
+   "source": "MONDO:0010526",
+   "target": "PMID:40840785",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Fabry disease literature: Fabry disease cardiomyopathy: A state-of-the-art review.",
+   "source_db": "pubmed",
+   "source_id": "PMID:40840785",
+   "supporting_publications": [
+    "PMID:40840785"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0217",
+   "source": "MONDO:0010526",
+   "target": "PMID:20301469",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Fabry disease literature: Fabry Disease.",
+   "source_db": "pubmed",
+   "source_id": "PMID:20301469",
+   "supporting_publications": [
+    "PMID:20301469"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0218",
+   "source": "MONDO:0009756",
+   "target": "PMID:20301544",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A literature: Acid Sphingomyelinase Deficiency.",
+   "source_db": "pubmed",
+   "source_id": "PMID:20301544",
+   "supporting_publications": [
+    "PMID:20301544"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0219",
+   "source": "MONDO:0009756",
+   "target": "PMID:38826605",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A literature: A Rare Case of Niemann-Pick Disease Type-A.",
+   "source_db": "pubmed",
+   "source_id": "PMID:38826605",
+   "supporting_publications": [
+    "PMID:38826605"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0220",
+   "source": "MONDO:0009756",
+   "target": "PMID:41208004",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease type A literature: Exploring the boundaries of Niemann-Pick disease type A/B: a report of a case and review of literature.",
+   "source_db": "pubmed",
+   "source_id": "PMID:41208004",
+   "supporting_publications": [
+    "PMID:41208004"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0221",
+   "source": "MONDO:0009757",
+   "target": "PMID:26007685",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 literature: Misexpression of the Niemann-Pick disease type C1 (NPC1)-like protein in Arabidopsis causes sphingolipid accumulation an",
+   "source_db": "pubmed",
+   "source_id": "PMID:26007685",
+   "supporting_publications": [
+    "PMID:26007685"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0222",
+   "source": "MONDO:0009757",
+   "target": "PMID:39838105",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 literature: Cholesterol mobilization regulates dendritic cell maturation and the immunogenic response to cancer.",
+   "source_db": "pubmed",
+   "source_id": "PMID:39838105",
+   "supporting_publications": [
+    "PMID:39838105"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0223",
+   "source": "MONDO:0009757",
+   "target": "PMID:31500175",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Niemann-Pick disease, type C1 literature: Current Challenges in Understanding the Cellular and Molecular Mechanisms in Niemann-Pick Disease Type C1.",
+   "source_db": "pubmed",
+   "source_id": "PMID:31500175",
+   "supporting_publications": [
+    "PMID:31500175"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0224",
+   "source": "MONDO:0009499",
+   "target": "PMID:32965986",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Krabbe disease literature: Krabbe Disease.",
+   "source_db": "pubmed",
+   "source_id": "PMID:32965986",
+   "supporting_publications": [
+    "PMID:32965986"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0225",
+   "source": "MONDO:0009499",
+   "target": "PMID:27638593",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Krabbe disease literature: Expression of individual mutations and haplotypes in the galactocerebrosidase gene identified by the newborn screening p",
+   "source_db": "pubmed",
+   "source_id": "PMID:27638593",
+   "supporting_publications": [
+    "PMID:27638593"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0226",
+   "source": "MONDO:0009499",
+   "target": "PMID:26795590",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Krabbe disease literature: Newborn screening for Krabbe disease in New York State: the first eight years' experience.",
+   "source_db": "pubmed",
+   "source_id": "PMID:26795590",
+   "supporting_publications": [
+    "PMID:26795590"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0227",
+   "source": "MONDO:0018868",
+   "target": "PMID:26462614",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy literature: Mutation Update of ARSA and PSAP Genes Causing Metachromatic Leukodystrophy.",
+   "source_db": "pubmed",
+   "source_id": "PMID:26462614",
+   "supporting_publications": [
+    "PMID:26462614"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0228",
+   "source": "MONDO:0018868",
+   "target": "PMID:33195324",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy literature: Metachromatic Leukodystrophy: Diagnosis, Modeling, and Treatment Approaches.",
+   "source_db": "pubmed",
+   "source_id": "PMID:33195324",
+   "supporting_publications": [
+    "PMID:33195324"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0229",
+   "source": "MONDO:0018868",
+   "target": "PMID:38239149",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "metachromatic leukodystrophy literature: Progress in leukodystrophies with zebrafish.",
+   "source_db": "pubmed",
+   "source_id": "PMID:38239149",
+   "supporting_publications": [
+    "PMID:38239149"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0230",
+   "source": "MONDO:0009650",
+   "target": "PMID:34172897",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "mucolipidosis type II literature: Mucolipidosis type II and type III: a systematic review of 843 published cases.",
+   "source_db": "pubmed",
+   "source_id": "PMID:34172897",
+   "supporting_publications": [
+    "PMID:34172897"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0231",
+   "source": "MONDO:0009650",
+   "target": "PMID:34341521",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "mucolipidosis type II literature: Pathogenic variants in GNPTAB and GNPTG encoding distinct subunits of GlcNAc-1-phosphotransferase differentially impact ",
+   "source_db": "pubmed",
+   "source_id": "PMID:34341521",
+   "supporting_publications": [
+    "PMID:34341521"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0232",
+   "source": "MONDO:0009650",
+   "target": "PMID:30882951",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "mucolipidosis type II literature: The lysosomal storage disorders mucolipidosis type II, type III alpha/beta, and type III gamma: Update on GNPTAB and GNP",
+   "source_db": "pubmed",
+   "source_id": "PMID:30882951",
+   "supporting_publications": [
+    "PMID:30882951"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0233",
+   "source": "MONDO:0009290",
+   "target": "PMID:23884227",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "glycogen storage disease II literature: Three patients with glycogen storage disease type II and the mutational spectrum of GAA in Korean patients.",
+   "source_db": "pubmed",
+   "source_id": "PMID:23884227",
+   "supporting_publications": [
+    "PMID:23884227"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0234",
+   "source": "MONDO:0009290",
+   "target": "PMID:17915575",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "glycogen storage disease II literature: Molecular genetics of late onset glycogen storage disease II in Italy.",
+   "source_db": "pubmed",
+   "source_id": "PMID:17915575",
+   "supporting_publications": [
+    "PMID:17915575"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0235",
+   "source": "MONDO:0009290",
+   "target": "PMID:36969713",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "glycogen storage disease II literature: Pompe Disease: a Clinical, Diagnostic, and Therapeutic Overview.",
+   "source_db": "pubmed",
+   "source_id": "PMID:36969713",
+   "supporting_publications": [
+    "PMID:36969713"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0236",
+   "source": "MONDO:0010100",
+   "target": "PMID:31634902",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease literature: Search-and-replace genome editing without double-strand breaks or donor DNA.",
+   "source_db": "pubmed",
+   "source_id": "PMID:31634902",
+   "supporting_publications": [
+    "PMID:31634902"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0237",
+   "source": "MONDO:0010100",
+   "target": "PMID:35145305",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease literature: AAV gene therapy for Tay-Sachs disease.",
+   "source_db": "pubmed",
+   "source_id": "PMID:35145305",
+   "supporting_publications": [
+    "PMID:35145305"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0238",
+   "source": "MONDO:0010100",
+   "target": "PMID:40710901",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Tay-Sachs disease literature: Advances in Diagnosis, Pathological Mechanisms, Clinical Impact, and Future Therapeutic Perspectives in Tay-Sachs Diseas",
+   "source_db": "pubmed",
+   "source_id": "PMID:40710901",
+   "supporting_publications": [
+    "PMID:40710901"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0239",
+   "source": "MONDO:0010006",
+   "target": "PMID:40769205",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Sandhoff disease literature: Microglia-neuron crosstalk through Hex-GM2-MGL2 maintains brain homeostasis.",
+   "source_db": "pubmed",
+   "source_id": "PMID:40769205",
+   "supporting_publications": [
+    "PMID:40769205"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0240",
+   "source": "MONDO:0010006",
+   "target": "PMID:35420740",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Sandhoff disease literature: Sandhoff Disease.",
+   "source_db": "pubmed",
+   "source_id": "PMID:35420740",
+   "supporting_publications": [
+    "PMID:35420740"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0241",
+   "source": "MONDO:0010006",
+   "target": "PMID:38253667",
+   "rel_type": "SUPPORTED_BY",
+   "provenance": "curated",
+   "description": "Sandhoff disease literature: Innate immune sensing of lysosomal dysfunction drives multiple lysosomal storage disorders.",
+   "source_db": "pubmed",
+   "source_id": "PMID:38253667",
+   "supporting_publications": [
+    "PMID:38253667"
+   ],
+   "contradictory_evidence": []
+  },
+  {
+   "id": "EDGE-0242",
+   "source": "MONDO:0009756",
+   "target": "MONDO:0009757",
+   "rel_type": "SHARES_MECHANISM",
+   "provenance": "inferred",
+   "description": "Niemann-Pick disease type A and Niemann-Pick disease, type C1 are both lysosomal disorders sharing 3 annotated phenotypes.",
+   "source_db": "atlas-inference",
+   "source_id": "pheno-overlap:MONDO:0009756|MONDO:0009757",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "Both Niemann-Pick disease type A (genes: SMPD1) and Niemann-Pick disease, type C1 (genes: NPC1) are lysosomal disorders. Shared HPO phenotypes: Sea-blue histiocytosis, Hypotonia, Bone-marrow foam cells. Both disrupt lysosomal function, though via different genes; phenotype overlap may reflect shared downstream lysosomal pathology or may be generic (e.g. hepatosplenomegaly is common across storage disorders).",
+   "edge_valid": 0.8203,
+   "rel_probs": {
+    "asserted": 0.3909,
+    "weaker_association": 0.2311,
+    "different_relationship": 0.2109,
+    "unsupported": 0.1672
+   },
+   "evidence_level": {
+    "expected": 1.631,
+    "probs": {
+     "hypothesis": 0.0258,
+     "supported": 0.4766,
+     "replicated": 0.3382,
+     "clinical": 0.1594
+    }
+   },
+   "contradicted": 0.0733,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0243",
+   "source": "MONDO:0009756",
+   "target": "MONDO:0009290",
+   "rel_type": "SHARES_MECHANISM",
+   "provenance": "inferred",
+   "description": "Niemann-Pick disease type A and glycogen storage disease II are both lysosomal disorders sharing 3 annotated phenotypes.",
+   "source_db": "atlas-inference",
+   "source_id": "pheno-overlap:MONDO:0009756|MONDO:0009290",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "Both Niemann-Pick disease type A (genes: SMPD1) and glycogen storage disease II (genes: GAA) are lysosomal disorders. Shared HPO phenotypes: Hepatomegaly, Elevated circulating alanine aminotransferase concentration, Feeding difficulties in infancy. Both disrupt lysosomal function, though via different genes; phenotype overlap may reflect shared downstream lysosomal pathology or may be generic (e.g. hepatosplenomegaly is common across storage disorders).",
+   "edge_valid": 0.8499,
+   "rel_probs": {
+    "asserted": 0.7017,
+    "weaker_association": 0.1262,
+    "different_relationship": 0.0956,
+    "unsupported": 0.0765
+   },
+   "evidence_level": {
+    "expected": 1.561,
+    "probs": {
+     "hypothesis": 0.0277,
+     "supported": 0.5403,
+     "replicated": 0.2757,
+     "clinical": 0.1564
+    }
+   },
+   "contradicted": 0.0351,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0244",
+   "source": "MONDO:0009756",
+   "target": "MONDO:0010100",
+   "rel_type": "SHARES_MECHANISM",
+   "provenance": "inferred",
+   "description": "Niemann-Pick disease type A and Tay-Sachs disease are both lysosomal disorders sharing 3 annotated phenotypes.",
+   "source_db": "atlas-inference",
+   "source_id": "pheno-overlap:MONDO:0009756|MONDO:0010100",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "Both Niemann-Pick disease type A (genes: SMPD1) and Tay-Sachs disease (genes: HEXA) are lysosomal disorders. Shared HPO phenotypes: Developmental regression, Skeletal muscle atrophy, Cherry red spot of the macula. Both disrupt lysosomal function, though via different genes; phenotype overlap may reflect shared downstream lysosomal pathology or may be generic (e.g. hepatosplenomegaly is common across storage disorders).",
+   "edge_valid": 0.8707,
+   "rel_probs": {
+    "asserted": 0.6793,
+    "weaker_association": 0.1265,
+    "different_relationship": 0.1052,
+    "unsupported": 0.0891
+   },
+   "evidence_level": {
+    "expected": 1.731,
+    "probs": {
+     "hypothesis": 0.0238,
+     "supported": 0.4311,
+     "replicated": 0.3356,
+     "clinical": 0.2095
+    }
+   },
+   "contradicted": 0.027,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0245",
+   "source": "MONDO:0009756",
+   "target": "MONDO:0010006",
+   "rel_type": "SHARES_MECHANISM",
+   "provenance": "inferred",
+   "description": "Niemann-Pick disease type A and Sandhoff disease are both lysosomal disorders sharing 4 annotated phenotypes.",
+   "source_db": "atlas-inference",
+   "source_id": "pheno-overlap:MONDO:0009756|MONDO:0010006",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "Both Niemann-Pick disease type A (genes: SMPD1) and Sandhoff disease (genes: HEXB) are lysosomal disorders. Shared HPO phenotypes: Hepatomegaly, Developmental regression, Recurrent respiratory infections, Cherry red spot of the macula. Both disrupt lysosomal function, though via different genes; phenotype overlap may reflect shared downstream lysosomal pathology or may be generic (e.g. hepatosplenomegaly is common across storage disorders).",
+   "edge_valid": 0.8233,
+   "rel_probs": {
+    "asserted": 0.5358,
+    "weaker_association": 0.1848,
+    "different_relationship": 0.1552,
+    "unsupported": 0.1243
+   },
+   "evidence_level": {
+    "expected": 1.675,
+    "probs": {
+     "hypothesis": 0.0259,
+     "supported": 0.4808,
+     "replicated": 0.2856,
+     "clinical": 0.2078
+    }
+   },
+   "contradicted": 0.0453,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0246",
+   "source": "MONDO:0009499",
+   "target": "MONDO:0010100",
+   "rel_type": "SHARES_MECHANISM",
+   "provenance": "inferred",
+   "description": "Krabbe disease and Tay-Sachs disease are both lysosomal disorders sharing 3 annotated phenotypes.",
+   "source_db": "atlas-inference",
+   "source_id": "pheno-overlap:MONDO:0009499|MONDO:0010100",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "Both Krabbe disease (genes: GALC) and Tay-Sachs disease (genes: HEXA) are lysosomal disorders. Shared HPO phenotypes: Abnormal circulating enzyme concentration or activity, Atypical behavior, Visual impairment. Both disrupt lysosomal function, though via different genes; phenotype overlap may reflect shared downstream lysosomal pathology or may be generic (e.g. hepatosplenomegaly is common across storage disorders).",
+   "edge_valid": 0.8076,
+   "rel_probs": {
+    "asserted": 0.4529,
+    "weaker_association": 0.2096,
+    "different_relationship": 0.1987,
+    "unsupported": 0.1388
+   },
+   "evidence_level": {
+    "expected": 1.681,
+    "probs": {
+     "hypothesis": 0.0303,
+     "supported": 0.4612,
+     "replicated": 0.3058,
+     "clinical": 0.2028
+    }
+   },
+   "contradicted": 0.0386,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0247",
+   "source": "MONDO:0018868",
+   "target": "MONDO:0010100",
+   "rel_type": "SHARES_MECHANISM",
+   "provenance": "inferred",
+   "description": "metachromatic leukodystrophy and Tay-Sachs disease are both lysosomal disorders sharing 5 annotated phenotypes.",
+   "source_db": "atlas-inference",
+   "source_id": "pheno-overlap:MONDO:0018868|MONDO:0010100",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "Both metachromatic leukodystrophy (genes: PSAP, ARSA) and Tay-Sachs disease (genes: HEXA) are lysosomal disorders. Shared HPO phenotypes: Muscle weakness, Frequent falls, Developmental regression, Clumsiness, Abnormal circulating enzyme concentration or activity. Both disrupt lysosomal function, though via different genes; phenotype overlap may reflect shared downstream lysosomal pathology or may be generic (e.g. hepatosplenomegaly is common across storage disorders).",
+   "edge_valid": 0.6138,
+   "rel_probs": {
+    "asserted": 0.4154,
+    "weaker_association": 0.2566,
+    "different_relationship": 0.1743,
+    "unsupported": 0.1537
+   },
+   "evidence_level": {
+    "expected": 1.758,
+    "probs": {
+     "hypothesis": 0.03,
+     "supported": 0.3929,
+     "replicated": 0.3665,
+     "clinical": 0.2106
+    }
+   },
+   "contradicted": 0.0671,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  },
+  {
+   "id": "EDGE-0248",
+   "source": "MONDO:0010100",
+   "target": "MONDO:0010006",
+   "rel_type": "SHARES_MECHANISM",
+   "provenance": "inferred",
+   "description": "Tay-Sachs disease and Sandhoff disease are both lysosomal disorders sharing 3 annotated phenotypes.",
+   "source_db": "atlas-inference",
+   "source_id": "pheno-overlap:MONDO:0010100|MONDO:0010006",
+   "supporting_publications": [],
+   "contradictory_evidence": [],
+   "state": "Both Tay-Sachs disease (genes: HEXA) and Sandhoff disease (genes: HEXB) are lysosomal disorders. Shared HPO phenotypes: Developmental regression, Hyperreflexia, Cherry red spot of the macula. Both disrupt lysosomal function, though via different genes; phenotype overlap may reflect shared downstream lysosomal pathology or may be generic (e.g. hepatosplenomegaly is common across storage disorders).",
+   "edge_valid": 0.8707,
+   "rel_probs": {
+    "asserted": 0.5442,
+    "weaker_association": 0.2059,
+    "different_relationship": 0.1478,
+    "unsupported": 0.102
+   },
+   "evidence_level": {
+    "expected": 1.616,
+    "probs": {
+     "hypothesis": 0.0313,
+     "supported": 0.4923,
+     "replicated": 0.3056,
+     "clinical": 0.1708
+    }
+   },
+   "contradicted": 0.0186,
+   "decision_meta": {
+    "model": "convaiinnovations/laya",
+    "question_pack": "edge-validate-v1",
+    "judged_at": "2026-10-03"
+   }
+  }
+ ]
+}

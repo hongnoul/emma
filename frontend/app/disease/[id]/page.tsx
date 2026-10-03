@@ -14,7 +14,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 }
 
 function Chips({ items, color = "bg-slate-100" }: { items: GraphNode[]; color?: string }) {
-  if (items.length === 0) return <p className="text-sm text-slate-400">None in demo data.</p>;
+  if (items.length === 0) return <p className="text-sm text-slate-400">None in current dataset.</p>;
   return (
     <div className="flex flex-wrap gap-2">
       {items.map((n) => (

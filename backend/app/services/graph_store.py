@@ -127,4 +127,13 @@ class GraphStore:
 
 @lru_cache(maxsize=1)
 def get_store() -> GraphStore:
+    """Default: data/graph.json (demo). Override with ATLAS_GRAPH_PATH to
+    serve a pipeline-built generation, e.g. data/graph.real.json."""
+    import os
+    override = os.environ.get("ATLAS_GRAPH_PATH")
+    if override:
+        p = Path(override)
+        if not p.is_absolute():
+            p = DATA_DIR.parent / override
+        return GraphStore(p)
     return GraphStore()
