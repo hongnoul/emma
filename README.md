@@ -163,6 +163,13 @@ backend and the data model.
 Pages: `/` (search) · `/disease/[id]` · `/graph/[id]` (sigma.js, ForceAtlas2) ·
 `/connection/[a]/[b]` · `/opportunities/[id]` · `/evals`.
 
+## Continuous ingestion (design)
+
+`docs/ingestion-pipeline.md` is the production design for the fetch→parse→
+reconcile→judge→gate→publish pipeline over the challenge's data sources,
+including build phases. Phase 1 (one-cluster vertical slice) is the next
+build target; the connector stubs below are its skeleton.
+
 ## Where real integrations plug in
 
 1. **Biomedical data** → `backend/app/connectors/` documents each source
