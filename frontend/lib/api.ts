@@ -4,9 +4,20 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000";
 
 async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`${API_BASE}${path}`, { cache: "no-store" });
-  if (!res.ok) throw new Error(`${res.status} ${res.statusText}: ${path}`);
-  return res.json();
+  // 15s timeout so a cold-starting backend shows an error instead of an
+  // infinite "Loading…"; one retry covers the warm-up case.
+  for (let attempt = 0; ; attempt++) {
+    try {
+      const res = await fetch(`${API_BASE}${path}`, {
+        cache: "no-store",
+        signal: AbortSignal.timeout(15000),
+      });
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}: ${path}`);
+      return res.json();
+    } catch (e) {
+      if (attempt >= 1) throw e instanceof Error ? e : new Error(String(e));
+    }
+  }
 }
 
 // ---- types mirroring backend/app/models/schemas.py ----
