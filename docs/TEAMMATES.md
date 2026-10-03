@@ -32,7 +32,7 @@ Or copy `frontend/public/starter.html` — it runs from `file://`, no npm.
 3. **Why-connected** — `/v1/entities?q=` picker → `/v1/paths?from=&to=` (render `known` vs `inferred` vs `uncertain` chips)
 4. **Edge lab** — `/v1/edges?node=&rel_types=&provenance=&min_valid=&limit=` + `/api/edges/{id}` + `/api/edges/{id}/judge`
 5. **Evals / trust UI** — `/api/evals?judge=mock`, `/v1/evals`, `/api/question-packs`
-6. **Lenia scenes** — see `frontend/app/lenia/page.tsx` + `frontend/lib/lenia-atlas.ts` (7 scenes already wired to prod)
+6. **Lenia scenes** — see `frontend/app/lenia/page.tsx` + `frontend/lib/lenia-atlas.ts` for mapping patterns (graph stats → seed blobs). Note: that file fetches via a local-dev-only `/prod-api` proxy (`frontend/next.config.ts` rewrites); zero-context agents should fetch `https://rare-disease-atlas-api.fly.dev` directly (CORS `*`), not copy the `/prod-api` prefix.
 
 Full primitive reference: `docs/integration.md` (six `/v1` primitives + worked symptom-search example).
 Typed client: `cd frontend && npm run gen:api` regenerates `lib/api.gen.ts` from live OpenAPI.
