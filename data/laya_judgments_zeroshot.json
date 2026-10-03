@@ -1,0 +1,101 @@
+{
+  "_notice": "Zero-shot judgments from convaiinnovations/laya (laya 0.3.26) over the demo edges, produced by scripts/judge_with_laya.py. Regenerable; kept so evals can compare judges without a GPU or model download.",
+  "model": "convaiinnovations/laya",
+  "question_pack": "edge-validate-v1",
+  "judged_at": "2026-10-03",
+  "judgments": {
+    "DEMO-EDGE-001": {
+      "edge_valid": 0.7206
+    },
+    "DEMO-EDGE-002": {
+      "edge_valid": 0.3666
+    },
+    "DEMO-EDGE-003": {
+      "edge_valid": 0.7832
+    },
+    "DEMO-EDGE-004": {
+      "edge_valid": 0.878
+    },
+    "DEMO-EDGE-005": {
+      "edge_valid": 0.89
+    },
+    "DEMO-EDGE-006": {
+      "edge_valid": 0.9262
+    },
+    "DEMO-EDGE-007": {
+      "edge_valid": 0.8673
+    },
+    "DEMO-EDGE-008": {
+      "edge_valid": 0.8996
+    },
+    "DEMO-EDGE-009": {
+      "edge_valid": 0.9103
+    },
+    "DEMO-EDGE-010": {
+      "edge_valid": 0.9556
+    },
+    "DEMO-EDGE-011": {
+      "edge_valid": 0.7225
+    },
+    "DEMO-EDGE-014": {
+      "edge_valid": 0.7845
+    },
+    "DEMO-EDGE-015": {
+      "edge_valid": 0.8364
+    },
+    "DEMO-EDGE-016": {
+      "edge_valid": 0.8397
+    },
+    "DEMO-EDGE-017": {
+      "edge_valid": 0.6343
+    },
+    "DEMO-EDGE-018": {
+      "edge_valid": 0.549
+    },
+    "DEMO-EDGE-019": {
+      "edge_valid": 0.8056
+    },
+    "DEMO-EDGE-020": {
+      "edge_valid": 0.2021
+    },
+    "DEMO-EDGE-021": {
+      "edge_valid": 0.8793
+    },
+    "DEMO-EDGE-022": {
+      "edge_valid": 0.8908
+    },
+    "DEMO-EDGE-023": {
+      "edge_valid": 0.9082
+    },
+    "DEMO-EDGE-078": {
+      "edge_valid": 0.7498
+    },
+    "DEMO-EDGE-079": {
+      "edge_valid": 0.2134
+    },
+    "DEMO-EDGE-080": {
+      "edge_valid": 0.0651
+    },
+    "DEMO-EDGE-081": {
+      "edge_valid": 0.0888
+    },
+    "DEMO-EDGE-082": {
+      "edge_valid": 0.7845
+    },
+    "DEMO-EDGE-083": {
+      "edge_valid": 0.5818
+    },
+    "DEMO-EDGE-084": {
+      "edge_valid": 0.0648
+    },
+    "DEMO-EDGE-085": {
+      "edge_valid": 0.6539
+    },
+    "DEMO-EDGE-086": {
+      "edge_valid": 0.6434
+    },
+    "DEMO-EDGE-087": {
+      "edge_valid": 0.0868
+    }
+  }
+}

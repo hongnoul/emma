@@ -5,8 +5,13 @@ Metrics over judged edges (those with an edge_valid probability):
   brier     mean squared error of p(valid) vs label
   ece       expected calibration error over equal-width bins
 
+Scores the stored (mock) judge by default. If data/laya_judgments_zeroshot.json
+exists (produced by scripts/judge_with_laya.py), judge="laya" scores the real
+zero-shot Laya judgments against the same gold labels.
+
 Run standalone:  python -m app.services.evals   (from backend/)
-Served at:       GET /api/evals
+Served at:       GET /api/evals            (mock)
+                 GET /api/evals?judge=laya (real zero-shot Laya, if file present)
 """
 from __future__ import annotations
 
@@ -20,13 +25,27 @@ DATA_DIR = Path(__file__).resolve().parents[3] / "data"
 N_BINS = 5
 
 
-def run_evals() -> EvalReport:
+def _laya_probs() -> dict[str, float] | None:
+    f = DATA_DIR / "laya_judgments_zeroshot.json"
+    if not f.exists():
+        return None
+    return {k: v["edge_valid"] for k, v in json.loads(f.read_text())["judgments"].items()}
+
+
+def run_evals(judge: str = "mock") -> EvalReport:
     store = get_store()
     gold = {g["edge_id"]: g["label"]
             for g in json.loads((DATA_DIR / "gold_labels.json").read_text())["labels"]}
-    pairs = [(store.edges[eid].edge_valid, label)
-             for eid, label in gold.items()
-             if eid in store.edges and store.edges[eid].edge_valid is not None]
+    if judge == "laya":
+        probs = _laya_probs()
+        if probs is None:
+            return EvalReport(n=0, accuracy=0, brier=0, ece=0, bins=[],
+                              notes="no Laya judgments found; run scripts/judge_with_laya.py first")
+        pairs = [(probs[eid], label) for eid, label in gold.items() if eid in probs]
+    else:
+        pairs = [(store.edges[eid].edge_valid, label)
+                 for eid, label in gold.items()
+                 if eid in store.edges and store.edges[eid].edge_valid is not None]
     n = len(pairs)
     if n == 0:
         return EvalReport(n=0, accuracy=0, brier=0, ece=0, bins=[], notes="no judged edges")
@@ -50,11 +69,20 @@ def run_evals() -> EvalReport:
 
     return EvalReport(
         n=n, accuracy=round(accuracy, 3), brier=round(brier, 3), ece=round(ece, 3), bins=bins,
-        notes=("Mock-judge probabilities vs hand-labeled demo gold set (includes deliberate "
-               "miscalibrated trap edges). Re-run after swapping in Laya; if ECE is high, fit "
-               "a per-question-pack temperature on this gold set."),
+        notes=(
+            f"judge={judge}. "
+            + ("Real zero-shot Laya (convaiinnovations/laya) probabilities vs the same gold set. "
+               "High ECE / trap misses are expected zero-shot; fine-tune and fit per-pack "
+               "temperatures before gating automation."
+               if judge == "laya" else
+               "Mock-judge probabilities vs hand-labeled demo gold set (includes deliberate "
+               "miscalibrated trap edges). Compare with ?judge=laya once "
+               "scripts/judge_with_laya.py has been run.")
+        ),
     )
 
 
 if __name__ == "__main__":
-    print(run_evals().model_dump_json(indent=2))
+    import sys
+    judge = sys.argv[1] if len(sys.argv) > 1 else "mock"
+    print(run_evals(judge).model_dump_json(indent=2))

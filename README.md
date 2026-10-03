@@ -172,8 +172,14 @@ Pages: `/` (search) · `/disease/[id]` · `/graph/[id]` (sigma.js, ForceAtlas2) 
    `TODO(openai)` markers: extraction, reconciliation, connection narration,
    evidence summaries, opportunity generation. No key needed today.
 3. **Laya (calibrated edge judge)** → `backend/app/services/decision_service.py`.
-   Already implemented: `pip install laya` (done in backend/.venv) and run the
+   Already implemented: `backend/.venv/bin/pip install laya` (not in
+   requirements.txt, since it pulls torch+transformers, ~2 GB), then run the
    backend with `ATLAS_JUDGE=laya` to judge edges with the real local model.
+   `scripts/judge_with_laya.py` batch-judges all edges and writes
+   `data/laya_judgments_zeroshot.json`; compare judges with
+   `GET /api/evals?judge=laya` vs `GET /api/evals` (a committed copy of the
+   zero-shot judgments ships with the repo, so the comparison works without
+   installing Laya).
    Measured on this machine (M-series, CPU/MPS): 152 ms/edge for all 4 typed
    questions in one forward pass; zero-shot on the 31-edge demo gold set:
    accuracy 0.742, Brier 0.179, ECE 0.162. Zero-shot misses subtle traps
