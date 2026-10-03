@@ -71,6 +71,15 @@ Run evals standalone:
 cd backend && .venv/bin/python -m app.services.evals
 ```
 
+Tests (both expect the stack running):
+
+```bash
+python3 scripts/smoke_test.py        # 21 API/journey/evidence checks
+node scripts/e2e_graph_click.mjs     # graph interaction E2E (needs Brave or Chrome)
+```
+
+Or start everything with `scripts/dev.sh`.
+
 ## Data model
 
 Node types: `Disease, Gene, Variant, Phenotype, Mechanism, Pathway,
