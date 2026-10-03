@@ -1,23 +1,33 @@
 "use client";
 // Landing + search. Minimal by design: the next owner replaces this UI.
-import { useState } from "react";
+// Supports deep links: /?q=lysosomal
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { api, SearchResult } from "@/lib/api";
 
 const EXAMPLES = ["lysosomal", "LYSA1", "seizures", "ciliary", "autophagy"];
 
-export default function Home() {
-  const [q, setQ] = useState("");
+function SearchHome() {
+  const router = useRouter();
+  const initialQ = useSearchParams().get("q") ?? "";
+  const [q, setQ] = useState(initialQ);
   const [results, setResults] = useState<SearchResult[] | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   async function run(query: string) {
     setQ(query); setLoading(true); setError(null);
+    router.replace(query ? `/?q=${encodeURIComponent(query)}` : "/");
     try { setResults(await api.search(query)); }
     catch (e) { setError(String(e)); }
     finally { setLoading(false); }
   }
+
+  useEffect(() => {
+    if (initialQ) run(initialQ);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="space-y-8">
@@ -64,5 +74,14 @@ export default function Home() {
         </ul>
       )}
     </div>
+  );
+}
+
+export default function Home() {
+  // useSearchParams requires a Suspense boundary for static prerender.
+  return (
+    <Suspense>
+      <SearchHome />
+    </Suspense>
   );
 }

@@ -25,6 +25,15 @@ def graph():
     return atlas.full_graph()
 
 
+@router.get("/graph.gexf")
+def graph_gexf():
+    """Full graph in GEXF for Gephi desktop (File > Open)."""
+    from fastapi.responses import Response
+    from ..services.gexf import to_gexf
+    return Response(content=to_gexf(get_store()), media_type="application/xml",
+                    headers={"Content-Disposition": 'attachment; filename="rare-disease-atlas.gexf"'})
+
+
 @router.get("/diseases/{disease_id}", response_model=DiseaseDetail)
 def disease(disease_id: str):
     d = atlas.disease_detail(disease_id)

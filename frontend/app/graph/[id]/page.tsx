@@ -1,15 +1,22 @@
 "use client";
-// Interactive knowledge graph (Cytoscape). One file, no component tree.
+// Interactive knowledge graph: graphology + sigma (the Gephi ecosystem's
+// web stack, as used by Gephi Lite). ForceAtlas2 layout, same as Gephi.
+// Export to Gephi desktop: GET /api/graph.gexf (link below the canvas).
 import { use, useEffect, useRef, useState } from "react";
-import cytoscape, { Core } from "cytoscape";
+import Graph from "graphology";
+import forceAtlas2 from "graphology-layout-forceatlas2";
+import { circular } from "graphology-layout";
+import type Sigma from "sigma";
 import { api, GraphEdge, GraphNode, NODE_COLORS, NodeType, pct } from "@/lib/api";
 
 const ALL_TYPES = Object.keys(NODE_COLORS) as NodeType[];
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000";
 
 export default function GraphPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const container = useRef<HTMLDivElement>(null);
-  const cyRef = useRef<Core | null>(null);
+  const sigmaRef = useRef<Sigma | null>(null);
+  const graphRef = useRef<Graph | null>(null);
   const [data, setData] = useState<{ nodes: GraphNode[]; edges: GraphEdge[] } | null>(null);
   const [hidden, setHidden] = useState<Set<NodeType>>(new Set());
   const [sel, setSel] = useState<{ kind: "node"; node: GraphNode } | { kind: "edge"; edge: GraphEdge } | null>(null);
@@ -19,43 +26,64 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
 
   useEffect(() => {
     if (!data || !container.current) return;
-    const nodeById = new Map(data.nodes.map((n) => [n.id, n]));
-    const edgeById = new Map(data.edges.map((e) => [e.id, e]));
-    const cy = cytoscape({
-      container: container.current,
-      elements: [
-        ...data.nodes.map((n) => ({ data: { id: n.id, label: n.name, type: n.type } })),
-        ...data.edges.map((e) => ({ data: { id: e.id, source: e.source, target: e.target, rel: e.rel_type, inferred: e.provenance === "inferred" } })),
-      ],
-      style: [
-        { selector: "node", style: {
-          "background-color": (el) => NODE_COLORS[el.data("type") as NodeType] ?? "#999",
-          label: "data(label)", "font-size": 8, "text-wrap": "ellipsis", "text-max-width": "80",
-          width: 18, height: 18, "text-valign": "bottom", "text-margin-y": 4,
-        }},
-        { selector: "node[type='Disease']", style: { width: 30, height: 30, "font-size": 10 } },
-        { selector: "edge", style: {
-          width: 1.5, "line-color": "#cbd5e1", "curve-style": "bezier",
-          label: "data(rel)", "font-size": 5, color: "#94a3b8",
-        }},
-        { selector: "edge[?inferred]", style: { "line-style": "dashed", "line-color": "#f59e0b" } },
-        { selector: ":selected", style: { "border-width": 3, "border-color": "#1d4ed8", "line-color": "#1d4ed8" } },
-      ],
-      layout: { name: "cose", animate: false, nodeRepulsion: () => 8000 },
+    const el = container.current;
+    let sigma: Sigma | null = null;
+    let cancelled = false;
+
+    // sigma requires WebGL, so it must be imported client-side only.
+    import("sigma").then(({ default: SigmaCtor }) => {
+      if (cancelled || !el) return;
+      const nodeById = new Map(data.nodes.map((n) => [n.id, n]));
+      const edgeById = new Map(data.edges.map((e) => [e.id, e]));
+
+      const graph = new Graph({ multi: true });
+      for (const n of data.nodes) {
+        graph.addNode(n.id, {
+          label: n.name,
+          size: n.type === "Disease" ? 14 : 7,
+          color: NODE_COLORS[n.type] ?? "#999",
+          nodeType: n.type,
+        });
+      }
+      for (const e of data.edges) {
+        if (!graph.hasNode(e.source) || !graph.hasNode(e.target)) continue;
+        graph.addEdgeWithKey(e.id, e.source, e.target, {
+          label: e.rel_type,
+          size: e.provenance === "inferred" ? 2.5 : 1.5,
+          color: e.provenance === "inferred" ? "#f59e0b" : "#cbd5e1",
+        });
+      }
+
+      // Gephi-style layout: circular seed, then ForceAtlas2.
+      circular.assign(graph);
+      forceAtlas2.assign(graph, {
+        iterations: 300,
+        settings: { ...forceAtlas2.inferSettings(graph), gravity: 1, scalingRatio: 6 },
+      });
+
+      sigma = new SigmaCtor(graph, el, {
+        renderEdgeLabels: true,
+        edgeLabelSize: 9,
+        labelSize: 11,
+        labelRenderedSizeThreshold: 8,
+        enableEdgeEvents: true,
+      });
+      sigma.on("clickNode", ({ node }) => { const n = nodeById.get(node); if (n) setSel({ kind: "node", node: n }); });
+      sigma.on("clickEdge", ({ edge }) => { const e = edgeById.get(edge); if (e) setSel({ kind: "edge", edge: e }); });
+      sigma.on("clickStage", () => setSel(null));
+
+      sigmaRef.current = sigma;
+      graphRef.current = graph;
     });
-    cy.on("tap", "node", (ev) => { const n = nodeById.get(ev.target.id()); if (n) setSel({ kind: "node", node: n }); });
-    cy.on("tap", "edge", (ev) => { const e = edgeById.get(ev.target.id()); if (e) setSel({ kind: "edge", edge: e }); });
-    cy.on("tap", (ev) => { if (ev.target === cy) setSel(null); });
-    cyRef.current = cy;
-    return () => { cy.destroy(); };
+
+    return () => { cancelled = true; sigma?.kill(); sigmaRef.current = null; graphRef.current = null; };
   }, [data]);
 
   useEffect(() => {
-    const cy = cyRef.current;
-    if (!cy || !data) return;
-    cy.nodes().forEach((n) => {
-      const t = n.data("type") as NodeType;
-      n.style("display", hidden.has(t) ? "none" : "element");
+    const graph = graphRef.current;
+    if (!graph) return;
+    graph.forEachNode((node, attrs) => {
+      graph.setNodeAttribute(node, "hidden", hidden.has(attrs.nodeType as NodeType));
     });
   }, [hidden, data]);
 
@@ -73,10 +101,14 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
             {t}
           </button>
         ))}
-        <button onClick={() => cyRef.current?.fit()} className="rounded px-2 py-1 border border-slate-300 ml-2">Center</button>
-        <button onClick={() => { setHidden(new Set()); cyRef.current?.layout({ name: "cose", animate: false }).run(); cyRef.current?.fit(); }}
-          className="rounded px-2 py-1 border border-slate-300">Reset</button>
-        <span className="text-slate-400 ml-auto">dashed amber = atlas-inferred</span>
+        <button onClick={() => sigmaRef.current?.getCamera().animatedReset()} className="rounded px-2 py-1 border border-slate-300 ml-2">Center</button>
+        <button onClick={() => {
+          setHidden(new Set());
+          const g = graphRef.current;
+          if (g) { circular.assign(g); forceAtlas2.assign(g, { iterations: 300, settings: { ...forceAtlas2.inferSettings(g), gravity: 1, scalingRatio: 6 } }); }
+          sigmaRef.current?.getCamera().animatedReset();
+        }} className="rounded px-2 py-1 border border-slate-300">Reset</button>
+        <span className="text-slate-400 ml-auto">amber = atlas-inferred</span>
       </div>
 
       <div className="flex gap-4">
@@ -122,6 +154,12 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
           )}
         </aside>
       </div>
+
+      <p className="text-xs text-slate-400">
+        Rendered with sigma.js + graphology (Gephi ecosystem) using ForceAtlas2.{" "}
+        <a className="text-blue-600 hover:underline" href={`${API_BASE}/api/graph.gexf`}>Download GEXF</a>{" "}
+        to open the full graph in Gephi desktop.
+      </p>
     </div>
   );
 }

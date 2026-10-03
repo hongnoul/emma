@@ -29,7 +29,7 @@ rare-disease-atlas (this repo)
 │       │   └── evals.py             accuracy / Brier / ECE harness
 │       └── connectors/        documented stubs: MONDO, HPO, ClinVar, PubMed,
 │                              ClinicalTrials.gov, Open Targets, Monarch, Orphanet
-└── frontend/                  Next.js + TypeScript + Tailwind + Cytoscape
+└── frontend/                  Next.js + TypeScript + Tailwind + sigma.js/graphology (Gephi ecosystem)
     └── (intentionally minimal; see "Frontend philosophy")
 ```
 
@@ -121,6 +121,7 @@ mock data generator, the decision service, and future Laya calls all share it.
 |---|---|
 | `GET /api/search?q=` | entities matching a query |
 | `GET /api/graph` | full graph |
+| `GET /api/graph.gexf` | GEXF export for Gephi desktop (File > Open) |
 | `GET /api/diseases/{id}` | disease detail (genes, phenotypes, research, assets…) |
 | `GET /api/diseases/{id}/related` | related diseases with shared features + connecting edge |
 | `GET /api/diseases/{id}/graph?depth=` | neighborhood subgraph for Cytoscape |
@@ -150,7 +151,7 @@ exists to prove the backend contract end to end and to be replaced or
 extended by whoever owns the UI next. Everything interesting lives in the
 backend and the data model.
 
-Pages: `/` (search) · `/disease/[id]` · `/graph/[id]` (Cytoscape) ·
+Pages: `/` (search) · `/disease/[id]` · `/graph/[id]` (sigma.js, ForceAtlas2) ·
 `/connection/[a]/[b]` · `/opportunities/[id]` · `/evals`.
 
 ## Where real integrations plug in
