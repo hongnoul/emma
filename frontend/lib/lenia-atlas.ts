@@ -2,7 +2,8 @@
 import { hashStr, seedBlob } from "./lenia";
 import { NODE_COLORS } from "./api";
 
-export const PROD = "https://rare-disease-atlas-api.fly.dev";
+export const PROD = "/prod-api";
+export const PROD_UPSTREAM = "https://rare-disease-atlas-api.fly.dev";
 
 async function get<T>(path: string): Promise<T> {
   const res = await fetch(`${PROD}${path}`, { cache: "no-store" });
