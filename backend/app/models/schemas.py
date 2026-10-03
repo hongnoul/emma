@@ -19,6 +19,9 @@ NodeType = Literal[
 RelType = Literal[
     "CAUSED_BY", "HAS_VARIANT", "HAS_PHENOTYPE", "AFFECTS_PATHWAY", "HAS_MECHANISM",
     "STUDIED_IN", "SUPPORTED_BY", "AUTHORED_BY", "HAS_ASSET", "SHARES_MECHANISM", "RELATED_TO",
+    # disease-centric channels (bulk pipeline): two parallel evidence channels
+    "PHENOTYPE_SIMILAR",      # shared phenotype profile, judged by Laya
+    "SHARES_GENE_MECHANISM",  # same causal gene(s) / gene family
 ]
 
 

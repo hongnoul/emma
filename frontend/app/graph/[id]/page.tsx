@@ -7,7 +7,7 @@ import Graph from "graphology";
 import forceAtlas2 from "graphology-layout-forceatlas2";
 import { circular } from "graphology-layout";
 import type Sigma from "sigma";
-import { api, GraphEdge, GraphNode, NODE_COLORS, NodeType, pct } from "@/lib/api";
+import { api, DEFAULT_HIDDEN_TYPES, EDGE_CHANNEL_COLORS, GraphEdge, GraphNode, NODE_COLORS, NodeType, pct } from "@/lib/api";
 
 const ALL_TYPES = Object.keys(NODE_COLORS) as NodeType[];
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000";
@@ -18,7 +18,7 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
   const sigmaRef = useRef<Sigma | null>(null);
   const graphRef = useRef<Graph | null>(null);
   const [data, setData] = useState<{ nodes: GraphNode[]; edges: GraphEdge[] } | null>(null);
-  const [hidden, setHidden] = useState<Set<NodeType>>(new Set());
+  const [hidden, setHidden] = useState<Set<NodeType>>(new Set(DEFAULT_HIDDEN_TYPES));
   const [sel, setSel] = useState<{ kind: "node"; node: GraphNode } | { kind: "edge"; edge: GraphEdge } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -49,8 +49,8 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
         if (!graph.hasNode(e.source) || !graph.hasNode(e.target)) continue;
         graph.addEdgeWithKey(e.id, e.source, e.target, {
           label: e.rel_type,
-          size: e.provenance === "inferred" ? 2.5 : 1.5,
-          color: e.provenance === "inferred" ? "#f59e0b" : "#cbd5e1",
+          size: EDGE_CHANNEL_COLORS[e.rel_type] ? 2.5 : 1.5,
+          color: EDGE_CHANNEL_COLORS[e.rel_type] ?? "#cbd5e1",
         });
       }
 
@@ -105,12 +105,12 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
         ))}
         <button onClick={() => sigmaRef.current?.getCamera().animatedReset()} className="rounded px-2 py-1 border border-slate-300 ml-2">Center</button>
         <button onClick={() => {
-          setHidden(new Set());
+          setHidden(new Set(DEFAULT_HIDDEN_TYPES));
           const g = graphRef.current;
           if (g) { circular.assign(g); forceAtlas2.assign(g, { iterations: 300, settings: { ...forceAtlas2.inferSettings(g), gravity: 1, scalingRatio: 6 } }); }
           sigmaRef.current?.getCamera().animatedReset();
         }} className="rounded px-2 py-1 border border-slate-300">Reset</button>
-        <span className="text-slate-400 ml-auto">amber = atlas-inferred</span>
+        <span className="text-slate-400 ml-auto">amber = phenotype-similar (judged) · blue = shared gene</span>
       </div>
 
       <div className="flex gap-4">

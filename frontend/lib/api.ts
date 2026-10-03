@@ -102,3 +102,12 @@ export const NODE_COLORS: Record<NodeType, string> = {
 export function pct(p?: number | null): string {
   return p == null ? "n/a" : `${Math.round(p * 100)}%`;
 }
+
+// Disease-centric graph view: edge channel colors + node types hidden by default.
+export const EDGE_CHANNEL_COLORS: Record<string, string> = {
+  PHENOTYPE_SIMILAR: "#f59e0b",      // amber: inferred, Laya-judged
+  SHARES_MECHANISM: "#f59e0b",
+  SHARES_GENE_MECHANISM: "#2563eb",  // blue: curated gene channel
+  RELATED_TO: "#fbbf24",
+};
+export const DEFAULT_HIDDEN_TYPES: NodeType[] = ["Phenotype", "Publication"];

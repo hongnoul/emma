@@ -61,7 +61,8 @@ def related_diseases(disease_id: str, store: GraphStore | None = None) -> list[R
     my_phenos = {p.id for p in store.neighbors_out(disease_id, "HAS_PHENOTYPE")}
     my_genes = store.neighbors_out(disease_id, "CAUSED_BY")
     my_pwys = {p.id for g in my_genes for p in store.neighbors_out(g.id, "AFFECTS_PATHWAY")}
-    for e in store.edges_touching(disease_id, "SHARES_MECHANISM", "RELATED_TO"):
+    for e in store.edges_touching(disease_id, "SHARES_MECHANISM", "RELATED_TO",
+                                  "PHENOTYPE_SIMILAR", "SHARES_GENE_MECHANISM"):
         other_id = e.target if e.source == disease_id else e.source
         other = store.get_node(other_id)
         if other is None or other.type != "Disease":

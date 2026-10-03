@@ -181,6 +181,41 @@ SHARES_MECHANISM candidates derived from phenotype overlap and judged by
 local Laya. Generations are archived under `data/generations/`. The default
 `data/graph.json` demo dataset is untouched; switch via the env var.
 
+## Bulk graph: all annotated rare diseases (working)
+
+`backend/pipeline/bulk_run.py` builds the full-scale disease-centric graph
+from official ontology releases (mondo.obo, hp.obo, phenotype.hpoa,
+genes_to_disease.txt in `data/raw/bulk/`):
+
+- 12,054 annotated rare diseases (MONDO spine, OMIM/Orphanet xref-reconciled)
+- Two parallel disease-disease channels per the product design:
+  `SHARES_GENE_MECHANISM` (curated causal-gene overlap, hierarchy-filtered)
+  and `PHENOTYPE_SIMILAR` (IC-weighted phenotype overlap, judged by local
+  Laya; 2,882 candidates judged in ~6 min, checkpointed to
+  `data/raw/bulk/judgments.jsonl` for resumable runs)
+- Disease→phenotype edges are intentionally not materialized in the bulk
+  view; shared phenotypes live inside each edge's `state` snippet
+
+```bash
+cd backend && .venv/bin/python -m pipeline.bulk_run     # --no-judge / --max-judge N
+ATLAS_GRAPH_PATH=data/graph.bulk.json .venv/bin/uvicorn app.main:app
+```
+
+The graph view hides Phenotype/Publication nodes by default (toggle chips to
+re-show) and colors edges by channel: amber = judged phenotype similarity,
+blue = shared gene.
+
+## Deployment (prepared, not yet deployed)
+
+- `Dockerfile`: stateless API image (~305 MB), judgments pre-baked, no model
+  at serve time. Verified locally with `docker build` + `docker run`.
+- `fly.toml`: Fly.io config (shared-cpu-1x, 512 MB, scale-to-zero).
+- `scripts/deploy.sh`: rebuild generation -> `fly deploy` -> Vercel notes.
+- Frontend: deploy `frontend/` to Vercel with
+  `NEXT_PUBLIC_API_BASE=https://<app>.fly.dev`; set `ATLAS_CORS_ORIGINS`
+  on the API to the Vercel domain.
+- `/health` reports which graph generation is being served.
+
 ## Continuous ingestion (design)
 
 `docs/ingestion-pipeline.md` is the production design for the fetch→parse→

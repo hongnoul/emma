@@ -1,0 +1,22 @@
+# Fly.io config for the Rare Disease Atlas API.
+# Deploy: fly launch --copy-config --no-deploy && fly deploy
+# The image bakes the published graph generation; redeploy to publish a new one.
+app = "rare-disease-atlas-api"
+primary_region = "ewr"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "stop"
+  auto_start_machines = true
+  min_machines_running = 0
+
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+
+[env]
+  ATLAS_GRAPH_PATH = "/data/graph.bulk.json"

@@ -6,11 +6,18 @@ from .routers.api import router
 
 app = FastAPI(title="Rare Disease Atlas API", version="0.1.0",
               description="Prototype backed by synthetic demonstration data.")
-app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:3000"],
+import os
+_origins = os.environ.get("ATLAS_CORS_ORIGINS", "http://localhost:3000").split(",")
+app.add_middleware(CORSMiddleware, allow_origins=_origins,
                    allow_methods=["*"], allow_headers=["*"])
 app.include_router(router)
 
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "data": "synthetic-demo"}
+    import json as _json
+    import os as _os
+    from .services.graph_store import get_store, DATA_DIR
+    store = get_store()
+    gp = _os.environ.get("ATLAS_GRAPH_PATH", "data/graph.json (demo)")
+    return {"status": "ok", "graph": gp, "nodes": len(store.nodes), "edges": len(store.edges)}

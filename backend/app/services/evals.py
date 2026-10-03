@@ -21,7 +21,8 @@ from pathlib import Path
 from ..models.schemas import EvalReport
 from .graph_store import get_store
 
-DATA_DIR = Path(__file__).resolve().parents[3] / "data"
+import os as _os
+DATA_DIR = Path(_os.environ.get("ATLAS_DATA_DIR") or Path(__file__).resolve().parents[3] / "data")
 N_BINS = 5
 
 
