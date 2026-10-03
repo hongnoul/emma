@@ -1,0 +1,2326 @@
+{
+  "_notice": "THIS IS SYNTHETIC DEMONSTRATION DATA. No publication, study, person, organization, gene, or disease in this file is real.",
+  "generated": "2026-10-03",
+  "nodes": [
+    {
+      "id": "DEMO-DIS-001",
+      "type": "Disease",
+      "name": "Demo Lysosomal Storage Disorder A",
+      "description": "Demonstration disease. Progressive multisystem disorder caused by deficiency of the demo enzyme LYSA1, leading to substrate accumulation in lysosomes.",
+      "identifier": "DEMO-MONDO:0000001",
+      "inheritance": "Autosomal recessive"
+    },
+    {
+      "id": "DEMO-DIS-002",
+      "type": "Disease",
+      "name": "Demo Neurodegeneration B",
+      "description": "Demonstration disease. Childhood-onset neurodegeneration with ataxia and seizures, caused by loss of the demo lysosomal transporter LYSB2.",
+      "identifier": "DEMO-MONDO:0000002",
+      "inheritance": "Autosomal recessive"
+    },
+    {
+      "id": "DEMO-DIS-003",
+      "type": "Disease",
+      "name": "Demo Congenital Myopathy C",
+      "description": "Demonstration disease. Early-onset muscle weakness with impaired autophagosome clearance, caused by variants in AUTC3.",
+      "identifier": "DEMO-MONDO:0000003",
+      "inheritance": "Autosomal dominant"
+    },
+    {
+      "id": "DEMO-DIS-004",
+      "type": "Disease",
+      "name": "Demo Retinal Dystrophy D",
+      "description": "Demonstration disease. Progressive retinal degeneration caused by variants in the demo ciliary transport gene CILD4.",
+      "identifier": "DEMO-MONDO:0000004",
+      "inheritance": "Autosomal recessive"
+    },
+    {
+      "id": "DEMO-DIS-005",
+      "type": "Disease",
+      "name": "Demo Ciliopathy Syndrome E",
+      "description": "Demonstration disease. Multisystem ciliopathy with polydactyly, retinal involvement, and renal cysts; caused by CILE5 or CILE6 variants.",
+      "identifier": "DEMO-MONDO:0000005",
+      "inheritance": "Autosomal recessive"
+    },
+    {
+      "id": "DEMO-DIS-006",
+      "type": "Disease",
+      "name": "Demo Metabolic Disorder F",
+      "description": "Demonstration disease. Hepatic glycogen accumulation and fasting intolerance caused by variants in the demo gene GLYF7.",
+      "identifier": "DEMO-MONDO:0000006",
+      "inheritance": "Autosomal recessive"
+    },
+    {
+      "id": "DEMO-DIS-007",
+      "type": "Disease",
+      "name": "Demo Epileptic Encephalopathy G",
+      "description": "Demonstration disease. Infantile-onset refractory epilepsy caused by variants in the demo synaptic vesicle gene SYNG8.",
+      "identifier": "DEMO-MONDO:0000007",
+      "inheritance": "De novo dominant"
+    },
+    {
+      "id": "DEMO-DIS-008",
+      "type": "Disease",
+      "name": "Demo Skeletal Dysplasia H",
+      "description": "Demonstration disease. Short stature and skeletal anomalies caused by variants in SKEH9 or SKEH10; secondary autophagy involvement reported in one demo study.",
+      "identifier": "DEMO-MONDO:0000008",
+      "inheritance": "Autosomal dominant"
+    },
+    {
+      "id": "DEMO-GENE-001",
+      "type": "Gene",
+      "name": "LYSA1",
+      "description": "Demo gene encoding a lysosomal hydrolase.",
+      "identifier": "DEMO-HGNC:0001"
+    },
+    {
+      "id": "DEMO-GENE-002",
+      "type": "Gene",
+      "name": "LYSB2",
+      "description": "Demo gene encoding a lysosomal membrane transporter.",
+      "identifier": "DEMO-HGNC:0002"
+    },
+    {
+      "id": "DEMO-GENE-003",
+      "type": "Gene",
+      "name": "AUTC3",
+      "description": "Demo gene required for autophagosome-lysosome fusion.",
+      "identifier": "DEMO-HGNC:0003"
+    },
+    {
+      "id": "DEMO-GENE-004",
+      "type": "Gene",
+      "name": "CILD4",
+      "description": "Demo gene encoding an intraflagellar transport component.",
+      "identifier": "DEMO-HGNC:0004"
+    },
+    {
+      "id": "DEMO-GENE-005",
+      "type": "Gene",
+      "name": "CILE5",
+      "description": "Demo gene encoding a basal body protein.",
+      "identifier": "DEMO-HGNC:0005"
+    },
+    {
+      "id": "DEMO-GENE-006",
+      "type": "Gene",
+      "name": "CILE6",
+      "description": "Demo gene encoding a ciliary tip kinase.",
+      "identifier": "DEMO-HGNC:0006"
+    },
+    {
+      "id": "DEMO-GENE-007",
+      "type": "Gene",
+      "name": "GLYF7",
+      "description": "Demo gene encoding a glycogen debranching enzyme.",
+      "identifier": "DEMO-HGNC:0007"
+    },
+    {
+      "id": "DEMO-GENE-008",
+      "type": "Gene",
+      "name": "SYNG8",
+      "description": "Demo gene encoding a synaptic vesicle priming factor.",
+      "identifier": "DEMO-HGNC:0008"
+    },
+    {
+      "id": "DEMO-GENE-009",
+      "type": "Gene",
+      "name": "SKEH9",
+      "description": "Demo gene encoding a cartilage matrix protein.",
+      "identifier": "DEMO-HGNC:0009"
+    },
+    {
+      "id": "DEMO-GENE-010",
+      "type": "Gene",
+      "name": "SKEH10",
+      "description": "Demo gene encoding a growth plate signaling receptor.",
+      "identifier": "DEMO-HGNC:0010"
+    },
+    {
+      "id": "DEMO-VAR-001",
+      "type": "Variant",
+      "name": "LYSA1 c.100C>T (p.Arg34Ter)",
+      "description": "Demo nonsense variant; classified pathogenic in the demo dataset.",
+      "identifier": "DEMO-CLINVAR:0001"
+    },
+    {
+      "id": "DEMO-VAR-002",
+      "type": "Variant",
+      "name": "LYSB2 c.511G>A (p.Gly171Arg)",
+      "description": "Demo missense variant; classified likely pathogenic in the demo dataset.",
+      "identifier": "DEMO-CLINVAR:0002"
+    },
+    {
+      "id": "DEMO-HP-0001",
+      "type": "Phenotype",
+      "name": "Seizures",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0001"
+    },
+    {
+      "id": "DEMO-HP-0002",
+      "type": "Phenotype",
+      "name": "Hypotonia",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0002"
+    },
+    {
+      "id": "DEMO-HP-0003",
+      "type": "Phenotype",
+      "name": "Global developmental delay",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0003"
+    },
+    {
+      "id": "DEMO-HP-0004",
+      "type": "Phenotype",
+      "name": "Hepatomegaly",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0004"
+    },
+    {
+      "id": "DEMO-HP-0005",
+      "type": "Phenotype",
+      "name": "Retinal degeneration",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0005"
+    },
+    {
+      "id": "DEMO-HP-0006",
+      "type": "Phenotype",
+      "name": "Ataxia",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0006"
+    },
+    {
+      "id": "DEMO-HP-0007",
+      "type": "Phenotype",
+      "name": "Proximal muscle weakness",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0007"
+    },
+    {
+      "id": "DEMO-HP-0008",
+      "type": "Phenotype",
+      "name": "Cardiomyopathy",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0008"
+    },
+    {
+      "id": "DEMO-HP-0009",
+      "type": "Phenotype",
+      "name": "Coarse facial features",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0009"
+    },
+    {
+      "id": "DEMO-HP-0010",
+      "type": "Phenotype",
+      "name": "Nystagmus",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0010"
+    },
+    {
+      "id": "DEMO-HP-0011",
+      "type": "Phenotype",
+      "name": "Postaxial polydactyly",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0011"
+    },
+    {
+      "id": "DEMO-HP-0012",
+      "type": "Phenotype",
+      "name": "Short stature",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0012"
+    },
+    {
+      "id": "DEMO-HP-0013",
+      "type": "Phenotype",
+      "name": "Spasticity",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0013"
+    },
+    {
+      "id": "DEMO-HP-0014",
+      "type": "Phenotype",
+      "name": "Sensorineural hearing loss",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0014"
+    },
+    {
+      "id": "DEMO-HP-0015",
+      "type": "Phenotype",
+      "name": "Failure to thrive",
+      "description": "Demo phenotype.",
+      "identifier": "DEMO-HP:0015"
+    },
+    {
+      "id": "DEMO-PWY-001",
+      "type": "Pathway",
+      "name": "Lysosomal degradation pathway",
+      "description": "Demo pathway: substrate trafficking into and catabolism within the lysosome.",
+      "identifier": "DEMO-PWY:0001"
+    },
+    {
+      "id": "DEMO-PWY-002",
+      "type": "Pathway",
+      "name": "Autophagy pathway",
+      "description": "Demo pathway: autophagosome formation, trafficking, and lysosomal fusion.",
+      "identifier": "DEMO-PWY:0002"
+    },
+    {
+      "id": "DEMO-PWY-003",
+      "type": "Pathway",
+      "name": "Ciliary transport pathway",
+      "description": "Demo pathway: intraflagellar transport and basal body assembly.",
+      "identifier": "DEMO-PWY:0003"
+    },
+    {
+      "id": "DEMO-MECH-001",
+      "type": "Mechanism",
+      "name": "Enzyme deficiency (loss of function)",
+      "description": "Demo mechanism: biallelic loss of a catalytic enzyme causing substrate accumulation.",
+      "identifier": "DEMO-MECH:0001"
+    },
+    {
+      "id": "DEMO-MECH-002",
+      "type": "Mechanism",
+      "name": "Impaired organelle clearance",
+      "description": "Demo mechanism: failure to clear damaged organelles or storage material.",
+      "identifier": "DEMO-MECH:0002"
+    },
+    {
+      "id": "DEMO-PUB-001",
+      "type": "Publication",
+      "name": "Biallelic LYSA1 variants cause Demo Lysosomal Storage Disorder A",
+      "description": "Demonstration publication (not a real paper).",
+      "identifier": "DEMO-PUB-001",
+      "year": 2019
+    },
+    {
+      "id": "DEMO-PUB-002",
+      "type": "Publication",
+      "name": "LYSB2 loss impairs lysosomal export in Demo Neurodegeneration B",
+      "description": "Demonstration publication (not a real paper).",
+      "identifier": "DEMO-PUB-002",
+      "year": 2020
+    },
+    {
+      "id": "DEMO-PUB-003",
+      "type": "Publication",
+      "name": "Shared lysosomal pathway dysfunction in demo disorders A and B",
+      "description": "Demonstration publication (not a real paper).",
+      "identifier": "DEMO-PUB-003",
+      "year": 2023
+    },
+    {
+      "id": "DEMO-PUB-004",
+      "type": "Publication",
+      "name": "AUTC3 variants block autophagosome fusion in Demo Myopathy C",
+      "description": "Demonstration publication (not a real paper).",
+      "identifier": "DEMO-PUB-004",
+      "year": 2018
+    },
+    {
+      "id": "DEMO-PUB-005",
+      "type": "Publication",
+      "name": "CILD4 and the demo intraflagellar transport module",
+      "description": "Demonstration publication (not a real paper).",
+      "identifier": "DEMO-PUB-005",
+      "year": 2021
+    },
+    {
+      "id": "DEMO-PUB-006",
+      "type": "Publication",
+      "name": "CILE5/CILE6 and the demo ciliopathy spectrum",
+      "description": "Demonstration publication (not a real paper).",
+      "identifier": "DEMO-PUB-006",
+      "year": 2022
+    },
+    {
+      "id": "DEMO-PUB-007",
+      "type": "Publication",
+      "name": "Natural history of Demo Neurodegeneration B: a 40-patient demo cohort",
+      "description": "Demonstration publication (not a real paper).",
+      "identifier": "DEMO-PUB-007",
+      "year": 2024
+    },
+    {
+      "id": "DEMO-PUB-008",
+      "type": "Publication",
+      "name": "A demo mouse model of LYSA1 deficiency responds to substrate reduction",
+      "description": "Demonstration publication (not a real paper).",
+      "identifier": "DEMO-PUB-008",
+      "year": 2022
+    },
+    {
+      "id": "DEMO-PUB-009",
+      "type": "Publication",
+      "name": "Glycogen debranching and hepatic phenotypes in demo disorder F",
+      "description": "Demonstration publication (not a real paper).",
+      "identifier": "DEMO-PUB-009",
+      "year": 2017
+    },
+    {
+      "id": "DEMO-PUB-010",
+      "type": "Publication",
+      "name": "No evidence of lysosomal involvement in Demo Metabolic Disorder F",
+      "description": "Demonstration publication (not a real paper).",
+      "identifier": "DEMO-PUB-010",
+      "year": 2021
+    },
+    {
+      "id": "DEMO-STUDY-001",
+      "type": "ClinicalTrial",
+      "name": "Natural history study of Demo Neurodegeneration B",
+      "description": "Demonstration study. Prospective 5-year natural history study; motor and seizure outcome measures.",
+      "identifier": "DEMO-NCT-0000001",
+      "status": "Recruiting"
+    },
+    {
+      "id": "DEMO-STUDY-002",
+      "type": "ClinicalTrial",
+      "name": "Substrate reduction therapy in Demo Disorder A",
+      "description": "Demonstration study. Phase 1/2 open-label trial of demo substrate reduction compound SRT-101.",
+      "identifier": "DEMO-NCT-0000002",
+      "status": "Active"
+    },
+    {
+      "id": "DEMO-STUDY-003",
+      "type": "ClinicalTrial",
+      "name": "Gene therapy for Demo Retinal Dystrophy D",
+      "description": "Demonstration study. Phase 1 subretinal AAV trial.",
+      "identifier": "DEMO-NCT-0000003",
+      "status": "Recruiting"
+    },
+    {
+      "id": "DEMO-STUDY-004",
+      "type": "ClinicalTrial",
+      "name": "Ketogenic diet in Demo Epileptic Encephalopathy G",
+      "description": "Demonstration study. Randomized dietary intervention study.",
+      "identifier": "DEMO-NCT-0000004",
+      "status": "Completed"
+    },
+    {
+      "id": "DEMO-RES-001",
+      "type": "Researcher",
+      "name": "Dr. Demo Osei",
+      "description": "Demonstration researcher. Lysosomal biology lab; leads the LYSA1 program.",
+      "identifier": "DEMO-RES-001",
+      "affiliation": "Demo University A"
+    },
+    {
+      "id": "DEMO-RES-002",
+      "type": "Researcher",
+      "name": "Dr. Demo Ivanova",
+      "description": "Demonstration researcher. Neurodegeneration clinician-scientist; PI of the Disorder B natural history study.",
+      "identifier": "DEMO-RES-002",
+      "affiliation": "Demo Children's Hospital"
+    },
+    {
+      "id": "DEMO-RES-003",
+      "type": "Researcher",
+      "name": "Dr. Demo Tanaka",
+      "description": "Demonstration researcher. Autophagy and muscle disease.",
+      "identifier": "DEMO-RES-003",
+      "affiliation": "Demo Institute C"
+    },
+    {
+      "id": "DEMO-RES-004",
+      "type": "Researcher",
+      "name": "Dr. Demo Alvarez",
+      "description": "Demonstration researcher. Ciliopathies and retinal gene therapy.",
+      "identifier": "DEMO-RES-004",
+      "affiliation": "Demo Eye Center"
+    },
+    {
+      "id": "DEMO-RES-005",
+      "type": "Researcher",
+      "name": "Dr. Demo Okafor",
+      "description": "Demonstration researcher. Metabolic liver disease.",
+      "identifier": "DEMO-RES-005",
+      "affiliation": "Demo University B"
+    },
+    {
+      "id": "DEMO-ORG-001",
+      "type": "PatientOrganization",
+      "name": "Demo Disorder A Family Alliance",
+      "description": "Demonstration patient organization. Runs the Disorder A patient registry.",
+      "identifier": "DEMO-ORG-001"
+    },
+    {
+      "id": "DEMO-ORG-002",
+      "type": "PatientOrganization",
+      "name": "Demo Neurodegeneration B Foundation",
+      "description": "Demonstration patient organization. Funds the natural history study and a biomarker program.",
+      "identifier": "DEMO-ORG-002"
+    },
+    {
+      "id": "DEMO-ORG-003",
+      "type": "PatientOrganization",
+      "name": "Demo Ciliopathy Network",
+      "description": "Demonstration patient organization. Umbrella group for demo ciliopathy families.",
+      "identifier": "DEMO-ORG-003"
+    },
+    {
+      "id": "DEMO-ORG-004",
+      "type": "PatientOrganization",
+      "name": "Demo Rare Muscle Coalition",
+      "description": "Demonstration patient organization. Supports myopathy research infrastructure.",
+      "identifier": "DEMO-ORG-004"
+    },
+    {
+      "id": "DEMO-ASSET-001",
+      "type": "ResearchAsset",
+      "name": "Disorder A patient registry",
+      "description": "Demonstration asset. 120-family registry with longitudinal clinical data.",
+      "identifier": "DEMO-ASSET-001",
+      "asset_type": "registry"
+    },
+    {
+      "id": "DEMO-ASSET-002",
+      "type": "ResearchAsset",
+      "name": "Disorder B natural history dataset",
+      "description": "Demonstration asset. Curated outcome-measure dataset from DEMO-STUDY-001.",
+      "identifier": "DEMO-ASSET-002",
+      "asset_type": "natural_history"
+    },
+    {
+      "id": "DEMO-ASSET-003",
+      "type": "ResearchAsset",
+      "name": "Lysa1-null demo mouse model",
+      "description": "Demonstration asset. Characterized knockout model with CNS phenotype.",
+      "identifier": "DEMO-ASSET-003",
+      "asset_type": "animal_model"
+    },
+    {
+      "id": "DEMO-ASSET-004",
+      "type": "ResearchAsset",
+      "name": "Demo lysosomal biomarker panel",
+      "description": "Demonstration asset. CSF biomarker panel validated in Disorder B.",
+      "identifier": "DEMO-ASSET-004",
+      "asset_type": "biomarker"
+    },
+    {
+      "id": "DEMO-ASSET-005",
+      "type": "ResearchAsset",
+      "name": "CILD4 patient iPSC line",
+      "description": "Demonstration asset. iPSC-derived retinal organoid line.",
+      "identifier": "DEMO-ASSET-005",
+      "asset_type": "cell_model"
+    }
+  ],
+  "edges": [
+    {
+      "id": "DEMO-EDGE-001",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-GENE-001",
+      "rel_type": "CAUSED_BY",
+      "provenance": "curated",
+      "description": "Demo Disorder A is caused by biallelic LYSA1 variants.",
+      "source_db": "DEMO-OMIM",
+      "source_id": "DEMO-REC-001",
+      "supporting_publications": [
+        "DEMO-PUB-001"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.92,
+        "weaker_association": 0.023,
+        "different_relationship": 0.011,
+        "unsupported": 0.046
+      },
+      "evidence_level": {
+        "expected": 1.93,
+        "probs": {
+          "hypothesis": 0.036,
+          "supported": 0.236,
+          "replicated": 0.49,
+          "clinical": 0.237
+        }
+      },
+      "contradicted": 0.035,
+      "edge_valid": 0.95,
+      "state": "[DEMO-PUB-001, 2019] Biallelic loss-of-function variants in LYSA1 were identified in 14 demo patients with Disorder A; enzyme activity was <5% of control in all cases.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-002",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-GENE-002",
+      "rel_type": "CAUSED_BY",
+      "provenance": "curated",
+      "description": "Demo Neurodegeneration B is caused by biallelic LYSB2 variants.",
+      "source_db": "DEMO-OMIM",
+      "source_id": "DEMO-REC-002",
+      "supporting_publications": [
+        "DEMO-PUB-002"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.908,
+        "weaker_association": 0.006,
+        "different_relationship": 0.074,
+        "unsupported": 0.012
+      },
+      "evidence_level": {
+        "expected": 1.94,
+        "probs": {
+          "hypothesis": 0.037,
+          "supported": 0.223,
+          "replicated": 0.506,
+          "clinical": 0.235
+        }
+      },
+      "contradicted": 0.041,
+      "edge_valid": 0.93,
+      "state": "[DEMO-PUB-002, 2020] LYSB2 transporter loss abolished lysosomal substrate export in patient fibroblasts from 9 demo families.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-003",
+      "source": "DEMO-DIS-003",
+      "target": "DEMO-GENE-003",
+      "rel_type": "CAUSED_BY",
+      "provenance": "curated",
+      "description": "Demo Myopathy C is caused by dominant AUTC3 variants.",
+      "source_db": "DEMO-OMIM",
+      "source_id": "DEMO-REC-003",
+      "supporting_publications": [
+        "DEMO-PUB-004"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.896,
+        "weaker_association": 0.03,
+        "different_relationship": 0.046,
+        "unsupported": 0.028
+      },
+      "evidence_level": {
+        "expected": 1.92,
+        "probs": {
+          "hypothesis": 0.053,
+          "supported": 0.244,
+          "replicated": 0.436,
+          "clinical": 0.267
+        }
+      },
+      "contradicted": 0.055,
+      "edge_valid": 0.91,
+      "state": "Demo Myopathy C is caused by dominant AUTC3 variants.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-004",
+      "source": "DEMO-DIS-004",
+      "target": "DEMO-GENE-004",
+      "rel_type": "CAUSED_BY",
+      "provenance": "curated",
+      "description": "Demo Retinal Dystrophy D is caused by biallelic CILD4 variants.",
+      "source_db": "DEMO-OMIM",
+      "source_id": "DEMO-REC-004",
+      "supporting_publications": [
+        "DEMO-PUB-005"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.89,
+        "weaker_association": 0.028,
+        "different_relationship": 0.023,
+        "unsupported": 0.059
+      },
+      "evidence_level": {
+        "expected": 1.9,
+        "probs": {
+          "hypothesis": 0.078,
+          "supported": 0.198,
+          "replicated": 0.469,
+          "clinical": 0.255
+        }
+      },
+      "contradicted": 0.065,
+      "edge_valid": 0.9,
+      "state": "Demo Retinal Dystrophy D is caused by biallelic CILD4 variants.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-005",
+      "source": "DEMO-DIS-005",
+      "target": "DEMO-GENE-005",
+      "rel_type": "CAUSED_BY",
+      "provenance": "curated",
+      "description": "Demo Ciliopathy E is caused by CILE5 variants.",
+      "source_db": "DEMO-OMIM",
+      "source_id": "DEMO-REC-005",
+      "supporting_publications": [
+        "DEMO-PUB-006"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.878,
+        "weaker_association": 0.1,
+        "different_relationship": 0.011,
+        "unsupported": 0.011
+      },
+      "evidence_level": {
+        "expected": 1.92,
+        "probs": {
+          "hypothesis": 0.043,
+          "supported": 0.236,
+          "replicated": 0.476,
+          "clinical": 0.244
+        }
+      },
+      "contradicted": 0.088,
+      "edge_valid": 0.88,
+      "state": "Demo Ciliopathy E is caused by CILE5 variants.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-006",
+      "source": "DEMO-DIS-005",
+      "target": "DEMO-GENE-006",
+      "rel_type": "CAUSED_BY",
+      "provenance": "curated",
+      "description": "Demo Ciliopathy E is caused by CILE6 variants in a minority of families.",
+      "source_db": "DEMO-OMIM",
+      "source_id": "DEMO-REC-006",
+      "supporting_publications": [
+        "DEMO-PUB-006"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.794,
+        "weaker_association": 0.06,
+        "different_relationship": 0.04,
+        "unsupported": 0.106
+      },
+      "evidence_level": {
+        "expected": 1.9,
+        "probs": {
+          "hypothesis": 0.072,
+          "supported": 0.204,
+          "replicated": 0.473,
+          "clinical": 0.251
+        }
+      },
+      "contradicted": 0.221,
+      "edge_valid": 0.74,
+      "state": "Demo Ciliopathy E is caused by CILE6 variants in a minority of families.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-007",
+      "source": "DEMO-DIS-006",
+      "target": "DEMO-GENE-007",
+      "rel_type": "CAUSED_BY",
+      "provenance": "curated",
+      "description": "Demo Metabolic Disorder F is caused by GLYF7 variants.",
+      "source_db": "DEMO-OMIM",
+      "source_id": "DEMO-REC-007",
+      "supporting_publications": [
+        "DEMO-PUB-009"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.902,
+        "weaker_association": 0.036,
+        "different_relationship": 0.014,
+        "unsupported": 0.048
+      },
+      "evidence_level": {
+        "expected": 1.94,
+        "probs": {
+          "hypothesis": 0.038,
+          "supported": 0.222,
+          "replicated": 0.502,
+          "clinical": 0.237
+        }
+      },
+      "contradicted": 0.056,
+      "edge_valid": 0.92,
+      "state": "Demo Metabolic Disorder F is caused by GLYF7 variants.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-008",
+      "source": "DEMO-DIS-007",
+      "target": "DEMO-GENE-008",
+      "rel_type": "CAUSED_BY",
+      "provenance": "curated",
+      "description": "Demo Epileptic Encephalopathy G is caused by de novo SYNG8 variants.",
+      "source_db": "DEMO-OMIM",
+      "source_id": "DEMO-REC-008",
+      "supporting_publications": [],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.884,
+        "weaker_association": 0.003,
+        "different_relationship": 0.053,
+        "unsupported": 0.06
+      },
+      "evidence_level": {
+        "expected": 1.9,
+        "probs": {
+          "hypothesis": 0.063,
+          "supported": 0.236,
+          "replicated": 0.447,
+          "clinical": 0.255
+        }
+      },
+      "contradicted": 0.081,
+      "edge_valid": 0.89,
+      "state": "Demo Epileptic Encephalopathy G is caused by de novo SYNG8 variants.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-009",
+      "source": "DEMO-DIS-008",
+      "target": "DEMO-GENE-009",
+      "rel_type": "CAUSED_BY",
+      "provenance": "curated",
+      "description": "Demo Skeletal Dysplasia H is caused by SKEH9 variants.",
+      "source_db": "DEMO-OMIM",
+      "source_id": "DEMO-REC-009",
+      "supporting_publications": [],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.872,
+        "weaker_association": 0.04,
+        "different_relationship": 0.031,
+        "unsupported": 0.057
+      },
+      "evidence_level": {
+        "expected": 1.83,
+        "probs": {
+          "hypothesis": 0.086,
+          "supported": 0.217,
+          "replicated": 0.476,
+          "clinical": 0.222
+        }
+      },
+      "contradicted": 0.101,
+      "edge_valid": 0.87,
+      "state": "Demo Skeletal Dysplasia H is caused by SKEH9 variants.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-010",
+      "source": "DEMO-DIS-008",
+      "target": "DEMO-GENE-010",
+      "rel_type": "CAUSED_BY",
+      "provenance": "curated",
+      "description": "Demo Skeletal Dysplasia H is caused by SKEH10 variants (one demo family).",
+      "source_db": "DEMO-OMIM",
+      "source_id": "DEMO-REC-010",
+      "supporting_publications": [],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.68,
+        "weaker_association": 0.084,
+        "different_relationship": 0.129,
+        "unsupported": 0.107
+      },
+      "evidence_level": {
+        "expected": 1.91,
+        "probs": {
+          "hypothesis": 0.049,
+          "supported": 0.222,
+          "replicated": 0.499,
+          "clinical": 0.23
+        }
+      },
+      "contradicted": 0.308,
+      "edge_valid": 0.55,
+      "state": "Demo Skeletal Dysplasia H is caused by SKEH10 variants (one demo family).",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-011",
+      "source": "DEMO-DIS-006",
+      "target": "DEMO-GENE-001",
+      "rel_type": "CAUSED_BY",
+      "provenance": "curated",
+      "description": "Legacy demo record links Disorder F to LYSA1 (superseded; retained to demonstrate contradiction handling).",
+      "source_db": "DEMO-LEGACY-DB",
+      "source_id": "DEMO-REC-011",
+      "supporting_publications": [],
+      "contradictory_evidence": [
+        "DEMO-PUB-010"
+      ],
+      "rel_probs": {
+        "asserted": 0.53,
+        "weaker_association": 0.23,
+        "different_relationship": 0.16,
+        "unsupported": 0.081
+      },
+      "evidence_level": {
+        "expected": 0.83,
+        "probs": {
+          "hypothesis": 0.479,
+          "supported": 0.286,
+          "replicated": 0.159,
+          "clinical": 0.076
+        }
+      },
+      "contradicted": 0.594,
+      "edge_valid": 0.3,
+      "state": "[DEMO-LEGACY-DB] Single 2009 demo case report linked Disorder F to LYSA1. [DEMO-PUB-010, 2021] found no lysosomal involvement in 25 sequenced demo patients.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-012",
+      "source": "DEMO-GENE-001",
+      "target": "DEMO-VAR-001",
+      "rel_type": "HAS_VARIANT",
+      "provenance": "curated",
+      "description": "Recurrent demo nonsense variant in LYSA1.",
+      "source_db": "DEMO-CLINVAR",
+      "source_id": "DEMO-REC-012",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-013",
+      "source": "DEMO-GENE-002",
+      "target": "DEMO-VAR-002",
+      "rel_type": "HAS_VARIANT",
+      "provenance": "curated",
+      "description": "Recurrent demo missense variant in LYSB2.",
+      "source_db": "DEMO-CLINVAR",
+      "source_id": "DEMO-REC-013",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-014",
+      "source": "DEMO-GENE-001",
+      "target": "DEMO-PWY-001",
+      "rel_type": "AFFECTS_PATHWAY",
+      "provenance": "curated",
+      "description": "LYSA1 encodes a hydrolase of the demo lysosomal degradation pathway.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-014",
+      "supporting_publications": [
+        "DEMO-PUB-001"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.914,
+        "weaker_association": 0.006,
+        "different_relationship": 0.036,
+        "unsupported": 0.044
+      },
+      "evidence_level": {
+        "expected": 1.84,
+        "probs": {
+          "hypothesis": 0.079,
+          "supported": 0.228,
+          "replicated": 0.468,
+          "clinical": 0.225
+        }
+      },
+      "contradicted": 0.04,
+      "edge_valid": 0.94,
+      "state": "LYSA1 encodes a hydrolase of the demo lysosomal degradation pathway.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-015",
+      "source": "DEMO-GENE-002",
+      "target": "DEMO-PWY-001",
+      "rel_type": "AFFECTS_PATHWAY",
+      "provenance": "curated",
+      "description": "LYSB2 exports catabolites from the lysosome in the same demo pathway.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-015",
+      "supporting_publications": [
+        "DEMO-PUB-002",
+        "DEMO-PUB-003"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.89,
+        "weaker_association": 0.018,
+        "different_relationship": 0.044,
+        "unsupported": 0.048
+      },
+      "evidence_level": {
+        "expected": 1.95,
+        "probs": {
+          "hypothesis": 0.042,
+          "supported": 0.216,
+          "replicated": 0.489,
+          "clinical": 0.252
+        }
+      },
+      "contradicted": 0.069,
+      "edge_valid": 0.9,
+      "state": "LYSB2 exports catabolites from the lysosome in the same demo pathway.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-016",
+      "source": "DEMO-GENE-003",
+      "target": "DEMO-PWY-002",
+      "rel_type": "AFFECTS_PATHWAY",
+      "provenance": "curated",
+      "description": "AUTC3 mediates autophagosome-lysosome fusion.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-016",
+      "supporting_publications": [
+        "DEMO-PUB-004"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.89,
+        "weaker_association": 0.076,
+        "different_relationship": 0.034,
+        "unsupported": 0.001
+      },
+      "evidence_level": {
+        "expected": 1.95,
+        "probs": {
+          "hypothesis": 0.054,
+          "supported": 0.208,
+          "replicated": 0.465,
+          "clinical": 0.272
+        }
+      },
+      "contradicted": 0.078,
+      "edge_valid": 0.9,
+      "state": "AUTC3 mediates autophagosome-lysosome fusion.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-017",
+      "source": "DEMO-GENE-004",
+      "target": "DEMO-PWY-003",
+      "rel_type": "AFFECTS_PATHWAY",
+      "provenance": "curated",
+      "description": "CILD4 is an intraflagellar transport component.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-017",
+      "supporting_publications": [
+        "DEMO-PUB-005"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.896,
+        "weaker_association": 0.03,
+        "different_relationship": 0.036,
+        "unsupported": 0.039
+      },
+      "evidence_level": {
+        "expected": 1.96,
+        "probs": {
+          "hypothesis": 0.032,
+          "supported": 0.235,
+          "replicated": 0.47,
+          "clinical": 0.263
+        }
+      },
+      "contradicted": 0.074,
+      "edge_valid": 0.91,
+      "state": "CILD4 is an intraflagellar transport component.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-018",
+      "source": "DEMO-GENE-005",
+      "target": "DEMO-PWY-003",
+      "rel_type": "AFFECTS_PATHWAY",
+      "provenance": "curated",
+      "description": "CILE5 localizes to the basal body.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-018",
+      "supporting_publications": [
+        "DEMO-PUB-006"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.878,
+        "weaker_association": 0.053,
+        "different_relationship": 0.054,
+        "unsupported": 0.014
+      },
+      "evidence_level": {
+        "expected": 1.9,
+        "probs": {
+          "hypothesis": 0.073,
+          "supported": 0.206,
+          "replicated": 0.473,
+          "clinical": 0.248
+        }
+      },
+      "contradicted": 0.068,
+      "edge_valid": 0.88,
+      "state": "CILE5 localizes to the basal body.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-019",
+      "source": "DEMO-GENE-006",
+      "target": "DEMO-PWY-003",
+      "rel_type": "AFFECTS_PATHWAY",
+      "provenance": "curated",
+      "description": "CILE6 phosphorylates ciliary tip substrates.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-019",
+      "supporting_publications": [
+        "DEMO-PUB-006"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.83,
+        "weaker_association": 0.147,
+        "different_relationship": 0.023,
+        "unsupported": 0.0
+      },
+      "evidence_level": {
+        "expected": 1.94,
+        "probs": {
+          "hypothesis": 0.043,
+          "supported": 0.213,
+          "replicated": 0.503,
+          "clinical": 0.241
+        }
+      },
+      "contradicted": 0.17,
+      "edge_valid": 0.8,
+      "state": "CILE6 phosphorylates ciliary tip substrates.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-020",
+      "source": "DEMO-GENE-007",
+      "target": "DEMO-PWY-001",
+      "rel_type": "AFFECTS_PATHWAY",
+      "provenance": "curated",
+      "description": "Legacy demo annotation places GLYF7 in the lysosomal pathway; glycogen debranching is cytosolic.",
+      "source_db": "DEMO-LEGACY-DB",
+      "source_id": "DEMO-REC-020",
+      "supporting_publications": [],
+      "contradictory_evidence": [
+        "DEMO-PUB-010"
+      ],
+      "rel_probs": {
+        "asserted": 0.482,
+        "weaker_association": 0.313,
+        "different_relationship": 0.076,
+        "unsupported": 0.129
+      },
+      "evidence_level": {
+        "expected": 0.91,
+        "probs": {
+          "hypothesis": 0.449,
+          "supported": 0.298,
+          "replicated": 0.15,
+          "clinical": 0.103
+        }
+      },
+      "contradicted": 0.7,
+      "edge_valid": 0.22,
+      "state": "[DEMO-LEGACY-DB] GLYF7 annotated to lysosomal degradation in a 2012 demo pathway release. [DEMO-PUB-010, 2021] places GLYF7 activity in the cytosol with no lysosomal involvement.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-021",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-MECH-001",
+      "rel_type": "HAS_MECHANISM",
+      "provenance": "curated",
+      "description": "Disorder A follows the demo enzyme-deficiency mechanism.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-021",
+      "supporting_publications": [
+        "DEMO-PUB-001"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.908,
+        "weaker_association": 0.041,
+        "different_relationship": 0.043,
+        "unsupported": 0.008
+      },
+      "evidence_level": {
+        "expected": 1.99,
+        "probs": {
+          "hypothesis": 0.037,
+          "supported": 0.217,
+          "replicated": 0.469,
+          "clinical": 0.277
+        }
+      },
+      "contradicted": 0.04,
+      "edge_valid": 0.93,
+      "state": "Disorder A follows the demo enzyme-deficiency mechanism.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-022",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-MECH-002",
+      "rel_type": "HAS_MECHANISM",
+      "provenance": "curated",
+      "description": "Disorder B shows impaired clearance of storage material.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-022",
+      "supporting_publications": [
+        "DEMO-PUB-002"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.86,
+        "weaker_association": 0.002,
+        "different_relationship": 0.089,
+        "unsupported": 0.049
+      },
+      "evidence_level": {
+        "expected": 1.95,
+        "probs": {
+          "hypothesis": 0.041,
+          "supported": 0.233,
+          "replicated": 0.463,
+          "clinical": 0.264
+        }
+      },
+      "contradicted": 0.134,
+      "edge_valid": 0.85,
+      "state": "Disorder B shows impaired clearance of storage material.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-023",
+      "source": "DEMO-DIS-003",
+      "target": "DEMO-MECH-002",
+      "rel_type": "HAS_MECHANISM",
+      "provenance": "curated",
+      "description": "Myopathy C shows impaired autophagosome clearance.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-023",
+      "supporting_publications": [
+        "DEMO-PUB-004"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.866,
+        "weaker_association": 0.064,
+        "different_relationship": 0.051,
+        "unsupported": 0.019
+      },
+      "evidence_level": {
+        "expected": 1.95,
+        "probs": {
+          "hypothesis": 0.053,
+          "supported": 0.202,
+          "replicated": 0.491,
+          "clinical": 0.254
+        }
+      },
+      "contradicted": 0.114,
+      "edge_valid": 0.86,
+      "state": "Myopathy C shows impaired autophagosome clearance.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-024",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-HP-0002",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-024",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-025",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-HP-0003",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-025",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-026",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-HP-0004",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-026",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-027",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-HP-0009",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-027",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-028",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-HP-0015",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-028",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-029",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-HP-0001",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-029",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-030",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-HP-0003",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-030",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-031",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-HP-0006",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-031",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-032",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-HP-0013",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-032",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-033",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-HP-0010",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-033",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-034",
+      "source": "DEMO-DIS-003",
+      "target": "DEMO-HP-0002",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-034",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-035",
+      "source": "DEMO-DIS-003",
+      "target": "DEMO-HP-0007",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-035",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-036",
+      "source": "DEMO-DIS-003",
+      "target": "DEMO-HP-0008",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-036",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-037",
+      "source": "DEMO-DIS-004",
+      "target": "DEMO-HP-0005",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-037",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-038",
+      "source": "DEMO-DIS-004",
+      "target": "DEMO-HP-0010",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-038",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-039",
+      "source": "DEMO-DIS-005",
+      "target": "DEMO-HP-0005",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-039",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-040",
+      "source": "DEMO-DIS-005",
+      "target": "DEMO-HP-0011",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-040",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-041",
+      "source": "DEMO-DIS-005",
+      "target": "DEMO-HP-0012",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-041",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-042",
+      "source": "DEMO-DIS-005",
+      "target": "DEMO-HP-0014",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-042",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-043",
+      "source": "DEMO-DIS-006",
+      "target": "DEMO-HP-0004",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-043",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-044",
+      "source": "DEMO-DIS-006",
+      "target": "DEMO-HP-0015",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-044",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-045",
+      "source": "DEMO-DIS-006",
+      "target": "DEMO-HP-0012",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-045",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-046",
+      "source": "DEMO-DIS-007",
+      "target": "DEMO-HP-0001",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-046",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-047",
+      "source": "DEMO-DIS-007",
+      "target": "DEMO-HP-0003",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-047",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-048",
+      "source": "DEMO-DIS-007",
+      "target": "DEMO-HP-0013",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-048",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-049",
+      "source": "DEMO-DIS-008",
+      "target": "DEMO-HP-0012",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-049",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-050",
+      "source": "DEMO-DIS-008",
+      "target": "DEMO-HP-0007",
+      "rel_type": "HAS_PHENOTYPE",
+      "provenance": "curated",
+      "description": "Demo phenotype association.",
+      "source_db": "DEMO-HPO",
+      "source_id": "DEMO-REC-050",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-051",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-STUDY-001",
+      "rel_type": "STUDIED_IN",
+      "provenance": "curated",
+      "description": "Disorder B natural history study.",
+      "source_db": "DEMO-CTGOV",
+      "source_id": "DEMO-REC-051",
+      "supporting_publications": [
+        "DEMO-PUB-007"
+      ],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-052",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-STUDY-002",
+      "rel_type": "STUDIED_IN",
+      "provenance": "curated",
+      "description": "Disorder A substrate reduction trial.",
+      "source_db": "DEMO-CTGOV",
+      "source_id": "DEMO-REC-052",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-053",
+      "source": "DEMO-DIS-004",
+      "target": "DEMO-STUDY-003",
+      "rel_type": "STUDIED_IN",
+      "provenance": "curated",
+      "description": "Retinal Dystrophy D gene therapy trial.",
+      "source_db": "DEMO-CTGOV",
+      "source_id": "DEMO-REC-053",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-054",
+      "source": "DEMO-DIS-007",
+      "target": "DEMO-STUDY-004",
+      "rel_type": "STUDIED_IN",
+      "provenance": "curated",
+      "description": "Encephalopathy G dietary study.",
+      "source_db": "DEMO-CTGOV",
+      "source_id": "DEMO-REC-054",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-055",
+      "source": "DEMO-PUB-001",
+      "target": "DEMO-RES-001",
+      "rel_type": "AUTHORED_BY",
+      "provenance": "curated",
+      "description": "Demo authorship.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-055",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-056",
+      "source": "DEMO-PUB-002",
+      "target": "DEMO-RES-002",
+      "rel_type": "AUTHORED_BY",
+      "provenance": "curated",
+      "description": "Demo authorship.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-056",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-057",
+      "source": "DEMO-PUB-003",
+      "target": "DEMO-RES-001",
+      "rel_type": "AUTHORED_BY",
+      "provenance": "curated",
+      "description": "Demo authorship.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-057",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-058",
+      "source": "DEMO-PUB-003",
+      "target": "DEMO-RES-002",
+      "rel_type": "AUTHORED_BY",
+      "provenance": "curated",
+      "description": "Demo authorship.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-058",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-059",
+      "source": "DEMO-PUB-004",
+      "target": "DEMO-RES-003",
+      "rel_type": "AUTHORED_BY",
+      "provenance": "curated",
+      "description": "Demo authorship.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-059",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-060",
+      "source": "DEMO-PUB-005",
+      "target": "DEMO-RES-004",
+      "rel_type": "AUTHORED_BY",
+      "provenance": "curated",
+      "description": "Demo authorship.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-060",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-061",
+      "source": "DEMO-PUB-006",
+      "target": "DEMO-RES-004",
+      "rel_type": "AUTHORED_BY",
+      "provenance": "curated",
+      "description": "Demo authorship.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-061",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-062",
+      "source": "DEMO-PUB-007",
+      "target": "DEMO-RES-002",
+      "rel_type": "AUTHORED_BY",
+      "provenance": "curated",
+      "description": "Demo authorship.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-062",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-063",
+      "source": "DEMO-PUB-008",
+      "target": "DEMO-RES-001",
+      "rel_type": "AUTHORED_BY",
+      "provenance": "curated",
+      "description": "Demo authorship.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-063",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-064",
+      "source": "DEMO-PUB-009",
+      "target": "DEMO-RES-005",
+      "rel_type": "AUTHORED_BY",
+      "provenance": "curated",
+      "description": "Demo authorship.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-064",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-065",
+      "source": "DEMO-PUB-010",
+      "target": "DEMO-RES-005",
+      "rel_type": "AUTHORED_BY",
+      "provenance": "curated",
+      "description": "Demo authorship.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-065",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-066",
+      "source": "DEMO-ORG-001",
+      "target": "DEMO-DIS-001",
+      "rel_type": "RELATED_TO",
+      "provenance": "curated",
+      "description": "Demo patient organization focused on this disease.",
+      "source_db": "DEMO-ORPHANET",
+      "source_id": "DEMO-REC-066",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-067",
+      "source": "DEMO-ORG-002",
+      "target": "DEMO-DIS-002",
+      "rel_type": "RELATED_TO",
+      "provenance": "curated",
+      "description": "Demo patient organization focused on this disease.",
+      "source_db": "DEMO-ORPHANET",
+      "source_id": "DEMO-REC-067",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-068",
+      "source": "DEMO-ORG-003",
+      "target": "DEMO-DIS-005",
+      "rel_type": "RELATED_TO",
+      "provenance": "curated",
+      "description": "Demo patient organization focused on this disease.",
+      "source_db": "DEMO-ORPHANET",
+      "source_id": "DEMO-REC-068",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-069",
+      "source": "DEMO-ORG-004",
+      "target": "DEMO-DIS-003",
+      "rel_type": "RELATED_TO",
+      "provenance": "curated",
+      "description": "Demo patient organization focused on this disease.",
+      "source_db": "DEMO-ORPHANET",
+      "source_id": "DEMO-REC-069",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-070",
+      "source": "DEMO-ORG-001",
+      "target": "DEMO-ASSET-001",
+      "rel_type": "HAS_ASSET",
+      "provenance": "curated",
+      "description": "Demo research asset.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-070",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-071",
+      "source": "DEMO-STUDY-001",
+      "target": "DEMO-ASSET-002",
+      "rel_type": "HAS_ASSET",
+      "provenance": "curated",
+      "description": "Demo research asset.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-071",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-072",
+      "source": "DEMO-RES-001",
+      "target": "DEMO-ASSET-003",
+      "rel_type": "HAS_ASSET",
+      "provenance": "curated",
+      "description": "Demo research asset.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-072",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-073",
+      "source": "DEMO-ORG-002",
+      "target": "DEMO-ASSET-004",
+      "rel_type": "HAS_ASSET",
+      "provenance": "curated",
+      "description": "Demo research asset.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-073",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-074",
+      "source": "DEMO-RES-004",
+      "target": "DEMO-ASSET-005",
+      "rel_type": "HAS_ASSET",
+      "provenance": "curated",
+      "description": "Demo research asset.",
+      "source_db": "DEMO-DB",
+      "source_id": "DEMO-REC-074",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-075",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-PUB-003",
+      "rel_type": "SUPPORTED_BY",
+      "provenance": "curated",
+      "description": "Pathway-sharing claim for Disorder A appears in DEMO-PUB-003.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-075",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-076",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-PUB-003",
+      "rel_type": "SUPPORTED_BY",
+      "provenance": "curated",
+      "description": "Pathway-sharing claim for Disorder B appears in DEMO-PUB-003.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-076",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-077",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-PUB-007",
+      "rel_type": "SUPPORTED_BY",
+      "provenance": "curated",
+      "description": "Natural history cohort for Disorder B.",
+      "source_db": "DEMO-PUBMED",
+      "source_id": "DEMO-REC-077",
+      "supporting_publications": [],
+      "contradictory_evidence": []
+    },
+    {
+      "id": "DEMO-EDGE-078",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-DIS-002",
+      "rel_type": "SHARES_MECHANISM",
+      "provenance": "inferred",
+      "description": "Disorders A and B both disrupt the demo lysosomal degradation pathway (LYSA1 hydrolase upstream of the LYSB2 export step).",
+      "source_db": "atlas-inference",
+      "source_id": "DEMO-REC-078",
+      "supporting_publications": [
+        "DEMO-PUB-001",
+        "DEMO-PUB-002",
+        "DEMO-PUB-003"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.878,
+        "weaker_association": 0.029,
+        "different_relationship": 0.02,
+        "unsupported": 0.073
+      },
+      "evidence_level": {
+        "expected": 1.86,
+        "probs": {
+          "hypothesis": 0.082,
+          "supported": 0.222,
+          "replicated": 0.449,
+          "clinical": 0.247
+        }
+      },
+      "contradicted": 0.096,
+      "edge_valid": 0.88,
+      "state": "[DEMO-PUB-003, 2023] Demo fibroblast studies show LYSA1 and LYSB2 act sequentially: hydrolase products accumulate when LYSB2 export is lost, and both patient lines show the same demo storage signature. Phenotype overlap: developmental delay in both; ataxia and seizures specific to B.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-079",
+      "source": "DEMO-DIS-004",
+      "target": "DEMO-DIS-005",
+      "rel_type": "SHARES_MECHANISM",
+      "provenance": "inferred",
+      "description": "Retinal Dystrophy D and Ciliopathy E both disrupt the demo ciliary transport pathway.",
+      "source_db": "atlas-inference",
+      "source_id": "DEMO-REC-079",
+      "supporting_publications": [
+        "DEMO-PUB-005",
+        "DEMO-PUB-006"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.842,
+        "weaker_association": 0.033,
+        "different_relationship": 0.074,
+        "unsupported": 0.051
+      },
+      "evidence_level": {
+        "expected": 1.98,
+        "probs": {
+          "hypothesis": 0.035,
+          "supported": 0.209,
+          "replicated": 0.499,
+          "clinical": 0.257
+        }
+      },
+      "contradicted": 0.14,
+      "edge_valid": 0.82,
+      "state": "[DEMO-PUB-005/006] CILD4 (IFT) and CILE5 (basal body) act in the same demo transport module; both diseases share retinal degeneration and nystagmus.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-080",
+      "source": "DEMO-DIS-003",
+      "target": "DEMO-DIS-002",
+      "rel_type": "SHARES_MECHANISM",
+      "provenance": "inferred",
+      "description": "Myopathy C and Neurodegeneration B may share the impaired-clearance mechanism (autophagy converges on the lysosome).",
+      "source_db": "atlas-inference",
+      "source_id": "DEMO-REC-080",
+      "supporting_publications": [
+        "DEMO-PUB-004",
+        "DEMO-PUB-002"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.722,
+        "weaker_association": 0.114,
+        "different_relationship": 0.053,
+        "unsupported": 0.111
+      },
+      "evidence_level": {
+        "expected": 1.81,
+        "probs": {
+          "hypothesis": 0.087,
+          "supported": 0.24,
+          "replicated": 0.448,
+          "clinical": 0.226
+        }
+      },
+      "contradicted": 0.224,
+      "edge_valid": 0.62,
+      "state": "[Inference] AUTC3 fusion defects and LYSB2 export defects both produce accumulation of undegraded cargo, but in different tissues (muscle vs CNS) and with partial phenotype overlap (hypotonia only).",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-081",
+      "source": "DEMO-DIS-003",
+      "target": "DEMO-DIS-008",
+      "rel_type": "SHARES_MECHANISM",
+      "provenance": "inferred",
+      "description": "A single demo study reported autophagy involvement in Skeletal Dysplasia H, suggesting overlap with Myopathy C.",
+      "source_db": "atlas-inference",
+      "source_id": "DEMO-REC-081",
+      "supporting_publications": [],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.56,
+        "weaker_association": 0.084,
+        "different_relationship": 0.088,
+        "unsupported": 0.268
+      },
+      "evidence_level": {
+        "expected": 0.88,
+        "probs": {
+          "hypothesis": 0.45,
+          "supported": 0.304,
+          "replicated": 0.16,
+          "clinical": 0.085
+        }
+      },
+      "contradicted": 0.533,
+      "edge_valid": 0.35,
+      "state": "[Inference] One demo immunostaining study reported LC3 puncta in SKEH9 growth plate sections; no functional demo data; phenotype overlap limited to nonspecific short stature/weakness.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-082",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-DIS-006",
+      "rel_type": "SHARES_MECHANISM",
+      "provenance": "inferred",
+      "description": "Disorders A and F both show hepatomegaly and failure to thrive, and a legacy annotation places GLYF7 in the lysosomal pathway.",
+      "source_db": "atlas-inference",
+      "source_id": "DEMO-REC-082",
+      "supporting_publications": [],
+      "contradictory_evidence": [
+        "DEMO-PUB-010"
+      ],
+      "rel_probs": {
+        "asserted": 0.818,
+        "weaker_association": 0.009,
+        "different_relationship": 0.073,
+        "unsupported": 0.1
+      },
+      "evidence_level": {
+        "expected": 1.84,
+        "probs": {
+          "hypothesis": 0.076,
+          "supported": 0.232,
+          "replicated": 0.463,
+          "clinical": 0.228
+        }
+      },
+      "contradicted": 0.179,
+      "edge_valid": 0.78,
+      "state": "[Inference] Shared phenotypes: hepatomegaly, failure to thrive. Legacy demo annotation links GLYF7 to lysosomal degradation. [DEMO-PUB-010, 2021] contradicts: GLYF7 is cytosolic; storage material in F is glycogen, not lysosomal substrate.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-083",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-DIS-007",
+      "rel_type": "RELATED_TO",
+      "provenance": "inferred",
+      "description": "Neurodegeneration B and Encephalopathy G share seizures and developmental delay.",
+      "source_db": "atlas-inference",
+      "source_id": "DEMO-REC-083",
+      "supporting_publications": [],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.53,
+        "weaker_association": 0.074,
+        "different_relationship": 0.179,
+        "unsupported": 0.217
+      },
+      "evidence_level": {
+        "expected": 0.94,
+        "probs": {
+          "hypothesis": 0.432,
+          "supported": 0.286,
+          "replicated": 0.191,
+          "clinical": 0.091
+        }
+      },
+      "contradicted": 0.398,
+      "edge_valid": 0.3,
+      "state": "[Inference] Overlap is limited to high-prevalence phenotypes (seizures, developmental delay) that carry little information; the genes act in unrelated demo pathways (lysosomal export vs synaptic vesicle priming).",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-084",
+      "source": "DEMO-DIS-005",
+      "target": "DEMO-DIS-008",
+      "rel_type": "RELATED_TO",
+      "provenance": "inferred",
+      "description": "Ciliopathy E and Skeletal Dysplasia H share short stature and polydactyly-adjacent skeletal findings.",
+      "source_db": "atlas-inference",
+      "source_id": "DEMO-REC-084",
+      "supporting_publications": [],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.602,
+        "weaker_association": 0.043,
+        "different_relationship": 0.051,
+        "unsupported": 0.304
+      },
+      "evidence_level": {
+        "expected": 0.94,
+        "probs": {
+          "hypothesis": 0.448,
+          "supported": 0.267,
+          "replicated": 0.181,
+          "clinical": 0.104
+        }
+      },
+      "contradicted": 0.442,
+      "edge_valid": 0.42,
+      "state": "[Inference] Skeletal overlap exists but demo ciliary genes and growth plate genes act in different modules; one demo review speculates a link via ciliary signaling in chondrocytes.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-085",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-DIS-003",
+      "rel_type": "RELATED_TO",
+      "provenance": "inferred",
+      "description": "Disorder A and Myopathy C connect indirectly through lysosome-autophagy convergence.",
+      "source_db": "atlas-inference",
+      "source_id": "DEMO-REC-085",
+      "supporting_publications": [],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.68,
+        "weaker_association": 0.109,
+        "different_relationship": 0.17,
+        "unsupported": 0.041
+      },
+      "evidence_level": {
+        "expected": 1.94,
+        "probs": {
+          "hypothesis": 0.031,
+          "supported": 0.246,
+          "replicated": 0.474,
+          "clinical": 0.249
+        }
+      },
+      "contradicted": 0.393,
+      "edge_valid": 0.55,
+      "state": "[Inference] Two-hop path: A disrupts lysosomal degradation; C blocks delivery into it. No direct demo co-study exists.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-086",
+      "source": "DEMO-DIS-006",
+      "target": "DEMO-DIS-008",
+      "rel_type": "RELATED_TO",
+      "provenance": "inferred",
+      "description": "Disorders F and H co-occur in one demo case report.",
+      "source_db": "atlas-inference",
+      "source_id": "DEMO-REC-086",
+      "supporting_publications": [],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.782,
+        "weaker_association": 0.044,
+        "different_relationship": 0.089,
+        "unsupported": 0.084
+      },
+      "evidence_level": {
+        "expected": 1.94,
+        "probs": {
+          "hypothesis": 0.045,
+          "supported": 0.218,
+          "replicated": 0.487,
+          "clinical": 0.249
+        }
+      },
+      "contradicted": 0.206,
+      "edge_valid": 0.72,
+      "state": "[Inference] Single demo case report of co-occurrence; no mechanistic data; shared phenotype limited to short stature.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    },
+    {
+      "id": "DEMO-EDGE-087",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-DIS-004",
+      "rel_type": "RELATED_TO",
+      "provenance": "inferred",
+      "description": "Disorder B cohort shows retinal thinning on demo OCT, overlapping Retinal Dystrophy D's phenotype domain.",
+      "source_db": "atlas-inference",
+      "source_id": "DEMO-REC-087",
+      "supporting_publications": [
+        "DEMO-PUB-007"
+      ],
+      "contradictory_evidence": [],
+      "rel_probs": {
+        "asserted": 0.638,
+        "weaker_association": 0.116,
+        "different_relationship": 0.187,
+        "unsupported": 0.059
+      },
+      "evidence_level": {
+        "expected": 0.86,
+        "probs": {
+          "hypothesis": 0.466,
+          "supported": 0.286,
+          "replicated": 0.164,
+          "clinical": 0.083
+        }
+      },
+      "contradicted": 0.448,
+      "edge_valid": 0.48,
+      "state": "[DEMO-PUB-007, 2024] 11/40 demo Disorder B patients showed retinal thinning; mechanism unknown; no shared pathway annotated between LYSB2 and CILD4.",
+      "decision_meta": {
+        "model": "mock-judge-v0",
+        "question_pack": "edge-validate-v1",
+        "judged_at": "2026-10-03"
+      }
+    }
+  ]
+}

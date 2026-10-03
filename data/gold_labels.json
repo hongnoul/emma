@@ -1,0 +1,253 @@
+{
+  "_notice": "THIS IS SYNTHETIC DEMONSTRATION DATA. No publication, study, person, organization, gene, or disease in this file is real.",
+  "labels": [
+    {
+      "edge_id": "DEMO-EDGE-001",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-GENE-001",
+      "rel_type": "CAUSED_BY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-002",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-GENE-002",
+      "rel_type": "CAUSED_BY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-003",
+      "source": "DEMO-DIS-003",
+      "target": "DEMO-GENE-003",
+      "rel_type": "CAUSED_BY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-004",
+      "source": "DEMO-DIS-004",
+      "target": "DEMO-GENE-004",
+      "rel_type": "CAUSED_BY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-005",
+      "source": "DEMO-DIS-005",
+      "target": "DEMO-GENE-005",
+      "rel_type": "CAUSED_BY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-006",
+      "source": "DEMO-DIS-005",
+      "target": "DEMO-GENE-006",
+      "rel_type": "CAUSED_BY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-007",
+      "source": "DEMO-DIS-006",
+      "target": "DEMO-GENE-007",
+      "rel_type": "CAUSED_BY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-008",
+      "source": "DEMO-DIS-007",
+      "target": "DEMO-GENE-008",
+      "rel_type": "CAUSED_BY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-009",
+      "source": "DEMO-DIS-008",
+      "target": "DEMO-GENE-009",
+      "rel_type": "CAUSED_BY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-010",
+      "source": "DEMO-DIS-008",
+      "target": "DEMO-GENE-010",
+      "rel_type": "CAUSED_BY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-011",
+      "source": "DEMO-DIS-006",
+      "target": "DEMO-GENE-001",
+      "rel_type": "CAUSED_BY",
+      "label": 0,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-014",
+      "source": "DEMO-GENE-001",
+      "target": "DEMO-PWY-001",
+      "rel_type": "AFFECTS_PATHWAY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-015",
+      "source": "DEMO-GENE-002",
+      "target": "DEMO-PWY-001",
+      "rel_type": "AFFECTS_PATHWAY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-016",
+      "source": "DEMO-GENE-003",
+      "target": "DEMO-PWY-002",
+      "rel_type": "AFFECTS_PATHWAY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-017",
+      "source": "DEMO-GENE-004",
+      "target": "DEMO-PWY-003",
+      "rel_type": "AFFECTS_PATHWAY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-018",
+      "source": "DEMO-GENE-005",
+      "target": "DEMO-PWY-003",
+      "rel_type": "AFFECTS_PATHWAY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-019",
+      "source": "DEMO-GENE-006",
+      "target": "DEMO-PWY-003",
+      "rel_type": "AFFECTS_PATHWAY",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-020",
+      "source": "DEMO-GENE-007",
+      "target": "DEMO-PWY-001",
+      "rel_type": "AFFECTS_PATHWAY",
+      "label": 0,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-021",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-MECH-001",
+      "rel_type": "HAS_MECHANISM",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-022",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-MECH-002",
+      "rel_type": "HAS_MECHANISM",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-023",
+      "source": "DEMO-DIS-003",
+      "target": "DEMO-MECH-002",
+      "rel_type": "HAS_MECHANISM",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-078",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-DIS-002",
+      "rel_type": "SHARES_MECHANISM",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-079",
+      "source": "DEMO-DIS-004",
+      "target": "DEMO-DIS-005",
+      "rel_type": "SHARES_MECHANISM",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-080",
+      "source": "DEMO-DIS-003",
+      "target": "DEMO-DIS-002",
+      "rel_type": "SHARES_MECHANISM",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-081",
+      "source": "DEMO-DIS-003",
+      "target": "DEMO-DIS-008",
+      "rel_type": "SHARES_MECHANISM",
+      "label": 0,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-082",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-DIS-006",
+      "rel_type": "SHARES_MECHANISM",
+      "label": 0,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-083",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-DIS-007",
+      "rel_type": "RELATED_TO",
+      "label": 0,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-084",
+      "source": "DEMO-DIS-005",
+      "target": "DEMO-DIS-008",
+      "rel_type": "RELATED_TO",
+      "label": 0,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-085",
+      "source": "DEMO-DIS-001",
+      "target": "DEMO-DIS-003",
+      "rel_type": "RELATED_TO",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-086",
+      "source": "DEMO-DIS-006",
+      "target": "DEMO-DIS-008",
+      "rel_type": "RELATED_TO",
+      "label": 0,
+      "note": "demo-world ground truth, hand-assigned"
+    },
+    {
+      "edge_id": "DEMO-EDGE-087",
+      "source": "DEMO-DIS-002",
+      "target": "DEMO-DIS-004",
+      "rel_type": "RELATED_TO",
+      "label": 1,
+      "note": "demo-world ground truth, hand-assigned"
+    }
+  ]
+}
