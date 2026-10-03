@@ -1,0 +1,36 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas starter — no build, just open this file</title>
+<style>
+  body { font-family: system-ui; max-width: 720px; margin: 2rem auto; padding: 0 1rem; }
+  input, button { font-size: 1rem; padding: .4rem .6rem; }
+  pre { background: #111; color: #0f0; padding: 1rem; overflow: auto; font-size: .75rem; }
+  .row { display: flex; gap: .5rem; margin: .5rem 0; flex-wrap: wrap; }
+</style>
+<h1>Rare Disease Atlas — starter (fully public)</h1>
+<p>API: <code>https://rare-disease-atlas-api.fly.dev</code> · CORS <code>*</code> · no keys</p>
+<div class="row">
+  <input id="q" value="marfan" size="20">
+  <button onclick="resolve()">1 · resolve entities</button>
+  <button onclick="path()">2 · why-connected (Marfan pair)</button>
+  <button onclick="disease()">3 · disease detail</button>
+  <button onclick="edges()">4 · traverse edges</button>
+</div>
+<pre id="out">open this file from anywhere (file:// works) and click a button…</pre>
+<script>
+const API = "https://rare-disease-atlas-api.fly.dev";
+const out = (o) => document.getElementById("out").textContent =
+  typeof o === "string" ? o : JSON.stringify(o, null, 1).slice(0, 6000);
+const j = (p) => fetch(API + p).then(r => { if (!r.ok) throw new Error(r.status + " " + p); return r.json(); });
+let lastId = "MONDO:0007947";
+async function resolve() {
+  const q = document.getElementById("q").value || "marfan";
+  const r = await j(`/v1/entities?q=${encodeURIComponent(q)}&limit=5`);
+  lastId = r.items[0]?.node.id || lastId;
+  out({ first_hit: lastId, total: r.total, items: r.items.map(i => ({ id: i.node.id, name: i.node.name, match: i.match })) });
+}
+async function path() { out(await j(`/v1/paths?from=MONDO:0007947&to=MONDO:0011431`)); }
+async function disease() { out(await j(`/api/diseases/${lastId}`)); }
+async function edges() { out(await j(`/v1/edges?node=${lastId}&limit=5`)); }
+</script>
