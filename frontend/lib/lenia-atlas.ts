@@ -2,13 +2,27 @@
 import { hashStr, seedBlob } from "./lenia";
 import { NODE_COLORS } from "./api";
 
-export const PROD = "/prod-api";
 export const PROD_UPSTREAM = "https://rare-disease-atlas-api.fly.dev";
+// Same-origin proxy only exists in local dev (next.config.ts rewrites);
+// on Vercel prod there is no /prod-api route, so default to direct fetch
+// (backend CORS is *). Prefer the proxy only when it actually resolves.
+export const PROD = PROD_UPSTREAM;
 
 async function get<T>(path: string): Promise<T> {
-  const res = await fetch(`${PROD}${path}`, { cache: "no-store" });
-  if (!res.ok) throw new Error(`${res.status}: ${path}`);
-  return res.json();
+  // Prefer same-origin /prod-api when present (local dev Safari
+  // workaround), else fall back to direct prod fetch.
+  const candidates = ["/prod-api", PROD_UPSTREAM];
+  let lastErr: unknown = null;
+  for (const base of candidates) {
+    try {
+      const res = await fetch(`${base}${path}`, { cache: "no-store" });
+      if (!res.ok) throw new Error(`${res.status}: ${path}`);
+      return res.json();
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr instanceof Error ? lastErr : new Error(String(lastErr));
 }
 
 export interface SeedSpec {
