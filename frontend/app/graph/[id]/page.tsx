@@ -48,7 +48,7 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
       for (const e of data.edges) {
         if (!graph.hasNode(e.source) || !graph.hasNode(e.target)) continue;
         graph.addEdgeWithKey(e.id, e.source, e.target, {
-          label: e.rel_type,
+          label: e.edge_valid != null ? `${e.rel_type} ${Math.round(e.edge_valid * 100)}%` : e.rel_type,
           size: EDGE_CHANNEL_COLORS[e.rel_type] ? 2.5 : 1.5,
           color: EDGE_CHANNEL_COLORS[e.rel_type] ?? "#cbd5e1",
         });
@@ -63,7 +63,7 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
 
       sigma = new SigmaCtor(graph, el, {
         renderEdgeLabels: true,
-        edgeLabelSize: 9,
+        edgeLabelSize: 10,
         labelSize: 11,
         labelRenderedSizeThreshold: 8,
         enableEdgeEvents: true,
