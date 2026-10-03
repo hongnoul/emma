@@ -87,7 +87,7 @@ export const api = {
   opportunities: (id: string) => get<Opportunity[]>(`/api/diseases/${id}/opportunities`),
   connection: (a: string, b: string) => get<ConnectionExplanation>(`/api/connections/${a}/${b}`),
   edge: (id: string) => get<GraphEdge>(`/api/edges/${id}`),
-  evals: () => get<EvalReport>(`/api/evals`),
+  evals: (judge: "mock" | "laya" = "mock") => get<EvalReport>(`/api/evals?judge=${judge}`),
 };
 
 // Shared tiny helpers (kept here to avoid a components/ tree)
