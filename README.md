@@ -172,9 +172,16 @@ Pages: `/` (search) · `/disease/[id]` · `/graph/[id]` (sigma.js, ForceAtlas2) 
    `TODO(openai)` markers: extraction, reconciliation, connection narration,
    evidence summaries, opportunity generation. No key needed today.
 3. **Laya (calibrated edge judge)** → `backend/app/services/decision_service.py`.
-   The docstring contains the exact swap-in code. Pipeline: extractor proposes
-   an edge with a `state` snippet → `judge_edge()` fills the decision block →
-   eval harness verifies calibration against the gold set.
+   Already implemented: `pip install laya` (done in backend/.venv) and run the
+   backend with `ATLAS_JUDGE=laya` to judge edges with the real local model.
+   Measured on this machine (M-series, CPU/MPS): 152 ms/edge for all 4 typed
+   questions in one forward pass; zero-shot on the 31-edge demo gold set:
+   accuracy 0.742, Brier 0.179, ECE 0.162. Zero-shot misses subtle traps
+   (the superseded legacy edge gets p(valid)=0.72), so fine-tune on a real
+   gold set and fit per-pack temperatures before gating automation on these
+   probabilities. Pipeline: extractor proposes an edge with a `state`
+   snippet → `judge_edge()` fills the decision block → eval harness verifies
+   calibration against the gold set.
 4. **Graph database** → `backend/app/services/graph_store.py`.
 
 ## Highest-priority TODOs (mock → real)
