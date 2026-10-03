@@ -3,6 +3,8 @@
 // No layout polish. One page, all scenes stacked, each with its own canvas.
 import { useEffect, useState } from "react";
 import LeniaCanvas, { DEFAULTS, LeniaParams } from "@/components/LeniaCanvas";
+import DelaunayMap from "@/components/DelaunayMap";
+import { MapData, similarityMap, CHANNEL_COLOR } from "@/lib/delaunay-map";
 import {
   PROD, PROD_UPSTREAM, SceneData, sceneContest, sceneDetail, sceneEvals,
   sceneEvidence, sceneOpps, scenePath, sceneSwarm,
@@ -72,6 +74,13 @@ export default function LeniaScenesPage() {
   const s5 = useScene(() => scenePath(FOCAL, RIVAL), FOCAL + RIVAL);
   const s6 = useScene(() => sceneEvals(), "evals");
   const s7 = useScene(() => sceneOpps(FOCAL), FOCAL);
+  const [map, setMap] = useState<MapData | null>(null);
+  const [mapErr, setMapErr] = useState<string | null>(null);
+  useEffect(() => {
+    let live = true;
+    similarityMap(FOCAL, 2).then((m) => live && setMap(m)).catch((e) => live && setMapErr(String(e)));
+    return () => { live = false; };
+  }, []);
 
   return (
     <div className="space-y-8 max-w-6xl text-slate-200">
@@ -109,6 +118,32 @@ export default function LeniaScenesPage() {
       <Block title="7 · opportunities — reuse spores (honest empty state)"
         hint="prod returns [] for sampled diseases, so the field stays empty by design. Spore size would be validation burden."
         scene={s7.scene} err={s7.err} params={params} />
+
+      <section className="border-t border-emerald-700 pt-4 space-y-2">
+        <h2 className="text-lg font-semibold">8 · similarity map — Voronoi alternative (position from data)</h2>
+        <p className="text-xs text-slate-400">
+          every pixel belongs to exactly one disease · fill = dominant channel · dark lines = true graph edges ·
+          click a cell to lock its neighborhood. Compare with scenes 1–5: here proximity is BFS distance from focal, not hash order.
+        </p>
+        {mapErr && <p className="text-red-500 text-xs">{mapErr}</p>}
+        {!map && !mapErr && <p className="text-xs text-slate-500">fetching map…</p>}
+        {map && (
+          <div className="flex gap-6 flex-wrap">
+            <DelaunayMap data={map} />
+            <div className="text-xs space-y-2 max-w-sm">
+              {map.meta.map((m, i) => <p key={i} className="text-slate-300">{m}</p>)}
+              <ul className="space-y-1">
+                {Object.entries(CHANNEL_COLOR).map(([k, v]) => (
+                  <li key={k} className="flex gap-2 items-center">
+                    <span className="inline-block w-3 h-3 rounded-sm" style={{ background: v }} />
+                    <span className="text-slate-400">{k}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+      </section>
     </div>
   );
 }
