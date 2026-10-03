@@ -205,6 +205,16 @@ The graph view hides Phenotype/Publication nodes by default (toggle chips to
 re-show) and colors edges by channel: amber = judged phenotype similarity,
 blue = shared gene.
 
+## v1 API + MCP (the integration layer)
+
+Six generic primitives under `/v1/*` (entities, edges, paths, judge, evals,
+meta) with `generation_id` on every response, plus an MCP server exposing
+the same capabilities as agent tools (`backend/app/mcp_server.py`).
+**`docs/integration.md` is the guide for teammates building new frontends
+or agents** — including the symptom-search worked example that needs zero
+backend changes, and `npm run gen:api` for TypeScript types generated from
+the live OpenAPI schema.
+
 ## Deployment (prepared, not yet deployed)
 
 - `Dockerfile`: stateless API image (~305 MB), judgments pre-baked, no model

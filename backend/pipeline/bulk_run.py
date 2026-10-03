@@ -249,7 +249,8 @@ def main():
         if m not in nodes:
             d = diseases[m]
             nodes[m] = {"id": m, "type": "Disease", "name": d["name"],
-                        "description": (d.get("definition") or "")[:400], "identifier": m}
+                        "description": (d.get("definition") or "")[:400], "identifier": m,
+                        "synonyms": d.get("synonyms") or None}
 
     gene_nodes_added = set()
     def gene_node(sym):
@@ -312,6 +313,45 @@ def main():
                 "source_db": "hpoa-genes_to_disease", "source_id": f"caused:{m}:{sym}",
                 "supporting_publications": [], "contradictory_evidence": [],
             })
+
+    # HAS_PHENOTYPE edges: top informative phenotypes per disease, so that
+    # symptom -> diseases queries work from the generic /v1/edges primitive.
+    TOP_PHENOS_MATERIALIZED = 10
+    ph_added = set()
+    for m in list(nodes.keys()):
+        if nodes[m]["type"] != "Disease" or m not in dph:
+            continue
+        ranked = sorted(dph[m].items(), key=lambda kv: -(ic.get(kv[0], 0) * (0.3 + kv[1])))
+        for hp, w in ranked[:TOP_PHENOS_MATERIALIZED]:
+            if ic.get(hp, 0) < 2.0:
+                continue
+            if hp not in ph_added:
+                nodes[hp] = {"id": hp, "type": "Phenotype", "name": hp_labels.get(hp, hp),
+                             "description": f"HPO term {hp}.", "identifier": hp}
+                ph_added.add(hp)
+            eid += 1
+            edges.append({
+                "id": f"BULK-{eid:06d}", "source": m, "target": hp,
+                "rel_type": "HAS_PHENOTYPE", "provenance": "curated",
+                "description": f"{diseases[m]['name']} presents with {hp_labels.get(hp, hp)}.",
+                "source_db": "hpoa", "source_id": f"hpoa:{m}:{hp}",
+                "supporting_publications": [], "contradictory_evidence": [],
+            })
+
+    # SUBTYPE_OF hierarchy edges between materialized disease nodes
+    for m in list(nodes.keys()):
+        if nodes[m]["type"] != "Disease":
+            continue
+        for parent in diseases.get(m, {}).get("parents", []):
+            if parent in nodes:
+                eid += 1
+                edges.append({
+                    "id": f"BULK-{eid:06d}", "source": m, "target": parent,
+                    "rel_type": "SUBTYPE_OF", "provenance": "curated",
+                    "description": f"{diseases[m]['name']} is a subtype of {diseases[parent]['name']} (MONDO is_a).",
+                    "source_db": "mondo", "source_id": f"is_a:{m}:{parent}",
+                    "supporting_publications": [], "contradictory_evidence": [],
+                })
 
     log(f"graph: {len(nodes)} nodes, {len(edges)} edges "
         f"({pair_count} gene-channel, {len(ph_cands)} pheno-channel [{judged_edges} judged])")

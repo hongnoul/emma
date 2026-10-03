@@ -20,6 +20,7 @@ DATA_DIR = Path(_os.environ.get("ATLAS_DATA_DIR") or Path(__file__).resolve().pa
 class GraphStore:
     def __init__(self, graph_path: Path | None = None):
         raw = json.loads((graph_path or DATA_DIR / "graph.json").read_text())
+        self.generation: str = raw.get("generation", "demo")
         self.nodes: dict[str, Node] = {n["id"]: Node(**n) for n in raw["nodes"]}
         self.edges: dict[str, Edge] = {e["id"]: Edge(**e) for e in raw["edges"]}
         self._out: dict[str, list[Edge]] = defaultdict(list)
@@ -61,6 +62,48 @@ class GraphStore:
             if e.target == a:
                 return e
         return None
+
+    # ---- generic query (v1 API) ----
+    def query_edges(self, from_id: str | None = None, to_id: str | None = None,
+                    node_id: str | None = None, rel_types: list[str] | None = None,
+                    provenance: str | None = None, min_valid: float | None = None,
+                    judged_only: bool = False,
+                    limit: int = 50, offset: int = 0) -> tuple[list[Edge], int]:
+        """Filterable edge query. node_id matches either endpoint. Returns (page, total)."""
+        if from_id:
+            base = self._out.get(from_id, [])
+        elif to_id:
+            base = self._in.get(to_id, [])
+        elif node_id:
+            base = self._out.get(node_id, []) + self._in.get(node_id, [])
+        else:
+            base = list(self.edges.values())
+        out = []
+        for e in base:
+            if to_id and e.target != to_id and not from_id and not node_id:
+                pass  # base already filtered by _in
+            if rel_types and e.rel_type not in rel_types:
+                continue
+            if provenance and e.provenance != provenance:
+                continue
+            if judged_only and e.edge_valid is None:
+                continue
+            if min_valid is not None and (e.edge_valid is None or e.edge_valid < min_valid):
+                continue
+            out.append(e)
+        # deterministic order: judged desc by p(valid), then id
+        out.sort(key=lambda e: (-(e.edge_valid if e.edge_valid is not None else -1), e.id))
+        return out[offset:offset + limit], len(out)
+
+    def adjacency_summary(self, node_id: str) -> dict:
+        """Counts per rel_type (out+in) for a node."""
+        from collections import Counter
+        c = Counter()
+        for e in self._out.get(node_id, []):
+            c[e.rel_type] += 1
+        for e in self._in.get(node_id, []):
+            c[e.rel_type] += 1
+        return dict(c)
 
     # ---- traversal ----
     def subgraph(self, center_id: str, depth: int = 2, max_nodes: int = 80) -> tuple[list[Node], list[Edge]]:

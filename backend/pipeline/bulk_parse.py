@@ -43,6 +43,10 @@ def parse_obo(path: Path, want_xrefs: bool = False):
                 cur["definition"] = m.group(1)
         elif want_xrefs and line.startswith("xref: "):
             cur.setdefault("xrefs", []).append(line[6:].split(" ")[0].strip())
+        elif line.startswith("synonym: "):
+            m = re.match(r'synonym: "(.*?)"', line)
+            if m:
+                cur.setdefault("synonyms", []).append(m.group(1))
         elif line.startswith("is_a: "):
             cur.setdefault("parents", []).append(line[6:].split(" ")[0].strip())
         elif line.startswith("is_obsolete: true"):
@@ -63,7 +67,8 @@ def mondo_diseases() -> tuple[dict, dict]:
             continue
         diseases[tid] = {"name": t.get("name", tid),
                          "definition": t.get("definition", ""),
-                         "parents": t.get("parents", [])}
+                         "parents": t.get("parents", []),
+                         "synonyms": t.get("synonyms", [])[:8]}
         for x in t.get("xrefs", []):
             if x.startswith(("OMIM:", "Orphanet:")):
                 xref_map[x] = tid

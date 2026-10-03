@@ -22,6 +22,7 @@ RelType = Literal[
     # disease-centric channels (bulk pipeline): two parallel evidence channels
     "PHENOTYPE_SIMILAR",      # shared phenotype profile, judged by Laya
     "SHARES_GENE_MECHANISM",  # same causal gene(s) / gene family
+    "SUBTYPE_OF",             # MONDO is_a hierarchy (aggregate at render time)
 ]
 
 
@@ -37,6 +38,7 @@ class Node(BaseModel):
     status: Optional[str] = None
     affiliation: Optional[str] = None
     asset_type: Optional[str] = None
+    synonyms: Optional[list[str]] = None
 
 
 class EvidenceLevel(BaseModel):
