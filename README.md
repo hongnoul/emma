@@ -215,7 +215,13 @@ or agents** — including the symptom-search worked example that needs zero
 backend changes, and `npm run gen:api` for TypeScript types generated from
 the live OpenAPI schema.
 
-## Deployment (prepared, not yet deployed)
+## Deployment (LIVE)
+
+- **API**: https://rare-disease-atlas-api.fly.dev (`/docs`, `/v1/meta`)
+- **Frontend**: https://rare-disease-atlas-khaki.vercel.app
+- Redeploy: `scripts/deploy.sh` (rebuild generation -> `fly deploy`; frontend `vercel --prod`)
+
+### Deployment details
 
 - `Dockerfile`: stateless API image (~305 MB), judgments pre-baked, no model
   at serve time. Verified locally with `docker build` + `docker run`.

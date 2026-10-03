@@ -7,3 +7,4 @@ __pycache__/
 nohup.out
 data/raw/
 data/generations/
+.vercel
