@@ -3,6 +3,11 @@
 // Big bubble pill buttons that pop in with a GSAP back.out stagger, hold a
 // slight playful rotation on desktop, and flood with their accent color on
 // hover (styling lifted from the ReactBits bubble-menu pills).
+//
+// Two modes: plain nav (no selectedHref prop — every click follows the link)
+// and select-first (selectedHref + onSelect — the first click pins the bubble
+// and reports the choice so the parent can scope the search bar; clicking the
+// pinned bubble follows the link).
 import type { CSSProperties } from 'react';
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
@@ -19,6 +24,10 @@ export type BubbleItem = {
 
 type Props = {
   items: BubbleItem[];
+  /** select-first mode: href of the pinned bubble (null = none pinned) */
+  selectedHref?: string | null;
+  /** select-first mode: first click pins and reports instead of navigating */
+  onSelect?: (item: BubbleItem) => void;
   animationEase?: string;
   animationDuration?: number;
   staggerDelay?: number;
@@ -26,12 +35,15 @@ type Props = {
 
 export default function BubbleSelector({
   items,
+  selectedHref,
+  onSelect,
   animationEase = 'back.out(1.5)',
   animationDuration = 0.5,
   staggerDelay = 0.12
 }: Props) {
   const bubblesRef = useRef<(HTMLAnchorElement | null)[]>([]);
   const labelRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  const selectMode = onSelect !== undefined;
 
   useEffect(() => {
     const bubbles = bubblesRef.current.filter(Boolean) as HTMLAnchorElement[];
@@ -101,14 +113,39 @@ export default function BubbleSelector({
           color: inherit;
           opacity: 0.85;
         }
+        /* select-first mode: pinned bubble floods with its accent color and
+           stays that way; unpinned siblings recede until hovered */
+        .bubble-selector .bubble-btn[aria-pressed='true'] {
+          background: var(--hover-bg) !important;
+          color: var(--hover-color) !important;
+        }
+        .bubble-selector .bubble-btn[aria-pressed='true'] .bubble-sub {
+          color: inherit;
+          opacity: 0.85;
+        }
+        .bubble-selector[data-has-selection='true'] .bubble-btn[aria-pressed='false']:not(:hover) {
+          opacity: 0.55;
+        }
       `}</style>
 
-      <div className="bubble-selector flex w-full flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6">
+      <div
+        className="bubble-selector flex w-full flex-col items-center justify-center gap-4 sm:flex-row sm:gap-6"
+        data-has-selection={selectMode && selectedHref ? 'true' : undefined}
+      >
         {items.map((item, idx) => (
           <Link
             key={item.href}
             href={item.href}
             aria-label={item.ariaLabel || item.label}
+            aria-pressed={selectMode ? item.href === selectedHref : undefined}
+            onClick={
+              selectMode && item.href !== selectedHref
+                ? (e) => {
+                    e.preventDefault();
+                    onSelect?.(item);
+                  }
+                : undefined
+            }
             className={[
               'bubble-btn',
               'flex flex-col items-center justify-center',
@@ -116,7 +153,7 @@ export default function BubbleSelector({
               'bg-white',
               'no-underline',
               'shadow-[0_4px_16px_rgba(0,0,0,0.12)]',
-              'transition-[background,color] duration-300 ease-in-out',
+              'transition-[background,color,opacity] duration-300 ease-in-out',
               'whitespace-nowrap',
               'will-change-transform',
               'w-full max-w-xs px-10 py-6 sm:w-auto md:px-14 md:py-8'
@@ -143,7 +180,11 @@ export default function BubbleSelector({
               }}
             >
               <span className="text-xl font-semibold md:text-2xl">{item.label}</span>
-              {item.sub && (
+              {selectMode && item.href === selectedHref ? (
+                <span className="bubble-sub mt-1 text-[11px] font-normal md:text-xs">
+                  open →
+                </span>
+              ) : item.sub && (
                 <span className="bubble-sub mt-1 text-[11px] font-normal text-muted-foreground md:text-xs">
                   {item.sub}
                 </span>

@@ -10,8 +10,13 @@
 // with the same resolution the rest of the app uses (name > synonym >
 // description). Nothing fetches the whole graph, so the bulk generation
 // (17k nodes / 84k edges) behaves exactly like the demo one.
-import { useEffect, useMemo, useRef, useState } from "react";
+//
+// /physician?q= (apex handoff): the landing-page search bar submits here
+// with the typed query, which seeds the node section so results are already
+// resolving when the page lands.
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { v1, Meta, EdgesResponse, AttentionItem, EntityHit } from "@/lib/v1";
 import EmmaticsHero from "@/components/EmmaticsHero";
 import { Badge } from "@/components/ui/badge";
@@ -29,6 +34,12 @@ type Row = {
 };
 
 export default function PhysicianHome() {
+  // useSearchParams requires a Suspense boundary for static prerender.
+  return <Suspense><PhysicianHomeInner /></Suspense>;
+}
+
+function PhysicianHomeInner() {
+  const initialQuery = useSearchParams().get("q") ?? "";
   const [meta, setMeta] = useState<Meta | null>(null);
   const [bands, setBands] = useState<{ established: number; review: number; hidden: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -90,7 +101,7 @@ export default function PhysicianHome() {
         </section>
       )}
 
-      {meta && <NodeSection meta={meta} />}
+      {meta && <NodeSection meta={meta} initialQuery={initialQuery} />}
 
       <p className="text-xs text-muted-foreground max-w-2xl">
         Decision semantics: p(valid) is a calibrated probability, not a fact claim.
@@ -103,10 +114,10 @@ export default function PhysicianHome() {
 
 /* ------------- search-first node section: /v1/attention + /v1/entities ---- */
 
-function NodeSection({ meta }: { meta: Meta }) {
+function NodeSection({ meta, initialQuery = "" }: { meta: Meta; initialQuery?: string }) {
   const [attention, setAttention] = useState<AttentionItem[] | null>(null);
   const [hits, setHits] = useState<EntityHit[] | null>(null);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const [activeType, setActiveType] = useState<string>("all");
   const [searching, setSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);

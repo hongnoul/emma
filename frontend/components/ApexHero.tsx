@@ -6,8 +6,12 @@
 //
 // Matching is two-tier: HeroMesh does instant local substring matching over
 // node names/ids, and a debounced backend api.search unions in semantic hits
-// (genes, phenotypes, mechanisms) by their disease ids. Enter hands off to
-// /search?q= for the full results page.
+// (genes, phenotypes, mechanisms) by their disease ids.
+//
+// Flow is persona-first: the BubbleSelector sits above the search bar and the
+// first click pins a flow (physician / patient / explorer) instead of
+// navigating. The pinned persona scopes where Enter lands (/physician?q=,
+// /patient, /search?q=); clicking the pinned bubble follows its link.
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
@@ -18,9 +22,24 @@ import BubbleSelector, { BubbleItem } from "@/components/BubbleSelector";
 const SEMANTIC_DEBOUNCE_MS = 300;
 const SEMANTIC_MIN_CHARS = 3;
 
+// Where Enter sends the query for each pinned flow. Patient has no search
+// surface, so the query is dropped and the bubble itself is the direct path.
+const submitHref = (flowHref: string | null, query: string): string => {
+  const q = query ? `?q=${encodeURIComponent(query)}` : "";
+  if (flowHref === "/physician") return `/physician${q}`;
+  if (flowHref === "/patient") return "/patient";
+  return `/search${q}`;
+};
+
+const PLACEHOLDER: Record<string, string> = {
+  "/physician": "Search the judged graph: disease, gene, phenotype…",
+  "/patient": "Press Enter to open your companion",
+};
+
 export default function ApexHero({ flows }: { flows: BubbleItem[] }) {
   const router = useRouter();
   const [q, setQ] = useState("");
+  const [persona, setPersona] = useState<string | null>(null);
   const [semanticIds, setSemanticIds] = useState<string[] | null>(null);
   const [matchCount, setMatchCount] = useState<number | null>(meshBus.getMatchCount());
   const inputRef = useRef<HTMLInputElement>(null);
@@ -85,14 +104,25 @@ export default function ApexHero({ flows }: { flows: BubbleItem[] }) {
           where it came from, and whether it is established or inferred.
         </p>
 
+        {/* persona first: pin a flow, then the search bar scopes to it */}
+        <div className="mt-10 w-full">
+          <BubbleSelector
+            items={flows}
+            selectedHref={persona}
+            onSelect={(item) => {
+              setPersona(item.href);
+              inputRef.current?.focus();
+            }}
+          />
+        </div>
+
         {/* search bar: filters the mesh live, Enter opens the full search page */}
         <form
           data-apex-search
-          className="mt-10 w-full max-w-xl"
+          className="mt-8 w-full max-w-xl"
           onSubmit={(e) => {
             e.preventDefault();
-            const query = q.trim();
-            router.push(query ? `/search?q=${encodeURIComponent(query)}` : "/search");
+            router.push(submitHref(persona, q.trim()));
           }}
         >
           <div className="flex h-14 items-center gap-3 rounded-full border border-slate-200 bg-white/90 px-5 shadow-[0_4px_16px_rgba(0,0,0,0.12)] backdrop-blur-sm transition focus-within:border-indigo-300 focus-within:shadow-[0_4px_24px_rgba(67,56,202,0.18)]">
@@ -105,7 +135,7 @@ export default function ApexHero({ flows }: { flows: BubbleItem[] }) {
               onKeyDown={(e) => {
                 if (e.key === "Escape") { setQ(""); (e.target as HTMLInputElement).blur(); }
               }}
-              placeholder="Filter Emmatics: disease, gene, phenotype…"
+              placeholder={(persona && PLACEHOLDER[persona]) || "Filter Emmatics: disease, gene, phenotype…"}
               aria-label="Search Emmatics"
               className="h-full w-full bg-transparent text-base text-slate-900 outline-none placeholder:text-slate-400 [&::-webkit-search-cancel-button]:hidden"
             />
@@ -122,10 +152,6 @@ export default function ApexHero({ flows }: { flows: BubbleItem[] }) {
             )}
           </p>
         </form>
-
-        <div className="mt-8 w-full">
-          <BubbleSelector items={flows} />
-        </div>
       </section>
     </div>
   );

@@ -90,6 +90,23 @@
 .no-scrollbar {
   scrollbar-width: none;
 }
+
+/* ---- Physician shell: apex handoff ---- */
+/* The workbench canvas fades in from transparent so the lingering mesh
+   backdrop (see MeshBackdrop) shows through for the first beat of the
+   route change — no white pop between the two canvases. The end color is
+   the old bg-muted/40-over-background composite, made opaque so the mesh
+   unmount at ~450ms is invisible. */
+.physician-canvas {
+  background-color: color-mix(in srgb, var(--muted) 40%, var(--background));
+  animation: physician-canvas-in 0.45s ease-out both;
+}
+@keyframes physician-canvas-in {
+  from { background-color: transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .physician-canvas { animation: none; }
+}
 @keyframes rp-float1 {
   0%, 100% { transform: translate(0) scale(1); }
   50% { transform: translate(24px, 30px) scale(1.08); }

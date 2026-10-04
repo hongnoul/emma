@@ -9,11 +9,12 @@ export const metadata: Metadata = {
 
 // Physician lives in its own route group so it owns its chrome outright:
 // one top bar (brand + tabs), a flat muted canvas, no card-in-card nesting
-// and no negative-margin escape from the (emmatics) shell. The mesh
-// backdrop skips /physician entirely (see MeshBackdrop).
+// and no negative-margin escape from the (emmatics) shell. The canvas uses
+// .physician-canvas (globals.css): it fades in from transparent over the
+// lingering mesh backdrop on the apex handoff (see MeshBackdrop).
 export default function PhysicianLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-muted/40">
+    <div className="physician-canvas min-h-screen">
       <div className="sticky top-0 z-40 border-b bg-background">
         <div className="mx-auto flex max-w-6xl items-center gap-4 overflow-x-auto whitespace-nowrap px-4 py-2.5 text-sm md:gap-5 md:px-6">
           <Link href="/" className="flex shrink-0 items-center gap-2" title="Back to Emmatics">
