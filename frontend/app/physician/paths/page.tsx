@@ -7,10 +7,13 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { v1, EntityHit, PathResponse, pct, band, actionCls } from "@/lib/v1";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 
 export default function PathsPage() {
   return (
-    <Suspense fallback={<p className="text-slate-500">Loading…</p>}>
+    <Suspense fallback={<p className="text-muted-foreground">Loading…</p>}>
       <PathsInner />
     </Suspense>
   );
@@ -53,7 +56,7 @@ function PathsInner() {
     <div className="space-y-6">
       <header>
         <h1 className="text-xl font-semibold">Path inspector</h1>
-        <p className="text-xs text-slate-500">
+        <p className="text-xs text-muted-foreground">
           Pick two diseases. Joint confidence = product of judged hop probabilities;
           the weakest hop is where the inference chain is most fragile.
         </p>
@@ -63,22 +66,22 @@ function PathsInner() {
         <EntityPicker label="From" value={from} onPick={(id) => setParam("from", id)} />
         <EntityPicker label="To" value={to} onPick={(id) => setParam("to", id)} />
       </div>
-      <div className="flex gap-2 text-xs">
+      <div className="flex gap-2">
         {(["researcher", "patient"] as const).map((a) => (
-          <button key={a} onClick={() => setParam("audience", a)}
-            className={`rounded px-3 py-1 border ${audience === a ? "bg-indigo-600 text-white border-indigo-600" : "border-slate-300 text-slate-600"}`}>
+          <Button key={a} size="sm" variant={audience === a ? "default" : "outline"}
+            onClick={() => setParam("audience", a)}>
             {a === "researcher" ? "Researcher view" : "Patient view (≥0.90 + replicated)"}
-          </button>
+          </Button>
         ))}
       </div>
 
-      {busy && <p className="text-slate-500 text-sm">Finding route…</p>}
-      {error && <p className="text-red-600 text-sm">{error}</p>}
+      {busy && <p className="text-muted-foreground text-sm">Finding route…</p>}
+      {error && <p className="text-sm font-medium">{error}</p>}
 
       {res && (
         <>
           {res.path.length === 0 ? (
-            <p className="text-slate-500 text-sm">No supported route found in the current graph.</p>
+            <p className="text-muted-foreground text-sm">No supported route found in the current graph.</p>
           ) : (
             <>
               <div className="flex items-center gap-6 text-sm">
@@ -86,7 +89,7 @@ function PathsInner() {
                   <p className="text-2xl font-semibold font-mono">
                     {joint != null ? pct(joint) : judgedHops.length ? pct(judgedHops.reduce((p, s) => p * (s.edge!.edge_valid as number), 1)) : "curated"}
                   </p>
-                  <p className="text-xs text-slate-500">
+                  <p className="text-xs text-muted-foreground">
                     {trust ? `p_path (server, ${trust.edges.length} evidence edges, audience: ${trust.audience})`
                       : judgedHops.length
                       ? `joint confidence (${judgedHops.length} judged hop${judgedHops.length === 1 ? "" : "s"})`
@@ -94,13 +97,13 @@ function PathsInner() {
                   </p>
                 </div>
                 {weakest && (
-                  <div className="border border-red-200 bg-red-50/50 rounded-lg px-4 py-2">
-                    <p className="text-xs text-red-800">
-                      weakest hop: <span className="font-mono">{pct(weakest.edge!.edge_valid)}</span>{" "}
+                  <div className="border border-foreground/40 bg-muted/50 rounded-lg px-4 py-2">
+                    <p className="text-xs">
+                      weakest hop: <span className="font-mono font-semibold">{pct(weakest.edge!.edge_valid)}</span>{" "}
                       — {weakest.edge!.description}
                     </p>
                     <Link href={`/physician/edge/${encodeURIComponent(weakest.edge!.id)}`}
-                      className="text-xs text-indigo-700 underline">
+                      className="text-xs underline underline-offset-4 hover:no-underline">
                       interrogate in workbench →
                     </Link>
                   </div>
@@ -115,20 +118,20 @@ function PathsInner() {
                       <HopEdge edge={step.edge} weak={step === weakest}
                         gate={trust?.edges.find((g) => g.edge_id === step.edge!.id)} />
                     )}
-                    <div className={`inline-block rounded px-3 py-1.5 text-sm ${step.node.type === "Disease" ? "bg-red-50 border border-red-100 font-medium" : "bg-slate-100"}`}>
+                    <div className={`inline-block rounded px-3 py-1.5 text-sm ${step.node.type === "Disease" ? "border font-medium bg-background" : "bg-muted"}`}>
                       {step.node.name}
-                      <span className="text-xs text-slate-400 font-mono ml-2">{step.node.id}</span>
+                      <span className="text-xs text-muted-foreground font-mono ml-2">{step.node.id}</span>
                     </div>
                   </div>
                 ))}
               </div>
 
-              <p className="text-sm text-slate-700 border-l-4 border-indigo-200 pl-4 max-w-2xl">{res.narrative}</p>
+              <p className="text-sm border-l-4 pl-4 max-w-2xl">{res.narrative}</p>
 
               <div className="grid sm:grid-cols-3 gap-4 text-xs max-w-4xl">
-                <Bucket title="Known" items={res.known} cls="border-green-200 bg-green-50/40 text-green-800" />
-                <Bucket title="Inferred" items={res.inferred} cls="border-amber-200 bg-amber-50/40 text-amber-800" />
-                <Bucket title="Uncertain" items={res.uncertain} cls="border-red-200 bg-red-50/40 text-red-800" />
+                <Bucket title="Known" items={res.known} />
+                <Bucket title="Inferred" items={res.inferred} />
+                <Bucket title="Uncertain" items={res.uncertain} />
               </div>
             </>
           )}
@@ -145,9 +148,9 @@ function HopEdge({ edge, weak, gate }: {
 }) {
   const b = band(edge.edge_valid);
   return (
-    <div className={`ml-6 my-1 pl-4 border-l-2 ${weak ? "border-red-400" : "border-slate-200"} text-xs py-1`}>
+    <div className={`ml-6 my-1 pl-4 border-l-2 ${weak ? "border-foreground" : ""} text-xs py-1`}>
       <div className="flex items-center gap-2 flex-wrap">
-        <span className="text-slate-400">{edge.rel_type}</span>
+        <span className="text-muted-foreground">{edge.rel_type}</span>
         {edge.edge_valid != null ? (
           <>
             <span className={`font-mono rounded px-1.5 py-0.5 ${b.cls}`}>{pct(edge.edge_valid)} {b.label}</span>
@@ -156,29 +159,31 @@ function HopEdge({ edge, weak, gate }: {
                 {gate.action.replace(/_/g, " ")}
               </span>
             )}
-            <Link href={`/physician/edge/${encodeURIComponent(edge.id)}`} className="text-indigo-600 underline">
+            <Link href={`/physician/edge/${encodeURIComponent(edge.id)}`} className="underline underline-offset-4 hover:no-underline">
               workbench
             </Link>
           </>
         ) : (
-          <span className="text-slate-400">curated</span>
+          <span className="text-muted-foreground">curated</span>
         )}
-        {weak && <span className="text-red-600 font-medium">← weakest link</span>}
+        {weak && <span className="font-semibold">← weakest link</span>}
       </div>
       {gate?.caveat && (gate.action === "show_hypothesis" || gate.action === "show_with_warning") && (
-        <p className="text-slate-500 mt-0.5">{gate.caveat}</p>
+        <p className="text-muted-foreground mt-0.5">{gate.caveat}</p>
       )}
     </div>
   );
 }
 
-function Bucket({ title, items, cls }: { title: string; items: string[]; cls: string }) {
+function Bucket({ title, items }: { title: string; items: string[] }) {
   return (
-    <div className={`border rounded-lg p-3 ${cls}`}>
-      <h2 className="font-semibold mb-1">{title}</h2>
-      {items.length ? <ul className="space-y-1 text-slate-700">{items.map((k, i) => <li key={i}>{k}</li>)}</ul>
-        : <p className="text-slate-400">—</p>}
-    </div>
+    <Card className="py-3 gap-1">
+      <CardHeader className="px-3"><CardTitle className="text-xs">{title}</CardTitle></CardHeader>
+      <CardContent className="px-3">
+        {items.length ? <ul className="space-y-1">{items.map((k, i) => <li key={i}>{k}</li>)}</ul>
+          : <p className="text-muted-foreground">—</p>}
+      </CardContent>
+    </Card>
   );
 }
 
@@ -206,23 +211,22 @@ function EntityPicker({ label, value, onPick }: { label: string; value: string; 
 
   return (
     <div className="relative">
-      <label className="text-xs text-slate-500">{label}</label>
-      <input value={q} onChange={(e) => setQ(e.target.value)}
+      <label className="text-xs text-muted-foreground">{label}</label>
+      <Input value={q} onChange={(e) => setQ(e.target.value)}
         onFocus={() => hits.length && setOpen(true)}
         onBlur={() => setTimeout(() => setOpen(false), 150)}
-        placeholder={resolved || "search a disease…"}
-        className="w-full border border-slate-300 rounded px-3 py-2 text-sm bg-white" />
+        placeholder={resolved || "search a disease…"} />
       {value && !q && (
-        <p className="text-[10px] text-slate-400 font-mono mt-0.5">{value}</p>
+        <p className="text-[10px] text-muted-foreground font-mono mt-0.5">{value}</p>
       )}
       {open && hits.length > 0 && (
-        <ul className="absolute z-10 mt-1 w-full bg-white border border-slate-200 rounded-lg shadow-lg max-h-64 overflow-y-auto text-sm">
+        <ul className="absolute z-10 mt-1 w-full bg-popover text-popover-foreground border rounded-lg shadow-lg max-h-64 overflow-y-auto text-sm">
           {hits.map((h) => (
             <li key={h.node.id}>
-              <button className="w-full text-left px-3 py-2 hover:bg-indigo-50"
+              <button className="w-full text-left px-3 py-2 hover:bg-muted"
                 onMouseDown={() => { onPick(h.node.id); setQ(""); setOpen(false); }}>
                 {h.node.name}
-                <span className="text-xs text-slate-400 font-mono ml-2">{h.node.id}</span>
+                <span className="text-xs text-muted-foreground font-mono ml-2">{h.node.id}</span>
               </button>
             </li>
           ))}

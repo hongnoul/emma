@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -10,15 +11,15 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white text-slate-900 antialiased">
-        <nav className="border-b border-slate-200 px-6 py-3 flex items-center gap-6 text-sm">
+      <body className="min-h-screen bg-background text-foreground antialiased">
+        <nav className="border-b px-6 py-3 flex items-center gap-6 text-sm">
           <Link href="/" className="font-semibold">Rare Disease Atlas</Link>
-          <Link href="/" className="text-slate-600 hover:text-slate-900">Search</Link>
-          <Link href="/evals" className="text-slate-600 hover:text-slate-900">Evals</Link>
-          <Link href="/physician" className="text-indigo-700 hover:text-indigo-900 font-medium">Physician</Link>
-          <span className="ml-auto text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-0.5">
+          <Link href="/" className="text-muted-foreground hover:text-foreground">Search</Link>
+          <Link href="/evals" className="text-muted-foreground hover:text-foreground">Evals</Link>
+          <Link href="/physician" className="font-medium hover:underline">Physician</Link>
+          <Badge variant="outline" className="ml-auto text-muted-foreground">
             Research prototype · not medical advice
-          </span>
+          </Badge>
         </nav>
         <main className="max-w-5xl mx-auto px-6 py-8">{children}</main>
       </body>

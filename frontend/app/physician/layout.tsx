@@ -14,15 +14,15 @@ const TABS = [
 
 export default function PhysicianLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="-mx-6 -my-8 min-h-screen bg-slate-50">
-      <div className="border-b border-slate-200 bg-white px-6 py-2 flex items-center gap-5 text-sm">
-        <span className="font-semibold text-indigo-900">Physician partition</span>
+    <div className="-mx-6 -my-8 min-h-screen bg-muted/40">
+      <div className="border-b bg-background px-6 py-2 flex items-center gap-5 text-sm">
+        <span className="font-semibold">Physician partition</span>
         {TABS.map((t) => (
-          <Link key={t.href} href={t.href} className="text-slate-600 hover:text-slate-900">
+          <Link key={t.href} href={t.href} className="text-muted-foreground hover:text-foreground">
             {t.label}
           </Link>
         ))}
-        <span className="ml-auto text-xs text-slate-400">
+        <span className="ml-auto text-xs text-muted-foreground">
           calibrated judgments · never presented as facts
         </span>
       </div>

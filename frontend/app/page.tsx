@@ -5,6 +5,7 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { api, SearchResult } from "@/lib/api";
+import AtlasHero from "@/components/AtlasHero";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -38,6 +39,8 @@ function SearchHome() {
         <h1 className="text-3xl font-semibold">Rare Disease Atlas</h1>
         <p className="text-muted-foreground">Connecting rare diseases through biology, evidence, and shared research.</p>
       </header>
+
+      <AtlasHero />
 
       <form className="max-w-xl mx-auto" onSubmit={(e) => { e.preventDefault(); run(q); }}>
         <Input

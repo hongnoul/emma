@@ -4,6 +4,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { v1, Meta, EdgesResponse } from "@/lib/v1";
+import { Card, CardContent } from "@/components/ui/card";
 
 export default function PhysicianHome() {
   const [meta, setMeta] = useState<Meta | null>(null);
@@ -21,7 +22,7 @@ export default function PhysicianHome() {
     ).catch(() => { /* non-fatal */ });
   }, []);
 
-  if (error) return <p className="text-red-600 text-sm">{error}</p>;
+  if (error) return <p className="text-sm font-medium">{error}</p>;
 
   const judgeLive = meta?.judge && meta.judge !== "none";
 
@@ -29,18 +30,18 @@ export default function PhysicianHome() {
     <div className="space-y-8">
       <header className="space-y-2">
         <h1 className="text-2xl font-semibold">Evidence interrogation workbench</h1>
-        <p className="text-sm text-slate-600 max-w-2xl">
+        <p className="text-sm text-muted-foreground max-w-2xl">
           Every inferred connection in the atlas carries a calibrated decision block
           from a typed-judgment model. This partition is for interrogating those
           judgments: triage the uncertain band, ablate evidence to see what carries
           a belief, and re-examine weak hops in inference paths.
         </p>
         {meta && (
-          <p className="text-xs text-slate-500">
+          <p className="text-xs text-muted-foreground">
             generation <span className="font-mono">{meta.generation_id}</span> ·{" "}
             {meta.nodes.toLocaleString()} nodes · {meta.edges.toLocaleString()} edges ·{" "}
             judge:{" "}
-            <span className={judgeLive ? "text-green-700 font-medium" : "text-slate-400"}>
+            <span className={judgeLive ? "font-medium text-foreground" : ""}>
               {judgeLive ? `${meta.judge} (live)` : "offline — stored judgments only"}
             </span>
           </p>
@@ -50,11 +51,11 @@ export default function PhysicianHome() {
       {bands && (
         <section className="grid grid-cols-3 gap-4 max-w-2xl">
           {[
-            ["established ≥ 0.90", bands.established, "text-green-700 border-green-200 bg-green-50/50"],
-            ["review 0.40–0.90", bands.review, "text-amber-700 border-amber-200 bg-amber-50/50"],
-            ["hidden < 0.40", bands.hidden, "text-red-700 border-red-200 bg-red-50/50"],
+            ["established ≥ 0.90", bands.established, "bg-primary text-primary-foreground"],
+            ["review 0.40–0.90", bands.review, "bg-secondary text-secondary-foreground border"],
+            ["hidden < 0.40", bands.hidden, "border border-dashed text-muted-foreground"],
           ].map(([label, n, cls]) => (
-            <div key={label as string} className={`border rounded-lg p-4 text-center ${cls}`}>
+            <div key={label as string} className={`rounded-lg p-4 text-center ${cls}`}>
               <p className="text-2xl font-semibold">{(n as number).toLocaleString()}</p>
               <p className="text-xs">{label}</p>
             </div>
@@ -63,28 +64,32 @@ export default function PhysicianHome() {
       )}
 
       <section className="grid sm:grid-cols-3 gap-4">
-        <Card href="/physician/triage" title="Triage queue"
+        <WorkflowCard href="/physician/triage" title="Triage queue"
           body="Fly through the review band with j/k · a/r keys. Your verdicts build a local gold set and recalibrate the reliability view live." />
-        <Card href="/physician/triage" title="Edge workbench"
+        <WorkflowCard href="/physician/triage" title="Edge workbench"
           body="Open any edge: full decision block, leave-one-out evidence ablation (which symptom carries the belief), and a what-if editor that re-judges as you type." />
-        <Card href="/physician/paths" title="Path inspector"
+        <WorkflowCard href="/physician/paths" title="Path inspector"
           body="How are two diseases connected? See every hop's probability, the path's joint confidence, and the weakest link highlighted." />
       </section>
 
-      <p className="text-xs text-slate-400 max-w-2xl">
+      <p className="text-xs text-muted-foreground max-w-2xl">
         Decision semantics: p(valid) is a calibrated probability, not a fact claim.
-        Check <Link className="underline" href="/evals">the calibration report</Link> before
+        Check <Link className="underline underline-offset-4 hover:no-underline" href="/evals">the calibration report</Link> before
         gating clinical workflows on any threshold.
       </p>
     </div>
   );
 }
 
-function Card({ href, title, body }: { href: string; title: string; body: string }) {
+function WorkflowCard({ href, title, body }: { href: string; title: string; body: string }) {
   return (
-    <Link href={href} className="block border border-slate-200 bg-white rounded-lg p-4 hover:border-indigo-300 hover:shadow-sm transition">
-      <h2 className="font-semibold mb-1">{title}</h2>
-      <p className="text-sm text-slate-600">{body}</p>
+    <Link href={href}>
+      <Card className="h-full py-4 transition hover:shadow-sm hover:border-foreground/30">
+        <CardContent className="px-4">
+          <h2 className="font-semibold mb-1">{title}</h2>
+          <p className="text-sm text-muted-foreground">{body}</p>
+        </CardContent>
+      </Card>
     </Link>
   );
 }

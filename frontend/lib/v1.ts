@@ -154,19 +154,21 @@ export const v1 = {
 export const pct = (p?: number | null) => (p == null ? "–" : `${(p * 100).toFixed(0)}%`);
 export const pct1 = (p?: number | null) => (p == null ? "–" : `${(p * 100).toFixed(1)}%`);
 
-/** Gate band for a judged probability: expert policy 90/40 (Oct 2026). */
+/** Gate band for a judged probability: expert policy 90/40 (Oct 2026).
+ *  Monochrome encoding: solid = established, secondary = review,
+ *  dashed outline = hidden, muted = curated. */
 export function band(p?: number | null): { label: string; cls: string } {
-  if (p == null) return { label: "curated", cls: "text-slate-500 bg-slate-100" };
-  if (p >= 0.9) return { label: "established", cls: "text-green-800 bg-green-100" };
-  if (p >= 0.4) return { label: "review", cls: "text-amber-800 bg-amber-100" };
-  return { label: "hidden", cls: "text-red-800 bg-red-100" };
+  if (p == null) return { label: "curated", cls: "bg-muted text-muted-foreground" };
+  if (p >= 0.9) return { label: "established", cls: "bg-primary text-primary-foreground" };
+  if (p >= 0.4) return { label: "review", cls: "bg-secondary text-secondary-foreground border" };
+  return { label: "hidden", cls: "border border-dashed text-muted-foreground" };
 }
 
 /** Gate action chip: show / show_with_warning / show_hypothesis / suppress / hidden. */
 export function actionCls(action?: string): string {
-  if (action === "show") return "text-green-800 bg-green-100";
-  if (action === "show_with_warning") return "text-amber-800 bg-amber-100";
-  if (action === "show_hypothesis") return "text-blue-800 bg-blue-100";
-  if (action === "suppress_pending") return "text-orange-800 bg-orange-100";
-  return "text-slate-500 bg-slate-100";
+  if (action === "show") return "bg-primary text-primary-foreground";
+  if (action === "show_with_warning") return "bg-secondary text-secondary-foreground border";
+  if (action === "show_hypothesis") return "border bg-background text-foreground";
+  if (action === "suppress_pending") return "border border-dashed text-muted-foreground";
+  return "bg-muted text-muted-foreground";
 }

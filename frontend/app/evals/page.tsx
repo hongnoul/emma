@@ -5,6 +5,12 @@
 // temperature, zombie traps, 90%-precision gate, 3:1 cost, contested edges.
 import { useEffect, useState } from "react";
 import { v1, EvalsReport } from "@/lib/v1";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+} from "@/components/ui/table";
 
 type Judge = "mock" | "laya" | "openai" | "laya-v2" | "openai-v2";
 
@@ -26,42 +32,44 @@ export default function EvalsPage() {
     v1.evals(judge).then(setR).catch((e) => setError(String(e)));
   }, [judge]);
 
-  if (error) return <p className="text-red-600 text-sm">{error}</p>;
+  if (error) return <p className="text-sm font-medium">{error}</p>;
 
   return (
     <div className="space-y-6 max-w-3xl">
       <header className="space-y-2">
         <h1 className="text-2xl font-semibold">Edge-judge evaluation</h1>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-muted-foreground">
           p(valid) vs the domain-expert overlay (31 edges, 3 contested with soft
           targets, 3 expert overrides of demo gold).
         </p>
-        <div className="flex gap-2 text-sm flex-wrap">
+        <div className="flex gap-2 flex-wrap">
           {JUDGES.map((j) => (
-            <button key={j.id} onClick={() => setJudge(j.id)}
-              className={`rounded px-3 py-1 border ${judge === j.id ? "bg-blue-600 text-white border-blue-600" : "border-slate-300 text-slate-600"}`}>
+            <Button key={j.id} size="sm" variant={judge === j.id ? "default" : "outline"}
+              onClick={() => setJudge(j.id)}>
               {j.label}
-            </button>
+            </Button>
           ))}
         </div>
       </header>
 
-      {!r && <p className="text-slate-500">Loading…</p>}
-      {r && r.n === 0 && <p className="text-amber-700 text-sm">{r.notes}</p>}
+      {!r && <p className="text-muted-foreground">Loading…</p>}
+      {r && r.n === 0 && <p className="text-sm font-medium">{r.notes}</p>}
       {r && r.n > 0 && (
         <>
           <div className="grid grid-cols-3 sm:grid-cols-6 gap-3 text-center">
             {[["Accuracy", r.accuracy], ["Brier", r.brier], ["Soft-Brier", r.brier_soft],
               ["ECE", r.ece], ["T", r.temperature], ["Traps", r.trap_pass_rate]].map(([label, val]) => (
-              <div key={label as string} className="border border-slate-200 rounded-lg p-3">
-                <p className="text-xl font-semibold">{val as number ?? "–"}</p>
-                <p className="text-xs text-slate-500">{label}</p>
-              </div>
+              <Card key={label as string} className="py-3">
+                <CardContent className="px-3">
+                  <p className="text-xl font-semibold">{val as number ?? "–"}</p>
+                  <p className="text-xs text-muted-foreground">{label}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
 
           {r.precision_gate && (
-            <section className="text-sm border border-blue-200 bg-blue-50/50 rounded-lg p-3">
+            <section className="text-sm border rounded-lg bg-muted/50 p-3">
               <span className="font-semibold">90%-precision gate: </span>
               accept at p ≥ {r.precision_gate.threshold} ({r.precision_gate.accepted}/{r.precision_gate.n} accepted,
               abstains {((r.precision_gate.abstention_rate ?? 0) * 100).toFixed(0)}%).
@@ -74,22 +82,22 @@ export default function EvalsPage() {
             <div className="space-y-1 text-xs">
               {r.bins.map((b, i) => (
                 <div key={i} className="flex items-center gap-2">
-                  <span className="w-20 text-slate-500">{b.range[0].toFixed(1)}–{b.range[1].toFixed(1)}</span>
-                  <div className="flex-1 h-5 bg-slate-100 rounded relative">
+                  <span className="w-20 text-muted-foreground">{b.range[0].toFixed(1)}–{b.range[1].toFixed(1)}</span>
+                  <div className="flex-1 h-5 bg-muted rounded relative">
                     {b.mean_pred != null && (
-                      <div className="absolute inset-y-0 w-0.5 bg-blue-600" style={{ left: `${b.mean_pred * 100}%` }} title={`mean predicted ${b.mean_pred}`} />
+                      <div className="absolute inset-y-0 w-0.5 bg-foreground" style={{ left: `${b.mean_pred * 100}%` }} title={`mean predicted ${b.mean_pred}`} />
                     )}
                     {b.frac_true != null && (
-                      <div className="absolute inset-y-0 w-0.5 bg-red-600" style={{ left: `${b.frac_true * 100}%` }} title={`observed ${b.frac_true}`} />
+                      <div className="absolute inset-y-0 w-[3px] bg-muted-foreground/60" style={{ left: `${b.frac_true * 100}%` }} title={`observed ${b.frac_true}`} />
                     )}
                   </div>
-                  <span className="w-16 text-slate-500">{b.count} edges</span>
+                  <span className="w-16 text-muted-foreground">{b.count} edges</span>
                 </div>
               ))}
             </div>
-            <p className="text-xs text-slate-500 mt-2">
-              <span className="text-blue-600 font-medium">blue</span> = mean predicted ·{" "}
-              <span className="text-red-600 font-medium">red</span> = observed fraction true.
+            <p className="text-xs text-muted-foreground mt-2">
+              <span className="font-medium text-foreground">thin black</span> = mean predicted ·{" "}
+              <span className="font-medium">thick gray</span> = observed fraction true.
               Aligned marks = calibrated. Gaps = miscalibration.
             </p>
           </section>
@@ -97,27 +105,29 @@ export default function EvalsPage() {
           {r.trap_results && r.trap_results.length > 0 && (
             <section>
               <h2 className="font-semibold mb-2">Zombie-knowledge traps</h2>
-              <table className="w-full text-sm border border-slate-200">
-                <thead className="bg-slate-50 text-left">
-                  <tr><th className="p-2">Edge</th><th className="p-2">Pattern</th>
-                    <th className="p-2">p(valid)</th><th className="p-2">Superseded</th><th className="p-2">Verdict</th></tr>
-                </thead>
-                <tbody>
-                  {r.trap_results.map((t) => (
-                    <tr key={t.edge_id} className="border-t border-slate-100">
-                      <td className="p-2 font-mono text-xs">{t.edge_id}</td>
-                      <td className="p-2 text-xs">{t.pattern.replace(/_/g, " ")}</td>
-                      <td className="p-2">{t.p_valid?.toFixed(2) ?? "–"}</td>
-                      <td className="p-2">{t.superseded != null ? t.superseded.toFixed(2) : "–"}</td>
-                      <td className="p-2">
-                        <span className={`text-xs rounded px-1.5 py-0.5 ${t.passed ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
-                          {t.passed ? (t.passed_via === "superseded_flag" ? "killed (superseded)" : "rejected") : "falls for it"}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow><TableHead>Edge</TableHead><TableHead>Pattern</TableHead>
+                      <TableHead>p(valid)</TableHead><TableHead>Superseded</TableHead><TableHead>Verdict</TableHead></TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {r.trap_results.map((t) => (
+                      <TableRow key={t.edge_id}>
+                        <TableCell className="font-mono text-xs">{t.edge_id}</TableCell>
+                        <TableCell className="text-xs">{t.pattern.replace(/_/g, " ")}</TableCell>
+                        <TableCell>{t.p_valid?.toFixed(2) ?? "–"}</TableCell>
+                        <TableCell>{t.superseded != null ? t.superseded.toFixed(2) : "–"}</TableCell>
+                        <TableCell>
+                          <Badge variant={t.passed ? "secondary" : "default"}>
+                            {t.passed ? (t.passed_via === "superseded_flag" ? "killed (superseded)" : "rejected") : "falls for it"}
+                          </Badge>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
             </section>
           )}
 
@@ -126,7 +136,7 @@ export default function EvalsPage() {
               <h2 className="font-semibold mb-2">Contested edges (experts disagree)</h2>
               <ul className="text-sm space-y-1">
                 {Object.entries(r.contested).map(([eid, c]) => (
-                  <li key={eid} className="border border-amber-200 bg-amber-50/50 rounded px-3 py-2">
+                  <li key={eid} className="border bg-muted/50 rounded px-3 py-2">
                     <span className="font-mono text-xs">{eid}</span>: judge {c.p_valid.toFixed(2)} vs
                     expert soft target {c.soft_target.toFixed(2)} — {c.verdict}
                   </li>
@@ -135,7 +145,7 @@ export default function EvalsPage() {
             </section>
           )}
 
-          <p className="text-sm text-slate-600 border-l-4 border-slate-200 pl-3">{r.notes}</p>
+          <p className="text-sm text-muted-foreground border-l-4 pl-3">{r.notes}</p>
         </>
       )}
     </div>

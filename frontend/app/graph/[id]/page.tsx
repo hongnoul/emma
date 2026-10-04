@@ -89,8 +89,8 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
     });
   }, [hidden, data]);
 
-  if (error) return <p className="text-red-600 text-sm">{error}</p>;
-  if (!data) return <p className="text-slate-500">Loading graph…</p>;
+  if (error) return <p className="text-sm font-medium">{error}</p>;
+  if (!data) return <p className="text-muted-foreground">Loading graph…</p>;
 
   return (
     <div className="space-y-3">
@@ -103,39 +103,39 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
             {t}
           </button>
         ))}
-        <button onClick={() => sigmaRef.current?.getCamera().animatedReset()} className="rounded px-2 py-1 border border-slate-300 ml-2">Center</button>
+        <button onClick={() => sigmaRef.current?.getCamera().animatedReset()} className="rounded px-2 py-1 border ml-2 hover:bg-muted">Center</button>
         <button onClick={() => {
           setHidden(new Set(DEFAULT_HIDDEN_TYPES));
           const g = graphRef.current;
           if (g) { circular.assign(g); forceAtlas2.assign(g, { iterations: 300, settings: { ...forceAtlas2.inferSettings(g), gravity: 1, scalingRatio: 6 } }); }
           sigmaRef.current?.getCamera().animatedReset();
-        }} className="rounded px-2 py-1 border border-slate-300">Reset</button>
-        <span className="text-slate-400 ml-auto">amber = phenotype-similar (judged) · blue = shared gene</span>
+        }} className="rounded px-2 py-1 border hover:bg-muted">Reset</button>
+        <span className="text-muted-foreground ml-auto">amber = phenotype-similar (judged) · blue = shared gene</span>
       </div>
 
       <div className="flex gap-4">
-        <div ref={container} className="flex-1 h-[560px] border border-slate-200 rounded-lg" />
-        <aside className="w-80 shrink-0 border border-slate-200 rounded-lg p-4 text-sm space-y-2 overflow-y-auto max-h-[560px]">
-          {!sel && <p className="text-slate-400">Click a node or edge for details.</p>}
+        <div ref={container} className="flex-1 h-[560px] border rounded-lg" />
+        <aside className="w-80 shrink-0 border rounded-lg p-4 text-sm space-y-2 overflow-y-auto max-h-[560px]">
+          {!sel && <p className="text-muted-foreground">Click a node or edge for details.</p>}
           {sel?.kind === "node" && (
             <>
               <h3 className="font-semibold">{sel.node.name}</h3>
               <p><span className="text-xs rounded px-1.5 py-0.5 text-white" style={{ background: NODE_COLORS[sel.node.type] }}>{sel.node.type}</span></p>
-              <p className="text-xs text-slate-500">{sel.node.identifier}</p>
-              <p className="text-slate-700">{sel.node.description}</p>
-              <p className="text-xs text-slate-400">Source: synthetic demo dataset</p>
+              <p className="text-xs text-muted-foreground">{sel.node.identifier}</p>
+              <p>{sel.node.description}</p>
+              <p className="text-xs text-muted-foreground">Source: synthetic demo dataset</p>
             </>
           )}
           {sel?.kind === "edge" && (
             <>
               <h3 className="font-semibold">{sel.edge.rel_type}</h3>
-              <p className="text-slate-700">{sel.edge.description}</p>
+              <p>{sel.edge.description}</p>
               <p className="text-xs">
-                <span className={`rounded px-1.5 py-0.5 ${sel.edge.provenance === "inferred" ? "bg-amber-100 text-amber-800" : "bg-green-100 text-green-800"}`}>
+                <span className={`rounded px-1.5 py-0.5 ${sel.edge.provenance === "inferred" ? "border border-dashed text-muted-foreground" : "bg-secondary text-secondary-foreground border"}`}>
                   {sel.edge.provenance === "inferred" ? "ATLAS-INFERRED CONNECTION" : "DIRECT / CURATED EVIDENCE"}
                 </span>
               </p>
-              <dl className="text-xs text-slate-600 space-y-1">
+              <dl className="text-xs text-muted-foreground space-y-1">
                 <div><dt className="inline font-medium">Source: </dt><dd className="inline">{sel.edge.source_db} ({sel.edge.source_id})</dd></div>
                 {sel.edge.edge_valid != null && <div><dt className="inline font-medium">p(valid): </dt><dd className="inline">{pct(sel.edge.edge_valid)}</dd></div>}
                 {sel.edge.contradicted != null && <div><dt className="inline font-medium">p(contradicted): </dt><dd className="inline">{pct(sel.edge.contradicted)}</dd></div>}
@@ -147,19 +147,19 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
                   <div><dt className="inline font-medium">Supporting: </dt><dd className="inline">{sel.edge.supporting_publications.join(", ")}</dd></div>
                 )}
                 {sel.edge.contradictory_evidence.length > 0 && (
-                  <div className="text-red-700"><dt className="inline font-medium">Contradictory: </dt><dd className="inline">{sel.edge.contradictory_evidence.join(", ")}</dd></div>
+                  <div className="font-medium"><dt className="inline">Contradictory: </dt><dd className="inline">{sel.edge.contradictory_evidence.join(", ")}</dd></div>
                 )}
-                {sel.edge.state && <div><dt className="font-medium">Evidence snippet:</dt><dd className="italic text-slate-500">{sel.edge.state}</dd></div>}
-                {sel.edge.decision_meta && <div className="text-slate-400">judged by {sel.edge.decision_meta.model} · {sel.edge.decision_meta.question_pack}</div>}
+                {sel.edge.state && <div><dt className="font-medium">Evidence snippet:</dt><dd className="italic">{sel.edge.state}</dd></div>}
+                {sel.edge.decision_meta && <div>judged by {sel.edge.decision_meta.model} · {sel.edge.decision_meta.question_pack}</div>}
               </dl>
             </>
           )}
         </aside>
       </div>
 
-      <p className="text-xs text-slate-400">
+      <p className="text-xs text-muted-foreground">
         Rendered with sigma.js + graphology (Gephi ecosystem) using ForceAtlas2.{" "}
-        <a className="text-blue-600 hover:underline" href={`${API_BASE}/api/graph.gexf`}>Download GEXF</a>{" "}
+        <a className="underline underline-offset-4 hover:no-underline" href={`${API_BASE}/api/graph.gexf`}>Download GEXF</a>{" "}
         to open the full graph in Gephi desktop.
       </p>
     </div>
