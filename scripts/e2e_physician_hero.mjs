@@ -134,10 +134,32 @@ async function main() {
     const onTriage = nav.url.includes("/physician/triage?node=");
     check("canvas click navigates to node triage", onTriage, nav.url);
     check("triage queue loads judged edges", !!nav.header && !/^0 judged/.test(nav.header), nav.header ?? "no header");
-    // triage keyboard path: j moves cursor (sanity that the queue is live)
-    await send("Input.dispatchKeyEvent", { type: "keyDown", key: "j", text: "j" });
-    await send("Input.dispatchKeyEvent", { type: "keyUp", key: "j" });
-    await sleep(300);
+    // Demo arc step 3: keyboard review. "a" records an accept verdict that
+    // persists to localStorage; gold-set count and the live calibration panel
+    // (n, Brier) react; "u" undoes it.
+    const press = async (key) => {
+      await send("Input.dispatchKeyEvent", { type: "keyDown", key, text: key });
+      await send("Input.dispatchKeyEvent", { type: "keyUp", key });
+      await sleep(250);
+    };
+    const triageState = () => evalJs(send, `(() => {
+      const body = document.body.innerText;
+      const gold = Number(body.match(/Your gold set\\s+(\\d+)/)?.[1] ?? -1);
+      const calib = body.match(/n=(\\d+) · Brier ([\\d.]+)/);
+      let stored = {};
+      try { stored = JSON.parse(localStorage.getItem("emmatics-triage-verdicts-v1") ?? "{}"); } catch {}
+      return { gold, calibN: calib ? Number(calib[1]) : 0, brier: calib ? calib[2] : null,
+               storedCount: Object.keys(stored).length };
+    })()`);
+    const s0 = await triageState();
+    await press("a");
+    const s1 = await triageState();
+    check("'a' records verdict (gold set +1)", s1.gold === s0.gold + 1, `${s0.gold} -> ${s1.gold}`);
+    check("verdict persists to localStorage", s1.storedCount === s0.storedCount + 1, `${s0.storedCount} -> ${s1.storedCount}`);
+    check("live calibration reacts (n, Brier)", s1.calibN === s0.calibN + 1 && s1.brier !== null, `n=${s1.calibN} Brier=${s1.brier}`);
+    await press("u");
+    const s2 = await triageState();
+    check("'u' undoes verdict", s2.gold === s0.gold && s2.storedCount === s0.storedCount, `gold ${s1.gold} -> ${s2.gold}`);
   } else {
     check("canvas click navigates to node triage", false, "skipped: no hover target");
   }
