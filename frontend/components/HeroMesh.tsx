@@ -41,7 +41,7 @@ interface HeroData { generation_id: string; nodes: HeroNode[]; links: HeroLink[]
 
 type Band = "accept" | "review" | "low";
 const bandOf = (v: number): Band => (v >= 0.9 ? "accept" : v >= 0.6 ? "review" : "low");
-// Light-theme strand colors (same triage semantics as AtlasHero, toned down).
+// Light-theme strand colors (same triage semantics as EmmaticsHero, toned down).
 const LINK_COLOR: Record<Band, string> = {
   accept: "16,145,80", review: "202,128,8", low: "220,56,56",
 };

@@ -35,13 +35,13 @@ class AIService:
         # cites each edge id and clearly separates known / inferred / uncertain.
         if not path:
             return (f"No supported route between {source.name} and {target.name} was found in the "
-                    f"current demo graph. This means the atlas has no evidence chain to offer, not "
+                    f"current demo graph. This means Emmatics has no evidence chain to offer, not "
                     f"that none exists. The next step would be expanding coverage of both diseases.")
         hops = " → ".join(st.node.name for st in path)
         inferred_n = sum(1 for e in evidence if e.provenance == "inferred")
         contra = [e.id for e in evidence if e.contradictory_evidence]
         txt = (f"{source.name} connects to {target.name} through the route: {hops}. "
-               f"The chain uses {len(evidence)} relationships, of which {inferred_n} are atlas-inferred "
+               f"The chain uses {len(evidence)} relationships, of which {inferred_n} are Emmatics-inferred "
                f"rather than curated. Inferred links are hypotheses with calibrated probabilities, "
                f"not established biology.")
         if contra:

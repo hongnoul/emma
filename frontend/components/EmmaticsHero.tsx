@@ -1,5 +1,5 @@
 "use client";
-// AtlasHero: interactive UMAP "map of rare disease space" for the landing page.
+// EmmaticsHero: interactive UMAP "map of rare disease space" for the landing page.
 // 4.7k diseases positioned by umap-learn over IC-weighted phenotype profiles
 // (backend/pipeline/umap_hero.py), with judged PHENOTYPE_SIMILAR links colored
 // by triage band. Canvas 2D: links first, then points. Hover = tooltip,
@@ -21,7 +21,7 @@ const LINK_COLOR: Record<Band, string> = {
 
 interface Hit { kind: "node"; i: number } // nearest-node hit (links resolved via its edges)
 
-export default function AtlasHero() {
+export default function EmmaticsHero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const router = useRouter();

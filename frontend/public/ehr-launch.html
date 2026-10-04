@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<!-- Atlas EHR launch shim: SMART on FHIR R4 -> POST Bundle -> candidate phenotypes.
+<!-- Emmatics EHR launch shim: SMART on FHIR R4 -> POST Bundle -> candidate phenotypes.
      Zero-build single file. Register THIS file's URL as the SMART redirect URI
      in the hospital EHR (Epic/Oracle/Meditech) or a sandbox (SMART Health IT,
      Epic sandbox). No PHI is stored; the Bundle is POSTed in-memory to the
-     Atlas /v1/ehr/analyze-bundle endpoint and never logged. -->
+     Emmatics /v1/ehr/analyze-bundle endpoint and never logged. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Atlas · EHR launch</title>
+<title>Emmatics · EHR launch</title>
 <script src="https://cdn.jsdelivr.net/npm/fhirclient@2.5.2/build/fhir-client.js"></script>
 <style>
   body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; color: #1e293b; }
@@ -21,9 +21,9 @@
 </style>
 </head>
 <body>
-<h1>Atlas · EHR launch</h1>
+<h1>Emmatics · EHR launch</h1>
 <p class="muted">SMART on FHIR R4 shim. Reads this patient's Conditions + Observations,
-  asks the Atlas which phenotypes/diseases they suggest, and hands checked items
+  asks Emmatics which phenotypes/diseases they suggest, and hands checked items
   to the physician workbench. Candidate proposals only, never diagnoses.</p>
 
 <div id="standalone" class="card" style="display:none">
@@ -64,15 +64,15 @@ function render(a, label) {
     `<h3>Chart conditions → disease candidates</h3><ul>${checked(a.condition_candidates, "Disease") || "<li class=muted>none</li>"}</ul>` +
     `<h3>Chart observations → phenotype candidates</h3><ul>${checked(a.phenotype_candidates, "Phenotype") || "<li class=muted>none</li>"}</ul>` +
     (a.gene_candidates.length ? `<h3>Genetics → gene candidates</h3><ul>${checked(a.gene_candidates, "Gene")}</ul>` : "") +
-    `<p><button onclick="openAtlas()">Open in physician workbench →</button></p>` +
+    `<p><button onclick="openEmmatics()">Open in physician workbench →</button></p>` +
     `<p class="muted">${esc(a.disclaimer)}</p></div>`;
   show("Ready. Uncheck anything that does not describe this patient, then continue.");
 }
 
-function openAtlas() {
+function openEmmatics() {
   const qs = [...document.querySelectorAll("#results input:checked")]
     .map(el => el.dataset.q).filter(Boolean).slice(0, 8).join(", ");
-  alert("Accepted phenotypes:\n" + qs + "\n\nPaste these into Atlas symptom search (entities → edges → paths).");
+  alert("Accepted phenotypes:\n" + qs + "\n\nPaste these into Emmatics symptom search (entities → edges → paths).");
 }
 
 async function pullBundle(client) {
@@ -98,7 +98,7 @@ async function demo() {
 function standalone() {
   const iss = document.getElementById("iss").value.trim();
   if (!iss) return alert("Enter a FHIR server URL");
-  FHIR.oauth2.authorize({ clientId: "atlas-demo", scope: "launch openid fhirUser patient/*.read", iss,
+  FHIR.oauth2.authorize({ clientId: "emmatics-demo", scope: "launch openid fhirUser patient/*.read", iss,
     redirectUri: location.href.split("?")[0] });
 }
 

@@ -1,4 +1,4 @@
-import AtlasHeader from "@/components/AtlasHeader";
+import EmmaticsHeader from "@/components/EmmaticsHeader";
 import BottomNav from "@/components/BottomNav";
 
 // Full-bleed chrome for focus pages (/disease/[id]): header and bottom nav
@@ -7,7 +7,7 @@ import BottomNav from "@/components/BottomNav";
 export default function FocusLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
-      <AtlasHeader />
+      <EmmaticsHeader />
       <main className="pb-28 md:pb-10">{children}</main>
       <BottomNav />
     </>

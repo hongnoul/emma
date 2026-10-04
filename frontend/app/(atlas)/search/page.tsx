@@ -7,7 +7,7 @@ import { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { api, SearchResult } from "@/lib/api";
-import AtlasHero from "@/components/AtlasHero";
+import EmmaticsHero from "@/components/EmmaticsHero";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -62,7 +62,7 @@ function SearchHome() {
         </div>
       </section>
 
-      <AtlasHero />
+      <EmmaticsHero />
 
       {/* search card */}
       <section className="rounded-2xl border bg-muted/30 p-4 sm:p-6">

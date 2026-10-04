@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 
 // Floating pill header shared by the card-shell (atlas) and full-bleed
 // (focus) route groups.
-export default function AtlasHeader() {
+export default function EmmaticsHeader() {
   return (
     <header className="px-3 pt-3 md:px-6">
       <div className="mx-auto flex max-w-5xl items-center gap-3 rounded-2xl border bg-background px-4 py-3 shadow-sm">
