@@ -67,6 +67,7 @@ class GraphStore:
     def query_edges(self, from_id: str | None = None, to_id: str | None = None,
                     node_id: str | None = None, rel_types: list[str] | None = None,
                     provenance: str | None = None, min_valid: float | None = None,
+                    max_valid: float | None = None,
                     judged_only: bool = False,
                     limit: int = 50, offset: int = 0) -> tuple[list[Edge], int]:
         """Filterable edge query. node_id matches either endpoint. Returns (page, total)."""
@@ -89,6 +90,8 @@ class GraphStore:
             if judged_only and e.edge_valid is None:
                 continue
             if min_valid is not None and (e.edge_valid is None or e.edge_valid < min_valid):
+                continue
+            if max_valid is not None and (e.edge_valid is None or e.edge_valid > max_valid):
                 continue
             out.append(e)
         # deterministic order: judged desc by p(valid), then id

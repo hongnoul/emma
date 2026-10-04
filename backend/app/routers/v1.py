@@ -109,6 +109,7 @@ def traverse(from_id: str | None = Query(None, alias="from"),
              rel_types: str = Query("", description="comma-separated"),
              provenance: str | None = Query(None, pattern="^(curated|inferred)$"),
              min_valid: float | None = Query(None, ge=0, le=1),
+             max_valid: float | None = Query(None, ge=0, le=1),
              judged_only: bool = False,
              limit: int = Query(50, ge=1, le=500), offset: int = Query(0, ge=0)):
     """The workhorse: any edge query, filterable by endpoint, channel,
@@ -117,10 +118,29 @@ def traverse(from_id: str | None = Query(None, alias="from"),
     rts = [t.strip() for t in rel_types.split(",") if t.strip()] or None
     page, total = store.query_edges(from_id=from_id, to_id=to_id, node_id=node,
                                     rel_types=rts, provenance=provenance,
-                                    min_valid=min_valid, judged_only=judged_only,
+                                    min_valid=min_valid, max_valid=max_valid,
+                                    judged_only=judged_only,
                                     limit=limit, offset=offset)
     return EdgesResponse(generation_id=store.generation, total=total,
                          limit=limit, offset=offset, items=page)
+
+
+class EdgeDetail(Envelope):
+    edge: Edge
+    source_node: Node | None = None
+    target_node: Node | None = None
+
+
+@router.get("/edges/{edge_id}", response_model=EdgeDetail)
+def edge_detail(edge_id: str):
+    """One edge with full decision block plus endpoint nodes (for workbench views)."""
+    store = get_store()
+    e = store.edges.get(edge_id)
+    if e is None:
+        raise HTTPException(404, f"edge not found: {edge_id}")
+    return EdgeDetail(generation_id=store.generation, edge=e,
+                      source_node=store.get_node(e.source),
+                      target_node=store.get_node(e.target))
 
 
 @router.get("/paths", response_model=PathResponse)
@@ -140,6 +160,20 @@ class JudgeRequest(BaseModel):
     pack_id: str = "edge-validate-v1"
 
 
+def _live_judge():
+    """Return the decision service if a real judge is configured, else None."""
+    import os
+    if os.environ.get("ATLAS_JUDGE") not in ("laya", "openai"):
+        return None
+    from ..services.decision_service import get_decision_service
+    return get_decision_service()
+
+
+_JUDGE_501 = ("on-demand judging not enabled on this deployment "
+              "(set ATLAS_JUDGE=openai with OPENAI_API_KEY, or "
+              "ATLAS_JUDGE=laya with the laya package installed)")
+
+
 @router.post("/judge")
 def judge(req: JudgeRequest):
     """Judge an arbitrary state with a question pack.
@@ -149,19 +183,96 @@ def judge(req: JudgeRequest):
     Without one, returns 501 so clients can degrade gracefully; stored edge
     judgments are unaffected (they are precomputed into the graph).
     """
-    import os
-    if os.environ.get("ATLAS_JUDGE") not in ("laya", "openai"):
-        raise HTTPException(501, "on-demand judging not enabled on this deployment "
-                                 "(set ATLAS_JUDGE=openai with OPENAI_API_KEY, or "
-                                 "ATLAS_JUDGE=laya with the laya package installed)")
-    from ..services.decision_service import get_decision_service
-    svc = get_decision_service()
+    svc = _live_judge()
+    if svc is None:
+        raise HTTPException(501, _JUDGE_501)
     pack = svc.packs.get(req.pack_id)
     if pack is None:
         raise HTTPException(404, f"unknown question pack: {req.pack_id}")
     result = svc._router.predict(req.state, pack["questions"])  # type: ignore[attr-defined]
     return {"generation_id": get_store().generation, "pack_id": req.pack_id,
             "answers": result["answers"]}
+
+
+# ---- ablation: which evidence item carries the judge's belief? ----
+
+_EVIDENCE_LIST_MARKERS = [
+    # (prefix the list follows, terminator) — bulk pipeline state format
+    ("Shared informative HPO phenotypes: ", ". Causal genes"),
+]
+
+
+def _split_evidence_items(state: str) -> tuple[list[str], str, str] | None:
+    """Find an ablatable list in a state snippet.
+
+    Returns (items, head, tail) where state == head + ", ".join(items) + tail.
+    None when the state has no recognizable list (client should fall back to
+    manual what-if editing).
+    """
+    for marker, term in _EVIDENCE_LIST_MARKERS:
+        start = state.find(marker)
+        if start < 0:
+            continue
+        list_start = start + len(marker)
+        end = state.find(term, list_start)
+        if end < 0:
+            continue
+        items = [s.strip() for s in state[list_start:end].split(",") if s.strip()]
+        if len(items) >= 2:
+            return items, state[:list_start], state[end:]
+    return None
+
+
+class AblateResponse(BaseModel):
+    generation_id: str
+    edge_id: str
+    pack_id: str
+    baseline_valid: float
+    baseline_contradicted: float | None = None
+    items: list[dict]  # {removed, edge_valid, delta}
+
+
+@router.post("/edges/{edge_id}/ablate", response_model=AblateResponse)
+def ablate(edge_id: str, pack_id: str = "edge-validate-v1"):
+    """Leave-one-out evidence ablation: re-judge the edge's state N times,
+    each with one evidence item removed. delta = baseline - ablated, i.e.
+    how much p(valid) that single item carries. Only possible because each
+    judgment is one fast forward pass.
+    """
+    svc = _live_judge()
+    if svc is None:
+        raise HTTPException(501, _JUDGE_501)
+    store = get_store()
+    e = store.edges.get(edge_id)
+    if e is None:
+        raise HTTPException(404, f"edge not found: {edge_id}")
+    if not e.state:
+        raise HTTPException(422, "edge has no state snippet; nothing to ablate")
+    pack = svc.packs.get(pack_id)
+    if pack is None:
+        raise HTTPException(404, f"unknown question pack: {pack_id}")
+    split = _split_evidence_items(e.state)
+    if split is None:
+        raise HTTPException(422, "state has no recognizable evidence list; "
+                                 "use POST /v1/judge with an edited state instead")
+    items, head, tail = split
+    questions = pack["questions"]
+    predict = svc._router.predict  # type: ignore[attr-defined]
+    baseline = predict(e.state, questions)["answers"]
+    base_valid = baseline["edge_valid"]["noul"]
+    results = []
+    for i, item in enumerate(items):
+        kept = items[:i] + items[i + 1:]
+        ablated_state = head + ", ".join(kept) + tail
+        a = predict(ablated_state, questions)["answers"]
+        v = a["edge_valid"]["noul"]
+        results.append({"removed": item, "edge_valid": round(v, 4),
+                        "delta": round(base_valid - v, 4)})
+    results.sort(key=lambda r: -r["delta"])
+    return AblateResponse(generation_id=store.generation, edge_id=edge_id,
+                          pack_id=pack_id, baseline_valid=round(base_valid, 4),
+                          baseline_contradicted=round(baseline["contradicted"]["noul"], 4),
+                          items=results)
 
 
 @router.get("/evals")
@@ -174,7 +285,9 @@ def evals(judge: str = Query("mock", pattern="^(mock|laya|openai)$")):
 def meta():
     store = get_store()
     from collections import Counter
+    import os
     types = Counter(n.type for n in store.nodes.values())
     rels = Counter(e.rel_type for e in store.edges.values())
     return {"generation_id": store.generation, "nodes": len(store.nodes),
-            "edges": len(store.edges), "node_types": dict(types), "rel_types": dict(rels)}
+            "edges": len(store.edges), "node_types": dict(types), "rel_types": dict(rels),
+            "judge": os.environ.get("ATLAS_JUDGE") or "none"}
