@@ -14,6 +14,7 @@ import {
   VoiceButton,
   VoiceProvider,
   useVoiceSession,
+  type CheckinDraft,
   type VoiceMsg,
 } from "@/components/patient-voice";
 
@@ -75,6 +76,9 @@ async function liveFeed(): Promise<FeedItem[]> {
 export default function PatientApp() {
   const [tab, setTab] = useState<Tab>("journey");
   const [toast, setToast] = useState<string | null>(null);
+  // Voice check-in: drafted in ChatTab (fill_checkin client tool), consumed
+  // once by ResearchTab. Never auto-submitted.
+  const [checkinDraft, setCheckinDraft] = useState<CheckinDraft | null>(null);
   const frameRef = useRef<HTMLDivElement>(null);
 
   // Deep link support: /patient?tab=chat (post-hydration to avoid SSG mismatch)
@@ -88,6 +92,19 @@ export default function PatientApp() {
       t === "research"
     )
       setTab(t);
+  }, []);
+
+  // Dev/test hook: inject a voice check-in draft without a live ElevenLabs
+  // session (window.dispatchEvent(new CustomEvent("rarepath:checkin", {detail}))).
+  // Mirrors exactly what the fill_checkin client tool does.
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    const h = (e: Event) => {
+      setCheckinDraft((e as CustomEvent).detail as CheckinDraft);
+      setTab("research");
+    };
+    window.addEventListener("rarepath:checkin", h);
+    return () => window.removeEventListener("rarepath:checkin", h);
   }, []);
 
   useEffect(() => {
@@ -169,9 +186,16 @@ export default function PatientApp() {
           <main className="no-scrollbar min-h-0 flex-1 overflow-y-auto px-3 pb-4 pt-3">
             {tab === "journey" && <JourneyTab onGo={setTab} />}
             {tab === "home" && <OverviewTab onGo={setTab} />}
-            {tab === "chat" && <ChatTab onGo={setTab} />}
+            {tab === "chat" && (
+              <ChatTab onGo={setTab} onDraftCheckin={setCheckinDraft} />
+            )}
             {tab === "community" && <CommunityTab />}
-            {tab === "research" && <ResearchTab />}
+            {tab === "research" && (
+              <ResearchTab
+                draft={checkinDraft}
+                onDraftConsumed={() => setCheckinDraft(null)}
+              />
+            )}
           </main>
 
           {/* Bottom tab bar */}
@@ -529,15 +553,27 @@ interface ChatMsg {
   src?: string;
 }
 
-function ChatTab({ onGo }: { onGo: (t: Tab) => void }) {
+function ChatTab({
+  onGo,
+  onDraftCheckin,
+}: {
+  onGo: (t: Tab) => void;
+  onDraftCheckin: (d: CheckinDraft) => void;
+}) {
   return (
     <VoiceProvider>
-      <ChatTabInner onGo={onGo} />
+      <ChatTabInner onGo={onGo} onDraftCheckin={onDraftCheckin} />
     </VoiceProvider>
   );
 }
 
-function ChatTabInner({ onGo }: { onGo: (t: Tab) => void }) {
+function ChatTabInner({
+  onGo,
+  onDraftCheckin,
+}: {
+  onGo: (t: Tab) => void;
+  onDraftCheckin: (d: CheckinDraft) => void;
+}) {
   const [msgs, setMsgs] = useState<ChatMsg[]>([
     {
       from: "ai",
@@ -559,6 +595,7 @@ function ChatTabInner({ onGo }: { onGo: (t: Tab) => void }) {
       if (["journey", "home", "chat", "community", "research"].includes(t))
         onGo(t as Tab);
     },
+    onFillCheckin: onDraftCheckin,
   });
 
   useEffect(() => {
@@ -877,7 +914,13 @@ const CONSENT_POINTS: [string, string, string][] = [
   ],
 ];
 
-function ResearchTab() {
+function ResearchTab({
+  draft,
+  onDraftConsumed,
+}: {
+  draft: CheckinDraft | null;
+  onDraftConsumed: () => void;
+}) {
   const [symptoms, setSymptoms] = useState<string[]>(["Fatigue"]);
   const [effects, setEffects] = useState<string[]>([]);
   const [doses, setDoses] = useState(5);
@@ -886,6 +929,30 @@ function ResearchTab() {
   const [consent, setConsent] = useState<"ask" | "given" | "declined">("ask");
   const [agreed, setAgreed] = useState(false);
   const [feed, setFeed] = useState<FeedItem[] | null>(null);
+  const [voiceFilled, setVoiceFilled] = useState(false);
+
+  // Apply a voice-drafted check-in once. Values land in the normal form
+  // state, so the patient reviews and submits exactly as if typed. Known
+  // chips are matched case-insensitively; unknown ones are ignored rather
+  // than invented.
+  useEffect(() => {
+    if (!draft) return;
+    const match = (options: string[], wanted?: string[]) =>
+      wanted
+        ?.map((w) =>
+          options.find((o) => o.toLowerCase() === w.trim().toLowerCase()),
+        )
+        .filter((x): x is string => Boolean(x));
+    const s = match(SYMPTOMS, draft.symptoms);
+    const e = match(SIDE_EFFECTS, draft.effects);
+    if (s?.length) setSymptoms(s);
+    if (e?.length) setEffects(e);
+    if (draft.severity !== undefined) setSeverity(draft.severity);
+    if (draft.doses !== undefined) setDoses(draft.doses);
+    setSubmitted(false);
+    setVoiceFilled(true);
+    onDraftConsumed();
+  }, [draft, onDraftConsumed]);
 
   useEffect(() => {
     let alive = true;
@@ -1013,6 +1080,15 @@ function ResearchTab() {
               Manage
             </button>
           </div>
+          {voiceFilled && !submitted && (
+            <p className="rise mt-2 rounded-xl border border-primary/25 bg-primary/5 px-3 py-2 text-[11px] leading-relaxed text-foreground/70">
+              <span className="font-semibold text-primary">
+                Pre-filled by voice ·{" "}
+              </span>
+              Rarepath drafted this from your conversation. Review every field,
+              then submit yourself.
+            </p>
+          )}
           {submitted ? (
             <div className="rise mt-4 rounded-2xl bg-primary/10 p-4 text-center">
               <p className="font-display text-[18px] text-primary">

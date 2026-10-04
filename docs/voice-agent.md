@@ -91,10 +91,26 @@ Transcripts appear as chat bubbles; "show me my community" should flip tabs.
 - `frontend/components/patient-voice.tsx` — provider, session hook, mic button
 - `frontend/app/(atlas)/patient/page.tsx` — ChatTab wiring
 
+## Voice check-in (phase 2, built)
+
+Third client tool `fill_checkin` (provisioned by the script): when the
+patient describes symptoms/side effects/doses in conversation, the agent
+drafts the weekly check-in. The draft lands in the normal form state on the
+Research tab with a "Pre-filled by voice" banner; unknown chip values are
+ignored, numbers are clamped (severity 0-10, doses 0-7), and the patient
+always reviews and submits manually. Consent gating is unchanged: the form
+is only reachable after consent, and voice never submits.
+
+Dev test hook (non-production builds only):
+
+```js
+window.dispatchEvent(new CustomEvent("rarepath:checkin", {
+  detail: { symptoms: ["Joint pain"], effects: ["Nausea"], severity: 8, doses: 3 }
+}))
+```
+
 ## Next phases (not built yet)
 
-- Voice check-in: client tools to pre-fill the ResearchTab form (symptoms,
-  severity, doses) with the consent gate enforced in the prompt.
 - Bahasa Indonesia voice + language detection for the Adira persona.
 - Spoken daily-support toast and "read this study" on the research feed.
 

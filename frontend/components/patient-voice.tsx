@@ -21,6 +21,13 @@ export interface VoiceMsg {
   src?: string;
 }
 
+export interface CheckinDraft {
+  symptoms?: string[];
+  effects?: string[];
+  severity?: number;
+  doses?: number;
+}
+
 export function VoiceProvider({ children }: { children: React.ReactNode }) {
   return <ConversationProvider>{children}</ConversationProvider>;
 }
@@ -28,9 +35,11 @@ export function VoiceProvider({ children }: { children: React.ReactNode }) {
 export function useVoiceSession({
   onTranscript,
   onSwitchTab,
+  onFillCheckin,
 }: {
   onTranscript: (m: VoiceMsg) => void;
   onSwitchTab?: (tab: string) => void;
+  onFillCheckin?: (draft: CheckinDraft) => void;
 }) {
   const [connecting, setConnecting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,6 +59,28 @@ export function useVoiceSession({
       switch_tab: ({ tab }: { tab?: unknown }) => {
         if (typeof tab === "string" && onSwitchTab) onSwitchTab(tab);
         return "ok";
+      },
+      // Pre-fill the weekly check-in form from conversation. The agent is
+      // prompt-bound to only call this after the patient described symptoms
+      // and to tell them to review before submitting. Consent gating stays
+      // in the UI: the form is only reachable when consent === "given",
+      // and nothing is submitted by voice.
+      fill_checkin: (params: Record<string, unknown>) => {
+        if (!onFillCheckin) return "check-in not available on this screen";
+        const strArr = (v: unknown) =>
+          Array.isArray(v) ? v.filter((x): x is string => typeof x === "string") : undefined;
+        const num = (v: unknown, lo: number, hi: number) =>
+          typeof v === "number" && Number.isFinite(v)
+            ? Math.min(hi, Math.max(lo, Math.round(v)))
+            : undefined;
+        onFillCheckin({
+          symptoms: strArr(params.symptoms),
+          effects: strArr(params.side_effects),
+          severity: num(params.severity, 0, 10),
+          doses: num(params.doses_taken, 0, 7),
+        });
+        if (onSwitchTab) onSwitchTab("research");
+        return "check-in form pre-filled; patient must review and submit";
       },
     },
   });
