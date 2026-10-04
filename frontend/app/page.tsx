@@ -42,9 +42,9 @@ export default function Apex() {
         <h1 className="flex justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/logo.svg"
+            src="/logo-text.svg"
             alt="Emmatics"
-            className="h-40 w-auto sm:h-56"
+            className="h-48 w-auto sm:h-64"
           />
         </h1>
         <p className="mt-6 max-w-2xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg">
