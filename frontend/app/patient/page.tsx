@@ -364,6 +364,91 @@ function JourneyTab({ onGo }: { onGo: (t: Tab) => void }) {
 
 // ---------------------------------------------------------------- Overview
 
+/** Symptom cluster graph — nodes sized by prevalence, patient cluster filled. */
+function SymptomNetworkArt() {
+  const nodes: [number, number, number, boolean][] = [
+    [50, 38, 9, true], // fatigue (center)
+    [27, 24, 6, true], // hypermobility
+    [73, 26, 5, true], // malar rash
+    [22, 56, 4.5, false],
+    [48, 68, 4, false],
+    [76, 58, 5, false],
+    [64, 44, 3.5, true],
+    [36, 46, 3, false],
+  ];
+  const edges: [number, number][] = [
+    [0, 1],
+    [0, 2],
+    [0, 3],
+    [0, 4],
+    [0, 5],
+    [0, 6],
+    [1, 7],
+    [2, 6],
+    [5, 6],
+    [3, 7],
+  ];
+  return (
+    <svg viewBox="0 0 100 75" className="h-full w-full" aria-hidden>
+      {edges.map(([a, b], i) => (
+        <line
+          key={i}
+          x1={nodes[a][0]}
+          y1={nodes[a][1]}
+          x2={nodes[b][0]}
+          y2={nodes[b][1]}
+          className="stroke-foreground/20"
+          strokeWidth={nodes[a][3] && nodes[b][3] ? 1.2 : 0.6}
+        />
+      ))}
+      {nodes.map(([x, y, r, hot], i) => (
+        <circle
+          key={i}
+          cx={x}
+          cy={y}
+          r={r}
+          className={
+            hot ? "fill-foreground/70" : "fill-none stroke-foreground/35"
+          }
+          strokeWidth={1.2}
+        />
+      ))}
+    </svg>
+  );
+}
+
+/** Stylised double helix with base-pair rungs. */
+function HelixArt() {
+  const steps = Array.from({ length: 13 }, (_, i) => i);
+  const y = (i: number) => 6 + i * 5.25;
+  const xA = (i: number) => 50 + 26 * Math.sin(i * 0.55);
+  const xB = (i: number) => 50 + 26 * Math.sin(i * 0.55 + Math.PI);
+  const path = (fx: (i: number) => number) =>
+    steps.map((i) => `${i === 0 ? "M" : "L"}${fx(i).toFixed(1)},${y(i)}`).join(" ");
+  return (
+    <svg viewBox="0 0 100 75" className="h-full w-full" aria-hidden>
+      {steps.map((i) => (
+        <line
+          key={i}
+          x1={xA(i)}
+          y1={y(i)}
+          x2={xB(i)}
+          y2={y(i)}
+          className="stroke-foreground/25"
+          strokeWidth={0.8}
+        />
+      ))}
+      <path d={path(xA)} className="fill-none stroke-foreground/60" strokeWidth={2} strokeLinecap="round" />
+      <path d={path(xB)} className="fill-none stroke-foreground/40" strokeWidth={2} strokeLinecap="round" />
+      {steps
+        .filter((i) => i % 3 === 1)
+        .map((i) => (
+          <circle key={i} cx={xA(i)} cy={y(i)} r={2.4} className="fill-foreground/70" />
+        ))}
+    </svg>
+  );
+}
+
 function OverviewTab({ onGo }: { onGo: (t: Tab) => void }) {
   const [taken, setTaken] = useState(false);
   const [reminder, setReminder] = useState(false);
@@ -459,13 +544,19 @@ function OverviewTab({ onGo }: { onGo: (t: Tab) => void }) {
         </div>
         <div className="mt-3 grid grid-cols-2 gap-2">
           {/* The prototype shipped two photographs (symptom network, genetic
-              helix) that are not in the bundle; grayscale placeholders keep
-              the layout. */}
-          <div className="grid aspect-[4/3] w-full place-items-center rounded-2xl bg-foreground/10 text-2xl text-foreground/40">
-            ◎
+              helix) that are not in the bundle; inline SVG illustrations in
+              the monochrome system stand in for them. */}
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-foreground/5">
+            <SymptomNetworkArt />
+            <span className="absolute bottom-1.5 left-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-foreground/40">
+              Symptom network
+            </span>
           </div>
-          <div className="grid aspect-[4/3] w-full place-items-center rounded-2xl bg-foreground/10 text-2xl text-foreground/40">
-            ⌬
+          <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl bg-foreground/5">
+            <HelixArt />
+            <span className="absolute bottom-1.5 left-2 text-[9px] font-semibold uppercase tracking-[0.12em] text-foreground/40">
+              Genetic signature
+            </span>
           </div>
         </div>
         <p className="glass-soft mt-3 rounded-2xl p-3 text-[12px] leading-relaxed text-foreground/70">
