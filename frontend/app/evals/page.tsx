@@ -22,6 +22,19 @@ const JUDGES: { id: Judge; label: string }[] = [
   { id: "openai-v2", label: "OpenAI v2 +superseded" },
 ];
 
+function JudgeToggle({ judge, setJudge }: { judge: Judge; setJudge: (j: Judge) => void }) {
+  return (
+    <div className="flex gap-2 flex-wrap">
+      {JUDGES.map((j) => (
+        <Button key={j.id} size="sm" variant={judge === j.id ? "default" : "outline"}
+          onClick={() => setJudge(j.id)}>
+          {j.label}
+        </Button>
+      ))}
+    </div>
+  );
+}
+
 export default function EvalsPage() {
   const [judge, setJudge] = useState<Judge>("openai");
   const [r, setR] = useState<EvalsReport | null>(null);
@@ -29,10 +42,22 @@ export default function EvalsPage() {
 
   useEffect(() => {
     setR(null); setError(null);
-    v1.evals(judge).then(setR).catch((e) => setError(String(e)));
+    v1.evals(judge)
+      .then(setR)
+      .catch((e) => {
+        // Older backends only support mock|laya; fall back once from the default.
+        if (judge === "openai" && String(e).includes("string_pattern_mismatch")) setJudge("laya");
+        else setError(String(e));
+      });
   }, [judge]);
 
-  if (error) return <p className="text-sm font-medium">{error}</p>;
+  if (error) return (
+    <div className="space-y-6 max-w-3xl">
+      <JudgeToggle judge={judge} setJudge={setJudge} />
+      <p className="text-sm font-medium">{error}</p>
+      <p className="text-xs text-muted-foreground">This deployment may not support the selected judge. Try another.</p>
+    </div>
+  );
 
   return (
     <div className="space-y-6 max-w-3xl">
@@ -42,14 +67,7 @@ export default function EvalsPage() {
           p(valid) vs the domain-expert overlay (31 edges, 3 contested with soft
           targets, 3 expert overrides of demo gold).
         </p>
-        <div className="flex gap-2 flex-wrap">
-          {JUDGES.map((j) => (
-            <Button key={j.id} size="sm" variant={judge === j.id ? "default" : "outline"}
-              onClick={() => setJudge(j.id)}>
-              {j.label}
-            </Button>
-          ))}
-        </div>
+        <JudgeToggle judge={judge} setJudge={setJudge} />
       </header>
 
       {!r && <p className="text-muted-foreground">Loading…</p>}

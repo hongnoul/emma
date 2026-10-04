@@ -14,7 +14,11 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
       });
       if (!res.ok) {
         let detail = `${res.status} ${res.statusText}`;
-        try { detail = (await res.json()).detail ?? detail; } catch { /* keep */ }
+        try {
+          const d = (await res.json()).detail;
+          if (typeof d === "string") detail = d;
+          else if (d != null) detail = JSON.stringify(d);
+        } catch { /* keep */ }
         throw new ApiError(res.status, detail);
       }
       return res.json();
