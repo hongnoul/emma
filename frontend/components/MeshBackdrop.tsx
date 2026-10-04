@@ -3,7 +3,7 @@
 // persists across route changes (the click-zoom carries straight into
 // /disease/[id] with no white reload). Filter state arrives over meshBus
 // from ApexHero; match counts flow back the same way.
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import HeroMesh from "@/components/HeroMesh";
 import { meshBus, MeshFilter } from "@/lib/mesh-bus";
@@ -23,20 +23,26 @@ export default function MeshBackdrop() {
   // viewport, so the mesh would animate for zero visible pixels. Skip it —
   // but when arriving *from* another route (the apex handoff), linger
   // briefly under the shell's background fade before unmounting.
+  //
+  // Linger must flip during render, not in an effect: an effect-driven flag
+  // would return null for one commit, unmounting HeroMesh and losing the
+  // persistent canvas the unfold animation runs on (setState-in-render is
+  // the supported "derived state from props" pattern).
   const onPhysician = pathname.startsWith("/physician");
+  const [prevPath, setPrevPath] = useState(pathname);
   const [linger, setLinger] = useState(false);
-  const wasElsewhere = useRef(!onPhysician);
-  useEffect(() => {
-    const on = pathname.startsWith("/physician");
-    if (on && wasElsewhere.current) {
-      wasElsewhere.current = false;
+  if (prevPath !== pathname) {
+    setPrevPath(pathname);
+    if (onPhysician && !prevPath.startsWith("/physician")) {
       meshBus.markHandoff();
       setLinger(true);
-      const t = setTimeout(() => setLinger(false), PHYSICIAN_LINGER_MS);
-      return () => clearTimeout(t);
     }
-    wasElsewhere.current = !on;
-  }, [pathname]);
+  }
+  useEffect(() => {
+    if (!linger) return;
+    const t = setTimeout(() => setLinger(false), PHYSICIAN_LINGER_MS);
+    return () => clearTimeout(t);
+  }, [linger]);
   if (onPhysician && !linger) return null;
   return (
     <HeroMesh

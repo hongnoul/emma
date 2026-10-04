@@ -32,21 +32,36 @@ Bubble select becomes a state change, not a navigation:
   one motion. The artifact JSON is already in browser cache from the apex
   mesh, so there is no load flash.
 
-## Phase 2: one canvas, sphere unfolds into the map (future)
+## Phase 2a: sphere unfolds into the map (shipped)
+
+Entering /physician from anywhere now plays an unfold departure on the
+lingering backdrop canvas:
+
+- HeroMesh arms an unfold when the route flips into /physician: every node
+  lerps (~650ms, easeInOut) from its sphere projection to its flat UMAP
+  position inside the hero panel rect, using raw min/max normalization to
+  match EmmaticsHero's screenXY exactly. Depth fades lift as the map
+  flattens. Progress is exposed on `window.__meshUnfold` for the e2e.
+- EmmaticsHero registers its panel as the meshBus stage (the unfold target
+  rect) and, when `meshBus.handoffActive()` (stamped by ApexHero at nav
+  initiation), holds its dark panel transparent (.hero-panel-handoff) so
+  the converging mesh stays visible, then fades to dark as its own
+  light-on-dark points take over.
+- MeshBackdrop's linger grew to 800ms to cover the unfold; it flips the
+  linger flag during render (not in an effect) so HeroMesh never unmounts
+  for a commit mid-handoff.
+
+## Phase 2b: single canvas (future)
 
 Both canvases consume the same `/emmatics-umap.json` `{x, y}` coords —
 HeroMesh projects them onto a sphere, EmmaticsHero draws them flat.
 
-- Add a `layout: "sphere" | "flat"` state to HeroMesh that lerps each node
-  between its sphere projection and its normalized flat UMAP position docked
-  to a target rect (the `meshBus.setStage` docking mechanic already exists
-  for `/disease/[id]`).
 - `/physician` stops mounting its own canvas. `EmmaticsHero` shrinks to a DOM
   shell: stage div (registered via `setStage`), legend, band pills, tooltip
   host. `MeshBackdrop` drops its `/physician` early return; the physician
   hero region goes transparent.
-- Result: picking Physician unfolds the sphere into the map of rare disease
-  space — zero remount, filter state carried along.
+- Gains over 2a: hover/zoom/band state carries across, and the brief
+  double-canvas overlap disappears.
 
 ## Risks
 
