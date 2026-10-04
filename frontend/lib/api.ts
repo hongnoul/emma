@@ -117,6 +117,7 @@ export interface PaperDetail {
 
 export const api = {
   search: (q: string) => get<SearchResult[]>(`/api/search?q=${encodeURIComponent(q)}`),
+  graph: () => get<GraphPayload>(`/api/graph`),
   disease: (id: string) => get<DiseaseDetail>(`/api/diseases/${id}`),
   related: (id: string) => get<RelatedDisease[]>(`/api/diseases/${id}/related`),
   diseaseGraph: (id: string, depth = 2) => get<GraphPayload>(`/api/diseases/${id}/graph?depth=${depth}`),
