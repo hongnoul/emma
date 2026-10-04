@@ -109,9 +109,16 @@ window.dispatchEvent(new CustomEvent("rarepath:checkin", {
 }))
 ```
 
+## Bahasa Indonesia (phase 3, built)
+
+The provisioning script adds the `language_detection` system tool and an
+`id` language preset (localized first message). The agent auto-switches to
+Bahasa Indonesia when Adira speaks it, with informal register prompted.
+Optionally pin an Indonesian voice per language in the dashboard
+(Voice Library → language top picks → agent language settings).
+
 ## Next phases (not built yet)
 
-- Bahasa Indonesia voice + language detection for the Adira persona.
 - Spoken daily-support toast and "read this study" on the research feed.
 
 ## Fastest path: one command

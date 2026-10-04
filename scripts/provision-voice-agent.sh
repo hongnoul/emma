@@ -104,8 +104,22 @@ PY
 CHECKIN_TOOL_ID=$(el POST /v1/convai/tools "$CHECKIN_TOOL" | jqpy "['id']")
 echo "   fill_checkin: $CHECKIN_TOOL_ID"
 
+say "2c/5 Creating language_detection system tool…"
+LANG_TOOL=$(python3 <<'PY'
+import json
+print(json.dumps({"tool_config": {
+  "type": "system",
+  "name": "language_detection",
+  "description": "",
+  "params": {"system_tool_type": "language_detection"}
+}}))
+PY
+)
+LANG_TOOL_ID=$(el POST /v1/convai/tools "$LANG_TOOL" | jqpy "['id']")
+echo "   language_detection: $LANG_TOOL_ID"
+
 say "3/5 Creating agent…"
-AGENT=$(python3 - "$ATLAS_TOOL_ID" "$SWITCH_TOOL_ID" "$CHECKIN_TOOL_ID" <<'PY'
+AGENT=$(python3 - "$ATLAS_TOOL_ID" "$SWITCH_TOOL_ID" "$CHECKIN_TOOL_ID" "$LANG_TOOL_ID" <<'PY'
 import json, sys
 prompt = """You are Rarepath, a warm voice companion for rare-disease patients. You are speaking with Adira, who is on day 118 of treatment under Dr. Santoso.
 
@@ -117,6 +131,7 @@ Rules:
 - Keep replies under three sentences unless asked for detail. Speak plainly, no jargon unless the patient uses it first.
 - Use the switch_tab client tool when the patient wants to see something: journey, home, chat, community, research.
 - When the patient describes symptoms, side effects, or missed/taken doses, offer to draft their weekly check-in. If they agree, call fill_checkin with what they told you, then tell them to review the form and submit it themselves. Never claim you submitted it.
+- Adira lives in Jakarta. If she speaks Bahasa Indonesia, switch to Bahasa Indonesia and stay warm and informal ("kamu", not "Anda").
 - If the patient sounds distressed or describes an emergency, tell them to contact their physician or emergency services immediately."""
 print(json.dumps({
   "name": "Rarepath patient companion",
@@ -126,7 +141,16 @@ print(json.dumps({
       "language": "en",
       "prompt": {
         "prompt": prompt,
-        "tool_ids": [sys.argv[1], sys.argv[2], sys.argv[3]]
+        "tool_ids": [sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]]
+      }
+    },
+    "language_presets": {
+      "id": {
+        "overrides": {
+          "agent": {
+            "first_message": "Halo Adira, ini Rarepath. Bagaimana perasaanmu hari ini?"
+          }
+        }
       }
     }
   },
