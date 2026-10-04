@@ -97,10 +97,23 @@ Re-run the script whenever `/v1/meta` generation changes.
 ## Build order (for the implementing session)
 
 1. ~~`backend/pipeline/umap_hero.py` + artifact~~ **done, checked in.**
-2. `EmmaticsHero.tsx` with static render + fallback.
-3. Interactions (hover/click/zoom), wire into `/physician/page.tsx` replacing
-   the header+bands section.
-4. Entrance animation + band-chip link highlighting last (polish).
+2. ~~`EmmaticsHero.tsx` with static render + fallback.~~ **done.**
+3. ~~Interactions (hover/click/zoom), wire into `/physician/page.tsx` replacing
+   the header+bands section.~~ **done (2026-10-04):** hero renders on
+   `/physician` with an `onFailed` prop; on artifact failure the page falls
+   back to the static headline + band cards. The node section below is the
+   search-first `/v1/attention` worklist (no full-graph fetch), so the page
+   works on the bulk generation.
+4. ~~Entrance animation + band-chip link highlighting last (polish).~~
+   **done:** chips preview-highlight their band's links on hover.
+
+Verified end-to-end by `scripts/e2e_physician_hero.mjs` (CDP, real pointer
+input): canvas pixels, chip counts vs artifact, hover tooltip, click →
+triage with judged edges, chip-hover canvas re-render + restore, and the
+blocked-artifact fallback. 10/10 checks pass against the bulk generation.
+Local demo tip: `EMMA_API_PROXY` in `frontend/next.config.ts` proxies
+`/api` + `/v1` same-origin, so point it at a backend serving
+`data/graph.bulk.json` to demo prod-scale data without CORS changes.
 
 Note: only ~2,082 nodes have display names (parsed from similarity-edge
 descriptions); the rest fall back to the MONDO curie. The tooltip should

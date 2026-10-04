@@ -142,7 +142,36 @@ async function main() {
     check("canvas click navigates to node triage", false, "skipped: no hover target");
   }
 
-  // 5. Fallback: block the artifact and confirm the static header + band cards.
+  // 5. Band chip hover highlighting: hovering a chip must change the canvas
+  //    render (links of that band emphasized) and restore on mouse leave.
+  await send("Page.navigate", { url: BASE + "/physician" });
+  await sleep(6000);
+  const pixelHash = `(() => {
+    const cv = document.querySelector("canvas");
+    const d = cv.getContext("2d").getImageData(0, 0, cv.width, cv.height).data;
+    let h = 0; for (let i = 0; i < d.length; i += 997) h = (h * 31 + d[i]) >>> 0;
+    return h;
+  })()`;
+  const hashBefore = await evalJs(send, pixelHash);
+  const chipPos = await evalJs(send, `(() => {
+    const b = [...document.querySelectorAll("button")].find(x => /accept/.test(x.textContent));
+    if (!b) return null;
+    const r = b.getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
+  })()`);
+  if (chipPos) {
+    await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: chipPos.x, y: chipPos.y });
+    await sleep(600);
+    const hashDuring = await evalJs(send, pixelHash);
+    await send("Input.dispatchMouseEvent", { type: "mouseMoved", x: chipPos.x, y: chipPos.y + 300 });
+    await sleep(600);
+    const hashAfter = await evalJs(send, pixelHash);
+    check("chip hover re-renders canvas", hashDuring !== hashBefore, `${hashBefore} -> ${hashDuring}`);
+    check("canvas restores on chip leave", hashAfter !== hashDuring, `${hashDuring} -> ${hashAfter}`);
+  } else {
+    check("chip hover re-renders canvas", false, "accept chip not found");
+  }
+
+  // 6. Fallback: block the artifact and confirm the static header + band cards.
   await send("Page.navigate", { url: "about:blank" });
   await sleep(300);
   await send("Network.enable");
