@@ -143,21 +143,54 @@ def edge_detail(edge_id: str):
                       target_node=store.get_node(e.target))
 
 
-@router.get("/paths", response_model=PathResponse)
-def path(from_id: str = Query(..., alias="from"), to_id: str = Query(..., alias="to")):
-    """Why-connected for any node pair (not just diseases)."""
+@router.get("/paths")
+def path(from_id: str = Query(..., alias="from"), to_id: str = Query(..., alias="to"),
+         audience: str = Query("researcher", pattern="^(patient|researcher)$")):
+    """Why-connected for any node pair (not just diseases).
+
+    Trust layer: every evidence edge carries its calibrated band and gate
+    action; the whole path carries p_path with weakest-link attribution.
+    """
+    from ..services import trust as _trust
     c = atlas.explain_connection(from_id, to_id)
     if c is None:
         raise HTTPException(404, "one or both nodes not found")
     store = get_store()
-    return PathResponse(generation_id=store.generation, path=c.path, known=c.known,
+    valids, contras = [], []
+    gated = []
+    for e in c.evidence_edges:
+        ev = e.evidence_level.expected if e.evidence_level else None
+        pack = e.decision_meta.question_pack if e.decision_meta else "edge-validate-v1"
+        g = _trust.gate(e.edge_valid, e.contradicted, ev, pack, audience)
+        gated.append({"edge_id": e.id, **g,
+                      "band": g["band"], "p_valid": e.edge_valid})
+        if e.edge_valid is not None:
+            valids.append(e.edge_valid)
+            contras.append(e.contradicted or 0.0)
+    conf = _trust.path_confidence(valids, contras)
+    base = PathResponse(generation_id=store.generation, path=c.path, known=c.known,
                         inferred=c.inferred, uncertain=c.uncertain,
                         narrative=c.narrative, evidence_edges=c.evidence_edges)
+    out = base.model_dump()
+    out["trust"] = {"audience": audience, "edges": gated, **conf}
+    return out
 
 
 class JudgeRequest(BaseModel):
     state: str
     pack_id: str = "edge-validate-v1"
+
+
+# The local Laya judge is not safe under concurrent forward passes (MPS/Metal
+# command-buffer assertions kill the process). FastAPI runs sync endpoints in
+# a threadpool, so serialize every live prediction behind one lock.
+import threading
+_judge_lock = threading.Lock()
+
+
+def _predict(svc, state: str, questions: dict) -> dict:
+    with _judge_lock:
+        return svc._router.predict(state, questions)  # type: ignore[attr-defined]
 
 
 def _live_judge():
@@ -189,7 +222,7 @@ def judge(req: JudgeRequest):
     pack = svc.packs.get(req.pack_id)
     if pack is None:
         raise HTTPException(404, f"unknown question pack: {req.pack_id}")
-    result = svc._router.predict(req.state, pack["questions"])  # type: ignore[attr-defined]
+    result = _predict(svc, req.state, pack["questions"])
     return {"generation_id": get_store().generation, "pack_id": req.pack_id,
             "answers": result["answers"]}
 
@@ -257,14 +290,13 @@ def ablate(edge_id: str, pack_id: str = "edge-validate-v1"):
                                  "use POST /v1/judge with an edited state instead")
     items, head, tail = split
     questions = pack["questions"]
-    predict = svc._router.predict  # type: ignore[attr-defined]
-    baseline = predict(e.state, questions)["answers"]
+    baseline = _predict(svc, e.state, questions)["answers"]
     base_valid = baseline["edge_valid"]["noul"]
     results = []
     for i, item in enumerate(items):
         kept = items[:i] + items[i + 1:]
         ablated_state = head + ", ".join(kept) + tail
-        a = predict(ablated_state, questions)["answers"]
+        a = _predict(svc, ablated_state, questions)["answers"]
         v = a["edge_valid"]["noul"]
         results.append({"removed": item, "edge_valid": round(v, 4),
                         "delta": round(base_valid - v, 4)})
@@ -277,8 +309,17 @@ def ablate(edge_id: str, pack_id: str = "edge-validate-v1"):
 
 @router.get("/evals")
 def evals(judge: str = Query("mock", pattern="^(mock|laya|openai)$")):
+    from ..services.evals import expert_extra
+    from ..services import trust as _trust
     r = run_evals(judge)
-    return {"generation_id": get_store().generation, **r.model_dump()}
+    out = {"generation_id": get_store().generation, **r.model_dump()}
+    out.update(expert_extra(r))
+    out["policy"] = {"established_threshold": _trust.ESTABLISHED_THRESHOLD,
+                     "hide_threshold": _trust.HIDE_THRESHOLD,
+                     "fp_cost": _trust.FP_COST, "fn_cost": _trust.FN_COST,
+                     "caveat_language": _trust.CAVEAT_LANGUAGE,
+                     "contested_edges": _trust.contested_ids()}
+    return out
 
 
 @router.get("/meta")

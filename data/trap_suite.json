@@ -1,0 +1,10 @@
+{
+  "_notice": "Zombie-knowledge trap suite (DEMO). Edges a naive system falls for: superseded links, stale annotations, low-IC phenotype overlap, single case reports. From expert Section D starter patterns (ClinGen Brugada/HCM/LQTS reappraisals) mapped onto demo edges. A judge passes a trap by scoring p(valid) < 0.40 (patient-hide threshold).",
+  "traps": [
+    {"edge_id": "DEMO-EDGE-011", "pattern": "superseded_case_report", "expect": "reject", "note": "2009 single case report killed by 2021 n=25 cohort. Must render struck-through amber, not as fact.", "real_world": "20/21 Brugada genes reclassified disputed (Hosseini 2018)"},
+    {"edge_id": "DEMO-EDGE-020", "pattern": "stale_database_annotation", "expect": "reject_or_contested", "note": "2012 pathway annotation vs 2021 cytosol localization. DB lag trap.", "real_world": "ClinVar genes with limited/no evidence inherited by naive pipelines (Ingles 2019: 31% contamination)"},
+    {"edge_id": "DEMO-EDGE-082", "pattern": "generic_phenotypes_plus_stale_annotation", "expect": "reject", "note": "Compound trap: hepatomegaly + failure-to-thrive (low IC) plus legacy annotation. Mock judge scores 0.78: overconfident false positive.", "real_world": "DD/seizures/hypotonia connect everything (Kohler 2009)"},
+    {"edge_id": "DEMO-EDGE-083", "pattern": "low_IC_phenotype_overlap", "expect": "reject", "note": "Seizures + developmental delay only, unrelated pathways.", "real_world": "Naive similarity systems fall for high-prevalence phenotypes"},
+    {"edge_id": "DEMO-EDGE-086", "pattern": "single_cooccurrence_case_report", "expect": "reject", "note": "One co-occurrence report, no mechanism. Mock judge scores 0.72: overconfident false positive.", "real_world": "Publication bias toward unusual cases"}
+  ]
+}

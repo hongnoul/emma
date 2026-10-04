@@ -34,6 +34,44 @@
         }
       }
     },
+    "edge-validate-v2": {
+      "description": "Validate one graph edge given its evidence snippet (state). v2: expert-revised ladder (Oct 2026) — splits supported into model-only vs patient, adds superseded detection for zombie knowledge.",
+      "questions": {
+        "edge_valid": {
+          "type": "noul",
+          "instructions": "Does the evidence in the state support the asserted relationship between the two entities?"
+        },
+        "rel_class": {
+          "type": "choice",
+          "instructions": "Which best describes the relationship given the evidence?",
+          "criteria": {
+            "asserted": "the asserted relationship type is correct",
+            "weaker_association": "entities are associated but more weakly than asserted",
+            "different_relationship": "a different relationship type fits better",
+            "unsupported": "the evidence does not support any relationship"
+          }
+        },
+        "evidence_level": {
+          "type": "score",
+          "instructions": "Rate the strength of the supporting evidence. A single case report is hypothesis-level. Replication in model organisms without any patient data is supported (model-only), never replicated: replicated means replicated in humans.",
+          "criteria": [
+            "hypothesis",
+            "supported_model_only",
+            "supported_patient",
+            "replicated",
+            "clinical"
+          ]
+        },
+        "contradicted": {
+          "type": "noul",
+          "instructions": "Does the state contain evidence contradicting the asserted relationship?"
+        },
+        "superseded": {
+          "type": "noul",
+          "instructions": "Is the claim's key supporting evidence superseded: an older study, database annotation, or case report that newer, larger, or better-controlled evidence (cohort, replication, corrected localization) has overturned or undermined?"
+        }
+      }
+    },
     "cluster-membership-v1": {
       "description": "Judge whether two diseases plausibly share a mechanism, for cluster validation.",
       "questions": {
