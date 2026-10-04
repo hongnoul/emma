@@ -133,7 +133,13 @@ export default function ApexHero({ flows }: { flows: BubbleItem[] }) {
               value={q}
               onChange={(e) => setQ(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Escape") { setQ(""); (e.target as HTMLInputElement).blur(); }
+                if (e.key === "Escape") {
+                  // First Escape clears the query; Escape on an empty query
+                  // unpins the persona and returns to the neutral flow.
+                  if (q) { setQ(""); }
+                  else if (persona) { setPersona(null); }
+                  else { (e.target as HTMLInputElement).blur(); }
+                }
               }}
               placeholder={(persona && PLACEHOLDER[persona]) || "Filter Emmatics: disease, gene, phenotype…"}
               aria-label="Search Emmatics"

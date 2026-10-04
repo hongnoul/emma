@@ -6,6 +6,7 @@
 //  3. typing a query + Enter lands on /physician?q=... with the node
 //     section's search input pre-seeded and results resolving
 //  4. clicking the pinned bubble navigates directly
+//  5. Escape ladder: clears query -> unpins persona -> blurs input
 // No test framework. Usage: node scripts/e2e_apex_flow.mjs [browser-binary]
 import { execFile } from "node:child_process";
 import { existsSync, rmSync } from "node:fs";
@@ -19,7 +20,9 @@ const CANDIDATES = [
 const BIN = CANDIDATES.find((p) => existsSync(p));
 if (!BIN) { console.error("no Chromium-based browser found"); process.exit(2); }
 
-const PORT = 9227;
+// Per-process port: back-to-back runs otherwise race the previous browser's
+// shutdown and attach to its dying CDP endpoint.
+const PORT = 9300 + (process.pid % 500);
 const BASE = "http://localhost:3000";
 const PROFILE = `/tmp/apex-flow-e2e-${process.pid}`;
 
@@ -154,16 +157,17 @@ try {
     JSON.stringify(crossfade));
   check("physician shell fade-in animation active", crossfade?.anim === "physician-canvas-in",
     String(crossfade?.anim));
-  await sleep(900); // linger 450ms + fade 450ms + margin
-  const after = await evalJs(send, `(() => ({
-    meshMounted: !!document.querySelector('div.fixed.-z-10 canvas'),
-    bg: getComputedStyle(document.querySelector('.physician-canvas')).backgroundColor,
-  }))()`);
-  check("mesh unmounts after linger window", after?.meshMounted === false, JSON.stringify(after));
-  // Opaque = no alpha channel in the serialized color (rgb()/oklab() without
-  // a "/ a" or 4th component; transparent would be rgba(0,0,0,0)).
-  const opaque = !!after?.bg && after.bg !== "rgba(0, 0, 0, 0)" && !/\/|rgba/.test(after.bg);
-  check("shell background settles opaque", opaque, String(after?.bg));
+  // Settled state: mesh unmounted and shell background fully opaque. Poll
+  // rather than fixed-sleep — headless under load can stretch the 450ms
+  // linger + 450ms fade past a single checkpoint. Opaque = no alpha channel
+  // in the serialized color (no "/ a" or rgba()).
+  const settled = await waitFor(send, `(() => {
+    const mesh = !!document.querySelector('div.fixed.-z-10 canvas');
+    const bg = getComputedStyle(document.querySelector('.physician-canvas')).backgroundColor;
+    const opaque = bg && bg !== 'rgba(0, 0, 0, 0)' && !bg.includes('/') && !bg.startsWith('rgba');
+    return !mesh && opaque ? bg : false;
+  })()`, 5000, 100);
+  check("mesh unmounts and shell settles opaque", typeof settled === "string", String(settled));
 
   const seeded = await waitFor(send, `(() => {
     const inputs = [...document.querySelectorAll('input')];
@@ -193,6 +197,39 @@ try {
   })()`);
   const navved = await waitFor(send, `location.pathname === '/patient'`);
   check("second click on pinned bubble navigates", navved === true, await evalJs(send, `location.href`));
+
+  // -- 5. Escape ladder: query -> persona -> blur --------------------------
+  await evalJs(send, `(() => { location.href = '/'; })()`);
+  await waitFor(send, `location.pathname === '/' && !!document.querySelector('.bubble-btn')`);
+  await sleep(1600);
+  await evalJs(send, `(() => {
+    const a = [...document.querySelectorAll('.bubble-btn')].find(x => x.textContent.includes('Physician'));
+    a.click();
+  })()`);
+  await sleep(200);
+  await evalJs(send, `(() => {
+    const input = document.querySelector('[data-apex-search] input');
+    const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+    setter.call(input, 'abc');
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  })()`);
+  const esc = `(() => {
+    const input = document.querySelector('[data-apex-search] input');
+    input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+  })()`;
+  await evalJs(send, esc);
+  await sleep(150);
+  const esc1 = await evalJs(send, `(() => ({
+    q: document.querySelector('[data-apex-search] input').value,
+    pinned: !!document.querySelector('.bubble-btn[aria-pressed="true"]'),
+  }))()`);
+  check("Escape 1 clears query, keeps pin", esc1?.q === "" && esc1?.pinned === true, JSON.stringify(esc1));
+  await evalJs(send, esc);
+  await sleep(150);
+  const esc2 = await evalJs(send, `(() => ({
+    pinned: !!document.querySelector('.bubble-btn[aria-pressed="true"]'),
+  }))()`);
+  check("Escape 2 unpins persona", esc2?.pinned === false, JSON.stringify(esc2));
 
 } catch (e) {
   check("script completed", false, String(e));
