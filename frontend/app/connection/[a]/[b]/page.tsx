@@ -1,22 +1,51 @@
 "use client";
-// "Why are these connected?" page.
+// "Why are these connected?" page. Trust layer: server p_path with
+// weakest-link, audience toggle (researcher vs patient gate), per-edge gate
+// chips with expert caveat language, zombie edges struck through.
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { api, ConnectionExplanation, pct } from "@/lib/api";
+import { v1, TrustBlock, actionCls, band } from "@/lib/v1";
 
 export default function ConnectionPage({ params }: { params: Promise<{ a: string; b: string }> }) {
   const { a, b } = use(params);
   const [c, setC] = useState<ConnectionExplanation | null>(null);
+  const [trust, setTrust] = useState<TrustBlock | null>(null);
+  const [audience, setAudience] = useState<"researcher" | "patient">("researcher");
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => { api.connection(a, b).then(setC).catch((e) => setError(String(e))); }, [a, b]);
+  useEffect(() => {
+    v1.paths(a, b, audience).then((r) => setTrust(r.trust ?? null)).catch(() => setTrust(null));
+  }, [a, b, audience]);
 
   if (error) return <p className="text-red-600 text-sm">{error}</p>;
   if (!c) return <p className="text-slate-500">Loading…</p>;
 
+  const gateFor = (edgeId: string) => trust?.edges.find((g) => g.edge_id === edgeId);
+  const isZombie = (edgeId: string) => {
+    const g = gateFor(edgeId);
+    return g?.band === "hidden" || g?.action === "hidden";
+  };
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-semibold">Why are these connected?</h1>
+
+      <div className="flex gap-2 text-xs">
+        {(["researcher", "patient"] as const).map((x) => (
+          <button key={x} onClick={() => setAudience(x)}
+            className={`rounded px-3 py-1 border ${audience === x ? "bg-indigo-600 text-white border-indigo-600" : "border-slate-300 text-slate-600"}`}>
+            {x === "researcher" ? "Researcher view" : "Patient view"}
+          </button>
+        ))}
+        {trust?.p_path != null && (
+          <span className="ml-2 text-sm text-slate-600">
+            path confidence <span className="font-mono font-semibold">{pct(trust.p_path)}</span>
+            {trust.weakest_p != null && <span className="text-slate-400"> (weakest hop {pct(trust.weakest_p)})</span>}
+          </span>
+        )}
+      </div>
 
       <div className="flex items-center gap-2 flex-wrap text-sm">
         {c.path.map((step, i) => (
@@ -58,23 +87,33 @@ export default function ConnectionPage({ params }: { params: Promise<{ a: string
             </tr>
           </thead>
           <tbody>
-            {c.evidence_edges.map((e) => (
-              <tr key={e.id} className="border-t border-slate-100 align-top">
-                <td className="p-2">{e.rel_type}<p className="text-xs text-slate-500">{e.description}</p></td>
+            {c.evidence_edges.map((e) => {
+              const g = gateFor(e.id);
+              const zombie = isZombie(e.id);
+              const b = band(e.edge_valid);
+              return (
+              <tr key={e.id} className={`border-t border-slate-100 align-top ${zombie ? "bg-red-50/40" : ""}`}>
+                <td className={`p-2 ${zombie ? "line-through text-slate-400" : ""}`}>{e.rel_type}
+                  <p className="text-xs text-slate-500">{e.description}</p>
+                  {zombie && <p className="text-xs text-red-700 no-underline">superseded — struck through, do not act on this</p>}
+                  {g && <p><span className={`text-xs rounded px-1.5 py-0.5 ${actionCls(g.action)}`} title={g.reason}>{g.action.replace(/_/g, " ")}</span></p>}
+                </td>
                 <td className="p-2">
                   <span className={`text-xs rounded px-1.5 py-0.5 ${e.provenance === "inferred" ? "bg-amber-100 text-amber-800" : "bg-green-100 text-green-800"}`}>
                     {e.provenance}
                   </span>
                 </td>
                 <td className="p-2 text-xs">{e.source_db}</td>
-                <td className="p-2">{pct(e.edge_valid)}</td>
+                <td className="p-2"><span className={`text-xs rounded px-1.5 py-0.5 ${b.cls}`}>{pct(e.edge_valid)} {b.label}</span></td>
                 <td className="p-2">{pct(e.contradicted)}</td>
                 <td className="p-2 text-xs">
                   {e.supporting_publications.join(", ") || "—"}
                   {e.contradictory_evidence.length > 0 && <p className="text-red-700">contradicted by {e.contradictory_evidence.join(", ")}</p>}
+                  {g?.caveat && g.action !== "show" && <p className="text-slate-500 mt-1">{g.caveat}</p>}
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
       </section>

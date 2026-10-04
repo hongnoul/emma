@@ -70,10 +70,40 @@ export interface EntityDetail {
 }
 
 export interface PathStep { node: V1Node; edge?: V1Edge | null }
+export interface TrustEdgeGate {
+  edge_id: string; p_valid?: number | null; band: string; action: string;
+  reason: string; caveat?: string;
+}
+export interface TrustBlock {
+  audience: string; edges: TrustEdgeGate[];
+  p_path?: number | null; weakest_link?: number | null;
+  weakest_p?: number | null; max_contradicted?: number | null;
+}
 export interface PathResponse {
   generation_id: string; path: PathStep[];
   known: string[]; inferred: string[]; uncertain: string[];
   narrative: string; evidence_edges: V1Edge[];
+  trust?: TrustBlock;
+}
+
+export interface TrapResult {
+  edge_id: string; pattern: string; p_valid?: number | null;
+  passed: boolean; superseded?: number; passed_via?: string;
+}
+export interface EvalsReport {
+  generation_id: string; n: number; accuracy: number; brier: number; ece: number;
+  bins: { range: [number, number]; count: number; mean_pred?: number | null; frac_true?: number | null }[];
+  notes: string;
+  brier_soft?: number; temperature?: number; brier_calibrated?: number;
+  trap_pass_rate?: number | null; trap_results?: TrapResult[];
+  precision_gate?: { threshold: number; accepted: number; precision?: number; abstention_rate: number; n: number; target: number };
+  cost_at_0_5?: { false_positives: number; false_negatives: number; total_cost: number };
+  cost_at_0_75?: { false_positives: number; false_negatives: number; total_cost: number };
+  contested?: Record<string, { p_valid: number; soft_target: number; verdict?: string }>;
+  policy?: {
+    established_threshold: number; hide_threshold: number;
+    fp_cost: number; fn_cost: number; caveat_language: string; contested_edges: string[];
+  };
 }
 
 // Raw judge answers (Laya Router.predict contract)
@@ -111,8 +141,9 @@ export const v1 = {
     return get<EdgesResponse>(`/v1/edges?${qs}`);
   },
   edge: (id: string) => get<EdgeDetail>(`/v1/edges/${encodeURIComponent(id)}`),
-  paths: (from: string, to: string) =>
-    get<PathResponse>(`/v1/paths?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`),
+  paths: (from: string, to: string, audience?: string) =>
+    get<PathResponse>(`/v1/paths?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}${audience ? `&audience=${audience}` : ""}`),
+  evals: (judge = "mock") => get<EvalsReport>(`/v1/evals?judge=${judge}`),
   judge: (state: string, pack_id = "edge-validate-v1") =>
     post<JudgeResponse>(`/v1/judge`, { state, pack_id }),
   ablate: (edgeId: string) => post<AblateResponse>(`/v1/edges/${encodeURIComponent(edgeId)}/ablate`),
@@ -123,10 +154,19 @@ export const v1 = {
 export const pct = (p?: number | null) => (p == null ? "–" : `${(p * 100).toFixed(0)}%`);
 export const pct1 = (p?: number | null) => (p == null ? "–" : `${(p * 100).toFixed(1)}%`);
 
-/** Gate band for a judged probability: the triage semantics from the README. */
+/** Gate band for a judged probability: expert policy 90/40 (Oct 2026). */
 export function band(p?: number | null): { label: string; cls: string } {
   if (p == null) return { label: "curated", cls: "text-slate-500 bg-slate-100" };
-  if (p >= 0.9) return { label: "auto-accept", cls: "text-green-800 bg-green-100" };
-  if (p >= 0.6) return { label: "review", cls: "text-amber-800 bg-amber-100" };
-  return { label: "low", cls: "text-red-800 bg-red-100" };
+  if (p >= 0.9) return { label: "established", cls: "text-green-800 bg-green-100" };
+  if (p >= 0.4) return { label: "review", cls: "text-amber-800 bg-amber-100" };
+  return { label: "hidden", cls: "text-red-800 bg-red-100" };
+}
+
+/** Gate action chip: show / show_with_warning / show_hypothesis / suppress / hidden. */
+export function actionCls(action?: string): string {
+  if (action === "show") return "text-green-800 bg-green-100";
+  if (action === "show_with_warning") return "text-amber-800 bg-amber-100";
+  if (action === "show_hypothesis") return "text-blue-800 bg-blue-100";
+  if (action === "suppress_pending") return "text-orange-800 bg-orange-100";
+  return "text-slate-500 bg-slate-100";
 }

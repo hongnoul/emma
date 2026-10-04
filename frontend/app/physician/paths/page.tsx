@@ -6,7 +6,7 @@
 import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { v1, EntityHit, PathResponse, pct, band } from "@/lib/v1";
+import { v1, EntityHit, PathResponse, pct, band, actionCls } from "@/lib/v1";
 
 export default function PathsPage() {
   return (
@@ -21,6 +21,7 @@ function PathsInner() {
   const sp = useSearchParams();
   const from = sp.get("from") ?? "";
   const to = sp.get("to") ?? "";
+  const audience = sp.get("audience") ?? "researcher";
   const [res, setRes] = useState<PathResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -28,21 +29,25 @@ function PathsInner() {
   useEffect(() => {
     if (!from || !to) { setRes(null); return; }
     setBusy(true); setError(null);
-    v1.paths(from, to).then(setRes).catch((e) => setError(String(e))).finally(() => setBusy(false));
-  }, [from, to]);
+    v1.paths(from, to, audience).then(setRes).catch((e) => setError(String(e))).finally(() => setBusy(false));
+  }, [from, to, audience]);
 
-  const setParam = (key: "from" | "to", id: string) => {
+  const setParam = (key: "from" | "to" | "audience", id: string) => {
     const next = new URLSearchParams(sp.toString());
     next.set(key, id);
     router.replace(`/physician/paths?${next.toString()}`);
   };
 
-  // joint confidence over judged hops
+  // server trust block (falls back to client math when the backend is old)
+  const trust = res?.trust;
+  const joint = trust?.p_path ?? null;
+  const weakestGate = trust && trust.weakest_link != null ? trust.edges[trust.weakest_link] : null;
   const judgedHops = res?.path.filter((s) => s.edge?.edge_valid != null) ?? [];
-  const joint = judgedHops.reduce((p, s) => p * (s.edge!.edge_valid as number), 1);
-  const weakest = judgedHops.length
-    ? judgedHops.reduce((min, s) => (s.edge!.edge_valid! < min.edge!.edge_valid! ? s : min))
-    : null;
+  const weakest = weakestGate
+    ? (judgedHops.find((s) => s.edge?.id === weakestGate.edge_id) ?? null)
+    : (judgedHops.length
+      ? judgedHops.reduce((min, s) => (s.edge!.edge_valid! < min.edge!.edge_valid! ? s : min))
+      : null);
 
   return (
     <div className="space-y-6">
@@ -58,6 +63,14 @@ function PathsInner() {
         <EntityPicker label="From" value={from} onPick={(id) => setParam("from", id)} />
         <EntityPicker label="To" value={to} onPick={(id) => setParam("to", id)} />
       </div>
+      <div className="flex gap-2 text-xs">
+        {(["researcher", "patient"] as const).map((a) => (
+          <button key={a} onClick={() => setParam("audience", a)}
+            className={`rounded px-3 py-1 border ${audience === a ? "bg-indigo-600 text-white border-indigo-600" : "border-slate-300 text-slate-600"}`}>
+            {a === "researcher" ? "Researcher view" : "Patient view (≥0.90 + replicated)"}
+          </button>
+        ))}
+      </div>
 
       {busy && <p className="text-slate-500 text-sm">Finding route…</p>}
       {error && <p className="text-red-600 text-sm">{error}</p>}
@@ -71,10 +84,11 @@ function PathsInner() {
               <div className="flex items-center gap-6 text-sm">
                 <div>
                   <p className="text-2xl font-semibold font-mono">
-                    {judgedHops.length ? pct(joint) : "curated"}
+                    {joint != null ? pct(joint) : judgedHops.length ? pct(judgedHops.reduce((p, s) => p * (s.edge!.edge_valid as number), 1)) : "curated"}
                   </p>
                   <p className="text-xs text-slate-500">
-                    {judgedHops.length
+                    {trust ? `p_path (server, ${trust.edges.length} evidence edges, audience: ${trust.audience})`
+                      : judgedHops.length
                       ? `joint confidence (${judgedHops.length} judged hop${judgedHops.length === 1 ? "" : "s"})`
                       : "every hop is a curated annotation, no judged inference in this route"}
                   </p>
@@ -97,7 +111,10 @@ function PathsInner() {
               <div className="space-y-0">
                 {res.path.map((step, i) => (
                   <div key={step.node.id}>
-                    {i > 0 && step.edge && <HopEdge edge={step.edge} weak={step === weakest} />}
+                    {i > 0 && step.edge && (
+                      <HopEdge edge={step.edge} weak={step === weakest}
+                        gate={trust?.edges.find((g) => g.edge_id === step.edge!.id)} />
+                    )}
                     <div className={`inline-block rounded px-3 py-1.5 text-sm ${step.node.type === "Disease" ? "bg-red-50 border border-red-100 font-medium" : "bg-slate-100"}`}>
                       {step.node.name}
                       <span className="text-xs text-slate-400 font-mono ml-2">{step.node.id}</span>
@@ -121,22 +138,36 @@ function PathsInner() {
   );
 }
 
-function HopEdge({ edge, weak }: { edge: import("@/lib/v1").V1Edge; weak: boolean }) {
+function HopEdge({ edge, weak, gate }: {
+  edge: import("@/lib/v1").V1Edge;
+  weak: boolean;
+  gate?: import("@/lib/v1").TrustEdgeGate;
+}) {
   const b = band(edge.edge_valid);
   return (
-    <div className={`ml-6 my-1 pl-4 border-l-2 ${weak ? "border-red-400" : "border-slate-200"} text-xs flex items-center gap-2 py-1`}>
-      <span className="text-slate-400">{edge.rel_type}</span>
-      {edge.edge_valid != null ? (
-        <>
-          <span className={`font-mono rounded px-1.5 py-0.5 ${b.cls}`}>{pct(edge.edge_valid)}</span>
-          <Link href={`/physician/edge/${encodeURIComponent(edge.id)}`} className="text-indigo-600 underline">
-            workbench
-          </Link>
-        </>
-      ) : (
-        <span className="text-slate-400">curated</span>
+    <div className={`ml-6 my-1 pl-4 border-l-2 ${weak ? "border-red-400" : "border-slate-200"} text-xs py-1`}>
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="text-slate-400">{edge.rel_type}</span>
+        {edge.edge_valid != null ? (
+          <>
+            <span className={`font-mono rounded px-1.5 py-0.5 ${b.cls}`}>{pct(edge.edge_valid)} {b.label}</span>
+            {gate && (
+              <span className={`rounded px-1.5 py-0.5 ${actionCls(gate.action)}`} title={gate.reason}>
+                {gate.action.replace(/_/g, " ")}
+              </span>
+            )}
+            <Link href={`/physician/edge/${encodeURIComponent(edge.id)}`} className="text-indigo-600 underline">
+              workbench
+            </Link>
+          </>
+        ) : (
+          <span className="text-slate-400">curated</span>
+        )}
+        {weak && <span className="text-red-600 font-medium">← weakest link</span>}
+      </div>
+      {gate?.caveat && (gate.action === "show_hypothesis" || gate.action === "show_with_warning") && (
+        <p className="text-slate-500 mt-0.5">{gate.caveat}</p>
       )}
-      {weak && <span className="text-red-600 font-medium">← weakest link</span>}
     </div>
   );
 }
