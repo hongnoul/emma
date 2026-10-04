@@ -122,7 +122,7 @@ export default function ConnectionPage({ params }: { params: Promise<{ a: string
         </div>
       </section>
 
-      <div className="flex gap-4 text-sm">
+      <div className="flex flex-wrap gap-4 text-sm">
         <Link href={`/disease/${a}`} className="underline underline-offset-4 hover:no-underline">← {c.source.name}</Link>
         <Link href={`/opportunities/${a}`} className="underline underline-offset-4 hover:no-underline">Research opportunities →</Link>
       </div>

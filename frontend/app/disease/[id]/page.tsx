@@ -97,7 +97,7 @@ export default function DiseasePage({ params }: { params: Promise<{ id: string }
             <p className="mt-3 text-muted-foreground">{d.disease.description}</p>
           )}
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button asChild variant="outline">
             <Link href={`/research/${id}`}>Basic research</Link>
           </Button>

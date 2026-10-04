@@ -113,9 +113,9 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
         <span className="text-muted-foreground ml-auto">amber = phenotype-similar (judged) · blue = shared gene</span>
       </div>
 
-      <div className="flex gap-4">
-        <div ref={container} className="flex-1 h-[560px] border rounded-lg" />
-        <aside className="w-80 shrink-0 border rounded-lg p-4 text-sm space-y-2 overflow-y-auto max-h-[560px]">
+      <div className="flex flex-col gap-4 lg:flex-row">
+        <div ref={container} className="h-[420px] rounded-lg border lg:h-[560px] lg:flex-1" />
+        <aside className="max-h-[560px] space-y-2 overflow-y-auto rounded-lg border p-4 text-sm lg:w-80 lg:shrink-0">
           {!sel && <p className="text-muted-foreground">Click a node or edge for details.</p>}
           {sel?.kind === "node" && (
             <>
