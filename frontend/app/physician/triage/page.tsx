@@ -3,8 +3,8 @@
 // j/k or ↓/↑ navigate · a accept · r reject · u undo · enter opens workbench.
 // Verdicts persist to localStorage as a local gold set; the calibration
 // panel recomputes reliability against your verdicts live.
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useRef, useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { v1, V1Edge, pct, band } from "@/lib/v1";
 
 type Verdict = "accept" | "reject";
@@ -16,7 +16,13 @@ function loadVerdicts(): Record<string, Verdict> {
 }
 
 export default function TriagePage() {
+  // useSearchParams requires a Suspense boundary for static prerender.
+  return <Suspense><TriageInner /></Suspense>;
+}
+
+function TriageInner() {
   const router = useRouter();
+  const nodeFilter = useSearchParams().get("node");
   const [edges, setEdges] = useState<V1Edge[] | null>(null);
   const [total, setTotal] = useState(0);
   const [cursor, setCursor] = useState(0);
@@ -31,10 +37,11 @@ export default function TriagePage() {
 
   useEffect(() => {
     setEdges(null);
-    v1.edges({ judged_only: true, min_valid: lo, max_valid: hi, limit: 200 })
+    v1.edges({ judged_only: true, min_valid: lo, max_valid: hi, limit: 200,
+               node: nodeFilter ?? undefined })
       .then((r) => { setEdges(r.items); setTotal(r.total); setCursor(0); })
       .catch((e) => setError(String(e)));
-  }, [lo, hi]);
+  }, [lo, hi, nodeFilter]);
 
   const saveVerdict = useCallback((edgeId: string, v: Verdict) => {
     setVerdicts((prev) => {
