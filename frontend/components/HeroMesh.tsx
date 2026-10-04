@@ -31,9 +31,21 @@
 // (read live each frame via meshBus, so it tracks layout and scroll); deep
 // loads dive in on arrival, switching diseases re-targets through a
 // zoom-out/zoom-in, and leaving the route eases back to the full sphere.
+//
+// Unfold: navigating into /physician plays a departure animation during the
+// backdrop's linger window (see MeshBackdrop): every node lerps from its
+// sphere projection to its flat UMAP position inside the physician hero
+// panel rect (registered as the meshBus stage by EmmaticsHero), so the
+// sphere literally unfolds into the map of rare disease space while the
+// workbench shell fades in over it.
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { meshBus } from "@/lib/mesh-bus";
+
+declare global {
+  // Test hook: e2e asserts the unfold actually ran (0..1 progress).
+  interface Window { __meshUnfold?: number }
+}
 
 interface HeroNode { id: string; n: string; x: number; y: number; deg: number }
 interface HeroLink { id: string; s: number; t: number; v: number }
@@ -71,6 +83,8 @@ const HIT_MATCHED = 36; // px: filtering active — matched nodes get a big grab
 const ZOOM_MS = 700;
 const ZOOM_SCALE = 4;   // sphere radius multiplier at full zoom
 const NAV_AT = 0.55;    // zoom progress at which router.push fires
+// Unfold tuning: must finish inside MeshBackdrop's linger window.
+const UNFOLD_MS = 650;
 const easeInOut = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
 
 interface HoverInfo { i: number; id: string; name: string; deg: number }
@@ -106,11 +120,21 @@ export default function HeroMesh({
     return m ? decodeURIComponent(m[1]) : null;
   };
   const focusIdRef = useRef<string | null>(focusIdOf(pathname));
+  // Unfold departure state: armed when the route enters /physician.
+  const unfoldRef = useRef<{ active: boolean; start: number }>({ active: false, start: 0 });
+  const prevPathRef = useRef(pathname);
 
   useEffect(() => {
     activeRef.current = pathname === "/";
     focusIdRef.current = focusIdOf(pathname);
     focusCtl.current(focusIdRef.current);
+    const onPhys = pathname.startsWith("/physician");
+    if (onPhys && !prevPathRef.current?.startsWith("/physician")) {
+      unfoldRef.current = { active: true, start: performance.now() };
+    } else if (!onPhys) {
+      unfoldRef.current.active = false;
+    }
+    prevPathRef.current = pathname;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
   // Filter plumbing: props land in refs so the one-shot canvas effect never
@@ -264,6 +288,23 @@ export default function HeroMesh({
         };
         const xs = normalize(data.nodes.map((n) => n.x));
         const ys = normalize(data.nodes.map((n) => n.y));
+        // Flat UMAP positions for the /physician unfold target. Raw min/max
+        // normalization (no percentile clamp, no equalization) to match
+        // EmmaticsHero's screenXY exactly, so the unfold's end frame is the
+        // same layout the physician hero draws.
+        const fxs = new Float32Array(N), fys = new Float32Array(N);
+        {
+          let mnx = Infinity, mxx = -Infinity, mny = Infinity, mxy = -Infinity;
+          for (const n of data.nodes) {
+            if (n.x < mnx) mnx = n.x; if (n.x > mxx) mxx = n.x;
+            if (n.y < mny) mny = n.y; if (n.y > mxy) mxy = n.y;
+          }
+          const sx = mxx - mnx || 1, sy = mxy - mny || 1;
+          data.nodes.forEach((n, i) => {
+            fxs[i] = (n.x - mnx) / sx;
+            fys[i] = (n.y - mny) / sy;
+          });
+        }
         // Wrap the flat (u,v) map onto a unit sphere: u -> longitude (full
         // wrap, so half the map faces away at any moment), v -> latitude
         // clamped to +/-1.2 rad so clusters never pile up at the poles.
@@ -890,6 +931,34 @@ export default function HeroMesh({
               }
             }
             layout(t, e, size.W, size.H, zp);
+            // Unfold departure: lerp the whole sphere into the flat UMAP
+            // layout docked to the physician hero rect. Runs on top of the
+            // normal layout so spin/drift fade out as flatness takes over.
+            const uf = unfoldRef.current;
+            if (uf.active) {
+              const upRaw = Math.min(1, (now - uf.start) / UNFOLD_MS);
+              const up = easeInOut(upRaw);
+              const stage = meshBus.getStage();
+              // Fallback target: where the hero panel sits (62vh card under
+              // the header) before EmmaticsHero registers its real rect.
+              let rx = size.W * 0.04, ry = size.H * 0.14;
+              let rw = size.W * 0.92, rh = Math.min(size.H * 0.62, 560);
+              if (stage) {
+                const r = stage.getBoundingClientRect();
+                if (r.width > 50) { rx = r.left; ry = r.top; rw = r.width; rh = r.height; }
+              }
+              const pad = 24;
+              for (let i = 0; i < N; i++) {
+                const fx = rx + pad + fxs[i] * (rw - 2 * pad);
+                const fy = ry + pad + fys[i] * (rh - 2 * pad);
+                px[i] += (fx - px[i]) * up;
+                py[i] += (fy - py[i]) * up;
+                // Back-hemisphere alpha fade lifts as the map flattens: a
+                // flat map has no far side.
+                depth[i] += (1 - depth[i]) * up;
+              }
+              window.__meshUnfold = upRaw;
+            }
             // Ease the filter crossfade toward its target
             flt.strength += (flt.target - flt.strength) * 0.12;
             if (Math.abs(flt.target - flt.strength) < 0.005) flt.strength = flt.target;

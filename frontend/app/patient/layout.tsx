@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Fraunces } from "next/font/google";
 
 export const metadata: Metadata = {
-  title: "Rarepath · Patient companion",
+  title: "Emmatics · Patient companion",
   description:
     "AI symptom matching, patient community, research-trained AI assistant, check-ins and daily treatment support for rare disease patients.",
 };

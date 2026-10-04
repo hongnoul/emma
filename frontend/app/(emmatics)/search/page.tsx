@@ -1,5 +1,5 @@
 "use client";
-// Landing + search, Rarepath-style layout: step badge, serif editorial
+// Landing + search, Emmatics-style layout: step badge, serif editorial
 // headline, stacked pill CTAs, card sections. Data stays on the repo
 // FastAPI via lib/api.ts and the monochrome shadcn token system.
 // Supports deep links: /search?q=lysosomal

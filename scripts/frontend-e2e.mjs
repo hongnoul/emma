@@ -89,7 +89,7 @@ await page.waitForSelector('text=Good morning Adira', { timeout: 8000 });
 check('patient: daily-support toast fires', true);
 // switch to AI tab, send live query
 await page.click('nav button:has-text("AI")');
-await page.waitForSelector('text=Rarepath AI', { timeout: 5000 });
+await page.waitForSelector('text=Emmatics AI', { timeout: 5000 });
 check('patient: chat tab renders', true);
 await page.fill('form input', 'lysosomal');
 await page.press('form input', 'Enter');

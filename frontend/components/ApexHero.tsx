@@ -113,6 +113,9 @@ export default function ApexHero({ flows }: { flows: BubbleItem[] }) {
               setPersona(item.href);
               inputRef.current?.focus();
             }}
+            onNavigate={(item) => {
+              if (item.href.startsWith("/physician")) meshBus.markHandoff();
+            }}
           />
         </div>
 
@@ -122,7 +125,11 @@ export default function ApexHero({ flows }: { flows: BubbleItem[] }) {
           className="mt-8 w-full max-w-xl"
           onSubmit={(e) => {
             e.preventDefault();
-            router.push(submitHref(persona, q.trim()));
+            const href = submitHref(persona, q.trim());
+            // Stamp before pushing so EmmaticsHero's first render (which
+            // samples handoffActive) sees the apex handoff in flight.
+            if (href.startsWith("/physician")) meshBus.markHandoff();
+            router.push(href);
           }}
         >
           <div className="flex h-14 items-center gap-3 rounded-full border border-slate-200 bg-white/90 px-5 shadow-[0_4px_16px_rgba(0,0,0,0.12)] backdrop-blur-sm transition focus-within:border-indigo-300 focus-within:shadow-[0_4px_24px_rgba(67,56,202,0.18)]">

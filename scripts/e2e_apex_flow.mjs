@@ -151,12 +151,21 @@ try {
     const mesh = document.querySelector('div.fixed.-z-10 canvas');
     const shell = document.querySelector('.physician-canvas');
     const anim = shell ? getComputedStyle(shell).animationName : null;
-    return { meshMounted: !!mesh, shell: !!shell, anim };
+    return { meshMounted: !!mesh, shell: !!shell, anim, unfold: window.__meshUnfold ?? null };
   })()`);
   check("mesh canvas lingers under physician shell", crossfade?.meshMounted === true,
     JSON.stringify(crossfade));
   check("physician shell fade-in animation active", crossfade?.anim === "physician-canvas-in",
     String(crossfade?.anim));
+  // Unfold: HeroMesh reports sphere->map progress on window.__meshUnfold.
+  // It should be in flight (or just finished) during the linger window and
+  // reach 1 by the time the mesh unmounts.
+  const unfoldDone = await waitFor(send, `window.__meshUnfold === 1`, 4000, 100);
+  check("sphere-to-map unfold completes", unfoldDone === true,
+    "progress seen: " + JSON.stringify(crossfade?.unfold));
+  const heroHandoff = await evalJs(send,
+    `!!document.querySelector('.hero-panel-handoff')`);
+  check("hero panel plays handoff fade", heroHandoff === true);
   // Settled state: mesh unmounted and shell background fully opaque. Poll
   // rather than fixed-sleep — headless under load can stretch the 450ms
   // linger + 450ms fade past a single checkpoint. Opaque = no alpha channel

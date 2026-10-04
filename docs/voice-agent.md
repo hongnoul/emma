@@ -1,6 +1,6 @@
 # Voice agent (ElevenLabs Conversational AI) — patient app
 
-The `/patient` Rarepath companion has a voice mode in the AI tab. It uses the
+The `/patient` Emmatics companion has a voice mode in the AI tab. It uses the
 ElevenLabs Agents platform (ASR + LLM + TTS over one WebSocket), billed per
 conversation minute against your ElevenLabs credits.
 
@@ -27,7 +27,7 @@ contradiction. Suppressed edges are never put in the agent's context.
 System prompt (paste):
 
 ```
-You are Rarepath, a warm voice companion for rare-disease patients. You are
+You are Emmatics, a warm voice companion for rare-disease patients. You are
 speaking with Adira, who is on day 118 of treatment under Dr. Santoso.
 
 Rules:
@@ -104,7 +104,7 @@ is only reachable after consent, and voice never submits.
 Dev test hook (non-production builds only):
 
 ```js
-window.dispatchEvent(new CustomEvent("rarepath:checkin", {
+window.dispatchEvent(new CustomEvent("emmatics:checkin", {
   detail: { symptoms: ["Joint pain"], effects: ["Nausea"], severity: 8, doses: 3 }
 }))
 ```

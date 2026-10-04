@@ -1,5 +1,5 @@
 "use client";
-// Mobile bottom tab bar (Rarepath-style). Hidden on md+ where the top nav shows.
+// Mobile bottom tab bar (Emmatics-style). Hidden on md+ where the top nav shows.
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Check, Compass, FlaskConical, Search, Stethoscope } from "lucide-react";

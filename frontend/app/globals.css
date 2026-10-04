@@ -65,7 +65,7 @@
   }
 }
 
-/* ---- Patient app (Rarepath port) utilities — grayscale only ---- */
+/* ---- Patient app (Emmatics port) utilities — grayscale only ---- */
 /* Faithful to the prototype's glassmorphism but expressed with the
    monochrome token system: white glass over a neutral canvas. */
 .glass {
@@ -94,18 +94,34 @@
 /* ---- Physician shell: apex handoff ---- */
 /* The workbench canvas fades in from transparent so the lingering mesh
    backdrop (see MeshBackdrop) shows through for the first beat of the
-   route change — no white pop between the two canvases. The end color is
-   the old bg-muted/40-over-background composite, made opaque so the mesh
-   unmount at ~450ms is invisible. */
+   route change — no white pop between the two canvases. Transparency
+   holds through HeroMesh's ~650ms sphere-to-map unfold, then fades; the
+   end color is the old bg-muted/40-over-background composite, made opaque
+   so the mesh unmount at ~800ms is invisible. */
 .physician-canvas {
   background-color: color-mix(in srgb, var(--muted) 40%, var(--background));
-  animation: physician-canvas-in 0.45s ease-out both;
+  animation: physician-canvas-in 0.85s ease-out both;
 }
 @keyframes physician-canvas-in {
   from { background-color: transparent; }
+  65% { background-color: transparent; }
 }
 @media (prefers-reduced-motion: reduce) {
   .physician-canvas { animation: none; }
+}
+
+/* Physician hero panel during the apex handoff: hold transparent while the
+   unfolding mesh converges into this rect, then fade to the dark panel.
+   The hero's own light-on-dark points emerge as the background darkens —
+   that darkening is the crossfade between the two canvases. */
+.hero-panel-handoff {
+  animation: hero-panel-in 0.95s ease-out both;
+}
+@keyframes hero-panel-in {
+  0%, 68% { background-color: transparent; border-color: transparent; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-panel-handoff { animation: none; }
 }
 @keyframes rp-float1 {
   0%, 100% { transform: translate(0) scale(1); }

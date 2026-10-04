@@ -1,5 +1,5 @@
 "use client";
-// AvatarStage — Tier-1 open-source talking avatar for the Rarepath voice
+// AvatarStage — Tier-1 open-source talking avatar for the Emmatics voice
 // assistant. Renders a Ready Player Me style GLB head (MIT-licensed sample
 // from the TalkingHead project, ARKit + Oculus viseme morph targets) with
 // three.js and drives the mouth in real time from the ElevenLabs output
@@ -12,7 +12,7 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-const AVATAR_URL = "/avatars/rarepath.glb";
+const AVATAR_URL = "/avatars/emmatics.glb";
 
 type MorphMesh = THREE.Mesh & {
   morphTargetDictionary: Record<string, number>;

@@ -1,5 +1,5 @@
 "use client";
-// ElevenLabs Conversational AI voice layer for the Rarepath patient app.
+// ElevenLabs Conversational AI voice layer for the Emmatics patient app.
 //
 // Flow: mic button → GET {API_BASE}/v1/voice/signed-url (key stays on the
 // backend) → WebSocket session via @elevenlabs/react. Transcripts stream
@@ -49,7 +49,7 @@ export function useVoiceSession({
       onTranscript({
         from: role === "user" ? "me" : "ai",
         text: message,
-        src: role === "user" ? undefined : "Rarepath Voice · ElevenLabs",
+        src: role === "user" ? undefined : "Emmatics Voice · ElevenLabs",
       });
     },
     onError: (e: unknown) => {
@@ -158,7 +158,7 @@ export function VoiceButton({
       type="button"
       onClick={active ? onStop : onStart}
       disabled={connecting}
-      title={active ? "End voice session" : "Talk to Rarepath"}
+      title={active ? "End voice session" : "Talk to Emmatics"}
       className={`grid size-8 shrink-0 place-items-center rounded-full text-[13px] transition ${
         active
           ? isSpeaking

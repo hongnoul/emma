@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-shot provisioning of the Rarepath voice agent on ElevenLabs.
+# One-shot provisioning of the Emmatics voice agent on ElevenLabs.
 # Creates workspace tools (emmatics_brief webhook + switch_tab client), creates
 # the agent referencing them, enables auth, sets Fly secrets, verifies prod.
 #
@@ -109,7 +109,7 @@ echo "   fill_checkin: $CHECKIN_TOOL_ID"
 say "3/5 Creating agent…"
 AGENT=$(python3 - "$EMMATICS_TOOL_ID" "$SWITCH_TOOL_ID" "$CHECKIN_TOOL_ID" <<'PY'
 import json, sys
-prompt = """You are Rarepath, a warm voice companion for rare-disease patients. You are speaking with Adira, who is on day 118 of treatment under Dr. Santoso.
+prompt = """You are Emmatics, a warm voice companion for rare-disease patients. You are speaking with Adira, who is on day 118 of treatment under Dr. Santoso.
 
 Rules:
 - You are NOT a diagnostician. Never diagnose, never adjust medication. Symptoms get logged and routed to Dr. Santoso.
@@ -122,10 +122,10 @@ Rules:
 - Adira lives in Jakarta. If she speaks Bahasa Indonesia, switch to Bahasa Indonesia and stay warm and informal ("kamu", not "Anda").
 - If the patient sounds distressed or describes an emergency, tell them to contact their physician or emergency services immediately."""
 print(json.dumps({
-  "name": "Rarepath patient companion",
+  "name": "Emmatics patient companion",
   "conversation_config": {
     "agent": {
-      "first_message": "Hi Adira, it's Rarepath. How are you feeling today?",
+      "first_message": "Hi Adira, it's Emmatics. How are you feeling today?",
       "language": "en",
       "prompt": {
         "prompt": prompt,
@@ -144,7 +144,7 @@ print(json.dumps({
       "id": {
         "overrides": {
           "agent": {
-            "first_message": "Halo Adira, ini Rarepath. Bagaimana perasaanmu hari ini?"
+            "first_message": "Halo Adira, ini Emmatics. Bagaimana perasaanmu hari ini?"
           }
         }
       }

@@ -8,10 +8,11 @@ import { usePathname } from "next/navigation";
 import HeroMesh from "@/components/HeroMesh";
 import { meshBus, MeshFilter } from "@/lib/mesh-bus";
 
-// How long the mesh stays mounted after navigating into /physician. The
-// physician shell fades its opaque canvas in over this window (see the
-// physician layout), so the handoff reads as one motion, not a white pop.
-const PHYSICIAN_LINGER_MS = 450;
+// How long the mesh stays mounted after navigating into /physician: long
+// enough to cover HeroMesh's ~650ms unfold departure plus the shell's
+// background fade (see globals.css .physician-canvas), so the sphere
+// visibly unfolds into the map before the workbench paints over it.
+const PHYSICIAN_LINGER_MS = 800;
 
 export default function MeshBackdrop() {
   const pathname = usePathname();
@@ -29,6 +30,7 @@ export default function MeshBackdrop() {
     const on = pathname.startsWith("/physician");
     if (on && wasElsewhere.current) {
       wasElsewhere.current = false;
+      meshBus.markHandoff();
       setLinger(true);
       const t = setTimeout(() => setLinger(false), PHYSICIAN_LINGER_MS);
       return () => clearTimeout(t);

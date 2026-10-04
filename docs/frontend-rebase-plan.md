@@ -3,7 +3,7 @@
 Source material (unpacked locally, not committed):
 
 - Patient side: `~/Downloads/seeker-support-bot-site.zip` → `/tmp/emma_zip1`
-  ("Rarepath" mobile companion). **Compiled bundle only** — minified
+  ("Emmatics" mobile companion). **Compiled bundle only** — minified
   `routes-qzrcWisi.js` / `index-8VYjPnEP.js` + `styles-BwN7LzHO.css`. No JSX
   source; layouts and copy must be reverse-engineered from the (readable)
   minified output. The minifier kept template-literal classNames and copy
@@ -60,10 +60,10 @@ code must follow:
 
 ## Phase 2 — Patient app (`/patient`)
 
-New route subtree `frontend/app/patient/` reproducing Rarepath inside its
+New route subtree `frontend/app/patient/` reproducing Emmatics inside its
 phone frame (aspect 9/16 card, blob background, status bar, bottom tab bar):
 
-| Rarepath tab | Route | Backend mapping |
+| Emmatics tab | Route | Backend mapping |
 |---|---|---|
 | Journey | `/patient` (default tab) | static timeline content (faithful copy) |
 | Overview | `/patient` tab state | adherence/dose/side-effect cards: local state (prototype parity) |

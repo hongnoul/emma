@@ -1,5 +1,5 @@
 "use client";
-// Rarepath patient companion — faithful port of the Lovable prototype
+// Emmatics patient companion — faithful port of the Lovable prototype
 // (seeker-support-bot-site). Layout, flows, and copy mirror the original
 // one-screen phone demo with five tabs. Differences from the prototype:
 //  - Backend: repo FastAPI via lib/api.ts (search / disease / evidence)
@@ -105,7 +105,7 @@ export default function PatientApp() {
   }, []);
 
   // Dev/test hook: inject a voice check-in draft without a live ElevenLabs
-  // session (window.dispatchEvent(new CustomEvent("rarepath:checkin", {detail}))).
+  // session (window.dispatchEvent(new CustomEvent("emmatics:checkin", {detail}))).
   // Mirrors exactly what the fill_checkin client tool does.
   useEffect(() => {
     if (process.env.NODE_ENV === "production") return;
@@ -113,8 +113,8 @@ export default function PatientApp() {
       setCheckinDraft((e as CustomEvent).detail as CheckinDraft);
       setTab("research");
     };
-    window.addEventListener("rarepath:checkin", h);
-    return () => window.removeEventListener("rarepath:checkin", h);
+    window.addEventListener("emmatics:checkin", h);
+    return () => window.removeEventListener("emmatics:checkin", h);
   }, []);
 
   useEffect(() => {
@@ -147,11 +147,10 @@ export default function PatientApp() {
         {/* Header */}
         <header className="glass mx-3 mt-3 flex items-center justify-between rounded-2xl px-3.5 py-2.5 sm:px-5 sm:py-3">
           <div className="flex items-center gap-2">
-            <span className="grid size-7 place-items-center rounded-lg bg-primary text-sm font-semibold text-primary-foreground">
-              ✚
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="Emmatics" className="size-7" />
             <span className="font-display text-[15px] font-semibold tracking-tight sm:text-[17px]">
-              Rarepath
+              Emmatics
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -214,7 +213,12 @@ export default function PatientApp() {
                 tab === key ? "text-primary" : "text-foreground/45"
               }`}
             >
-              <span className="text-base leading-none">{icon}</span>
+              {key === "chat" ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src="/logo.svg" alt="" className="size-4" />
+              ) : (
+                <span className="text-base leading-none">{icon}</span>
+              )}
               {label}
             </button>
           ))}
@@ -248,7 +252,7 @@ const JOURNEY_STEPS = [
   },
   {
     t: "Registered by physician",
-    d: "Dr. Santoso registered you to Rarepath on 04 Mar.",
+    d: "Dr. Santoso registered you to Emmatics on 04 Mar.",
     who: "Physician",
   },
   {
@@ -294,7 +298,7 @@ function JourneyTab({ onGo }: { onGo: (t: Tab) => void }) {
           You are not a symptom list. You are a story.
         </h1>
         <p className="mt-3 text-[13px] leading-relaxed text-foreground/60">
-          Rarepath matches your symptoms against a live network of rare-disease
+          Emmatics matches your symptoms against a live network of rare-disease
           researchers, physicians, and patients walking the same road — so the
           answer arrives sooner, and you never walk it alone.
         </p>
@@ -675,7 +679,7 @@ function ChatTabInner({
   ]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
-  // Dev-only avatar preview (window event "rarepath:avatar") — verify the
+  // Dev-only avatar preview (window event "emmatics:avatar") — verify the
   // talking head without an ElevenLabs session. detail: {show, speaking}.
   const [avatarPreview, setAvatarPreview] = useState<{
     show: boolean;
@@ -698,8 +702,8 @@ function ChatTabInner({
       const d = (e as CustomEvent).detail ?? {};
       setAvatarPreview({ show: d.show !== false, speaking: !!d.speaking });
     };
-    window.addEventListener("rarepath:avatar", h);
-    return () => window.removeEventListener("rarepath:avatar", h);
+    window.addEventListener("emmatics:avatar", h);
+    return () => window.removeEventListener("emmatics:avatar", h);
   }, []);
 
   useEffect(() => {
@@ -769,12 +773,11 @@ function ChatTabInner({
   return (
     <Panel className="flex min-h-full flex-col">
       <div className="flex items-center gap-3 border-b border-border pb-3">
-        <span className="grid size-9 place-items-center rounded-full bg-primary text-primary-foreground">
-          ◈
-        </span>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/logo.svg" alt="Emmatics AI" className="size-9" />
         <div>
           <p className="font-display text-[16px] font-medium leading-none">
-            Rarepath AI
+            Emmatics AI
           </p>
           <p className="text-[10.5px] text-muted-foreground">
             {voice.active
@@ -802,7 +805,7 @@ function ChatTabInner({
               }
             />
             <p className="pointer-events-none absolute bottom-2 left-3 text-[9.5px] uppercase tracking-wider text-muted-foreground">
-              {voice.isSpeaking ? "Rarepath · speaking" : "Rarepath · listening"}
+              {voice.isSpeaking ? "Emmatics · speaking" : "Emmatics · listening"}
             </p>
           </div>
         </div>
@@ -812,9 +815,8 @@ function ChatTabInner({
         {msgs.map((m, i) =>
           m.from === "ai" ? (
             <div key={i} className="rise flex max-w-[88%] items-start gap-2">
-              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-primary text-[11px] text-primary-foreground">
-                ◈
-              </span>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/logo.svg" alt="" className="size-7 shrink-0" />
               <div>
                 <div className="glass-soft rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-foreground/80">
                   {m.text}
@@ -837,9 +839,8 @@ function ChatTabInner({
         )}
         {typing && (
           <div className="flex items-start gap-2">
-            <span className="grid size-7 shrink-0 place-items-center rounded-full bg-primary text-[11px] text-primary-foreground">
-              ◈
-            </span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.svg" alt="" className="size-7 shrink-0" />
             <div className="glass-soft w-14 rounded-2xl px-3 py-2 text-foreground/50">
               •••
             </div>
@@ -911,7 +912,7 @@ const PEERS = [
     n: "Yoga, 41",
     i: "Y",
     tag: "pursued a research trial",
-    q: "Rarepath flagged my data to a physician who connected me to an open trial in Jakarta.",
+    q: "Emmatics flagged my data to a physician who connected me to an open trial in Jakarta.",
     m: 88,
   },
   {
@@ -1215,7 +1216,7 @@ function ResearchTab({
               <span className="font-semibold text-primary">
                 Pre-filled by voice ·{" "}
               </span>
-              Rarepath drafted this from your conversation. Review every field,
+              Emmatics drafted this from your conversation. Review every field,
               then submit yourself.
             </p>
           )}
@@ -1301,12 +1302,17 @@ function ResearchTab({
       <Panel>
         <span className="font-display text-[17px] font-medium">Data flow</span>
         <div className="mt-3 flex items-center justify-between text-center text-[10.5px]">
-          {["You", "Rarepath AI", "Physician", "Researcher"].map((who, i) => (
+          {["You", "Emmatics AI", "Physician", "Researcher"].map((who, i) => (
             <div key={who} className="flex items-center gap-1">
               <div>
+                {who === "Emmatics AI" ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src="/logo.svg" alt="" className="mx-auto size-9" />
+                ) : (
                 <div className="mx-auto grid size-9 place-items-center rounded-full bg-primary/15 font-display text-primary">
-                  {["A", "◈", "✚", "▤"][i]}
+                  {["A", "", "✚", "▤"][i]}
                 </div>
+                )}
                 <p className="mt-1 text-foreground/60">{who}</p>
               </div>
               {i < 3 && <span className="mb-4 text-muted-foreground">→</span>}

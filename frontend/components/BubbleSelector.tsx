@@ -28,6 +28,8 @@ type Props = {
   selectedHref?: string | null;
   /** select-first mode: first click pins and reports instead of navigating */
   onSelect?: (item: BubbleItem) => void;
+  /** called when a click is about to follow the link (pinned bubble) */
+  onNavigate?: (item: BubbleItem) => void;
   animationEase?: string;
   animationDuration?: number;
   staggerDelay?: number;
@@ -37,6 +39,7 @@ export default function BubbleSelector({
   items,
   selectedHref,
   onSelect,
+  onNavigate,
   animationEase = 'back.out(1.5)',
   animationDuration = 0.5,
   staggerDelay = 0.12
@@ -144,7 +147,9 @@ export default function BubbleSelector({
                     e.preventDefault();
                     onSelect?.(item);
                   }
-                : undefined
+                : onNavigate
+                  ? () => onNavigate(item)
+                  : undefined
             }
             className={[
               'bubble-btn',

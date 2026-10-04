@@ -8,6 +8,7 @@
 // generation_id; if it mismatches the live API we still render but note it).
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { meshBus } from "@/lib/mesh-bus";
 
 interface HeroNode { id: string; n: string; x: number; y: number; deg: number }
 interface HeroLink { id: string; s: number; t: number; v: number }
@@ -29,6 +30,10 @@ export default function EmmaticsHero({ onFailed }: { onFailed?: () => void } = {
   const [failed, setFailed] = useState(false);
   const [bandFilter, setBandFilter] = useState<Band | null>(null);
   const [tip, setTip] = useState<{ x: number; y: number; title: string; sub: string; href: string } | null>(null);
+  // Apex handoff: hold the panel transparent while the backdrop's sphere
+  // unfolds into our rect, then fade to the dark panel. Sampled once on
+  // mount; deep loads (no handoff) paint the panel immediately.
+  const [handoff] = useState(() => meshBus.handoffActive());
 
   // view transform (pan/zoom) and entrance animation progress, in refs so
   // redraws don't re-render React.
@@ -46,6 +51,14 @@ export default function EmmaticsHero({ onFailed }: { onFailed?: () => void } = {
       .catch(() => { setFailed(true); onFailed?.(); });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Register the hero panel as the meshBus stage: the lingering HeroMesh
+  // backdrop unfolds the sphere into this exact rect during the apex
+  // handoff (see HeroMesh "Unfold"), so its end frame is our first frame.
+  useEffect(() => {
+    meshBus.setStage(wrapRef.current);
+    return () => { if (meshBus.getStage() === wrapRef.current) meshBus.setStage(null); };
+  }, [data]);
 
   useEffect(() => { bandRef.current = bandFilter; schedule(); }, [bandFilter]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -223,7 +236,8 @@ export default function EmmaticsHero({ onFailed }: { onFailed?: () => void } = {
     : null;
 
   return (
-    <div ref={wrapRef} className="relative rounded-xl overflow-hidden bg-slate-950 border border-slate-800"
+    <div ref={wrapRef}
+         className={`relative rounded-xl overflow-hidden bg-slate-950 border border-slate-800 ${handoff ? "hero-panel-handoff" : ""}`}
          style={{ height: "min(62vh, 560px)" }}>
       <canvas
         ref={canvasRef}
