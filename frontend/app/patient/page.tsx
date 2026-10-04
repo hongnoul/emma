@@ -201,7 +201,7 @@ export default function PatientApp() {
             [
               ["journey", "◎", "Journey"],
               ["home", "⌂", "Overview"],
-              ["chat", "◈", "AI"],
+              ["chat", "", "AI"],
               ["community", "❋", "Community"],
               ["research", "▤", "Research"],
             ] as [Tab, string, string][]
