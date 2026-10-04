@@ -189,7 +189,7 @@ export default function AvatarStage({
           0.25 +
           0.2 * Math.sin(t * 9.1) * Math.sin(t * 3.7) +
           0.12 * Math.sin(t * 13.3);
-        lerpMorph("jawOpen", Math.max(0, open) * 0.5, 0.3);
+        lerpMorph("jawOpen", Math.max(0, open) * 0.35, 0.3);
         lerpMorph("viseme_aa", Math.max(0, Math.sin(t * 5.3)) * 0.5, 0.3);
         lerpMorph("viseme_E", Math.max(0, Math.sin(t * 7.9 + 1)) * 0.4, 0.3);
         lerpMorph("viseme_O", Math.max(0, Math.sin(t * 4.1 + 2)) * 0.4, 0.3);
@@ -205,8 +205,8 @@ export default function AvatarStage({
         vowelBias = Math.max(-1, Math.min(1, vowelBias));
 
         const open = Math.pow(energy, 1.3);
-        lerpMorph("jawOpen", open * 0.45, 0.35);
-        lerpMorph("viseme_aa", Math.min(1, vowelLo * 2.2 * (1 - Math.max(0, vowelBias))) * open, 0.4);
+        lerpMorph("jawOpen", open * 0.3, 0.35);
+        lerpMorph("viseme_aa", Math.min(1, vowelLo * 2.2 * (1 - Math.max(0, vowelBias))) * open * 0.7, 0.4);
         lerpMorph("viseme_O", Math.min(1, vowelLo * 1.6 * Math.max(0, vowelBias)) * open, 0.35);
         lerpMorph("viseme_E", Math.min(1, vowelHi * 2.4) * open * 0.8, 0.4);
         lerpMorph("viseme_I", Math.min(1, vowelHi * 1.4) * open * 0.4, 0.35);
