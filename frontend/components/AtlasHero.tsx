@@ -36,7 +36,8 @@ export default function AtlasHero() {
   const anim = useRef(0); // 0..1 entrance
   const hover = useRef<Hit | null>(null);
   const bandRef = useRef<Band | null>(null);
-  const raf = useRef<number>(0);
+  const raf = useRef<number>(0);        // one-shot scheduled draws
+  const entranceRaf = useRef<number>(0); // entrance loop (must not be cancelled by schedule)
 
   useEffect(() => {
     fetch("/atlas-umap.json")
@@ -63,15 +64,19 @@ export default function AtlasHero() {
       ys[i] = (n.y - minY) / (maxY - minY);
     });
     norm.current = { xs, ys };
-    // entrance: ease points out from center over ~700ms
+    // entrance: ease points out from center over ~700ms. Runs on its own rAF
+    // handle so schedule() (resize/hover redraws) cannot cancel it mid-flight.
     const t0 = performance.now();
     const tick = (t: number) => {
       anim.current = Math.min(1, (t - t0) / 700);
       draw();
-      if (anim.current < 1) raf.current = requestAnimationFrame(tick);
+      if (anim.current < 1) entranceRaf.current = requestAnimationFrame(tick);
     };
-    raf.current = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf.current);
+    entranceRaf.current = requestAnimationFrame(tick);
+    // belt-and-braces: whatever happens to the rAF loop, settle at the final
+    // layout shortly after the entrance window.
+    const settle = window.setTimeout(() => { anim.current = 1; draw(); }, 900);
+    return () => { cancelAnimationFrame(entranceRaf.current); clearTimeout(settle); };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
