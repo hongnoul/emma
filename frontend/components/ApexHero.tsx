@@ -1,7 +1,8 @@
 "use client";
 // ApexHero: client island for the apex landing page. Owns the live search
-// query and feeds it to HeroMesh (background) as a real-time filter while
-// rendering the centered hero copy, search bar, and BubbleSelector flows.
+// query and feeds it over meshBus to the persistent HeroMesh backdrop
+// (mounted once in the root layout) while rendering the centered hero copy,
+// search bar, and BubbleSelector flows.
 //
 // Matching is two-tier: HeroMesh does instant local substring matching over
 // node names/ids, and a debounced backend api.search unions in semantic hits
@@ -11,7 +12,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search } from "lucide-react";
 import { api } from "@/lib/api";
-import HeroMesh from "@/components/HeroMesh";
+import { meshBus } from "@/lib/mesh-bus";
 import BubbleSelector, { BubbleItem } from "@/components/BubbleSelector";
 
 const SEMANTIC_DEBOUNCE_MS = 300;
@@ -21,9 +22,15 @@ export default function ApexHero({ flows }: { flows: BubbleItem[] }) {
   const router = useRouter();
   const [q, setQ] = useState("");
   const [semanticIds, setSemanticIds] = useState<string[] | null>(null);
-  const [matchCount, setMatchCount] = useState<number | null>(null);
+  const [matchCount, setMatchCount] = useState<number | null>(meshBus.getMatchCount());
   const inputRef = useRef<HTMLInputElement>(null);
   const seqRef = useRef(0); // drop out-of-order semantic responses
+
+  // Bridge to the persistent mesh backdrop in the root layout
+  useEffect(() => { meshBus.setFilter(q, semanticIds); }, [q, semanticIds]);
+  useEffect(() => meshBus.onMatchCount(setMatchCount), []);
+  // Leaving the page clears any residual filter dimming on the backdrop
+  useEffect(() => () => meshBus.setFilter("", null), []);
 
   // Debounced semantic search: union backend hits into the mesh filter.
   useEffect(() => {
@@ -62,10 +69,8 @@ export default function ApexHero({ flows }: { flows: BubbleItem[] }) {
   const filtering = q.trim().length > 0;
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-white">
-      <HeroMesh filter={q} semanticIds={semanticIds} onMatchCount={setMatchCount} />
-
-      {/* hero copy + search + bubble selector over the mesh */}
+    <div className="relative min-h-screen overflow-hidden">
+      {/* hero copy + search + bubble selector over the persistent mesh backdrop */}
       <section className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 py-24 text-center">
         <h1 className="flex justify-center">
           {/* eslint-disable-next-line @next/next/no-img-element */}

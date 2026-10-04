@@ -26,7 +26,7 @@
 // full mesh recedes to a ghost while matched nodes/links draw bright in a
 // second batched pass. Hit-testing prefers matched nodes while filtering.
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface HeroNode { id: string; n: string; x: number; y: number; deg: number }
 interface HeroLink { id: string; s: number; t: number; v: number }
@@ -59,9 +59,11 @@ const HIT_JUDGED = 20;  // px: prefer judged nodes within this radius
 const HIT_ANY = 12;     // px: otherwise any node within this radius
 const HIT_MATCHED = 36; // px: filtering active — matched nodes get a big grab radius
 // Click-zoom tuning: camera dollies into the clicked node, pans it to
-// center, dims unrelated geometry, then fades to white and navigates.
+// center, dims unrelated geometry. Navigation fires mid-zoom (the canvas
+// persists across routes, so the zoomed mesh is the loading backdrop).
 const ZOOM_MS = 700;
 const ZOOM_SCALE = 4;   // sphere radius multiplier at full zoom
+const NAV_AT = 0.55;    // zoom progress at which router.push fires
 const easeInOut = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
 
 interface HoverInfo { i: number; id: string; name: string; deg: number }
@@ -82,12 +84,22 @@ export default function HeroMesh({
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const fadeRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
+  const pathname = usePathname();
   const [hover, setHover] = useState<HoverInfo | null>(null);
   // Shared with the data closure below
   const hoverIdx = useRef(-1);
   const placeCard = useRef<(i: number) => void>(() => {});
+  // True on the landing page: hover, click-zoom and steering are enabled.
+  const activeRef = useRef(pathname === "/");
+  // Route-change hook into the animation closure (zoom-out on return home)
+  const routeCtl = useRef<(home: boolean) => void>(() => {});
+
+  useEffect(() => {
+    const home = pathname === "/";
+    activeRef.current = home;
+    routeCtl.current(home);
+  }, [pathname]);
   // Filter plumbing: props land in refs so the one-shot canvas effect never
   // re-runs; the closure rebinds applyFilterRef once data loads.
   const applyFilterRef = useRef<(q: string, ids: string[] | null) => void>(() => {});
@@ -149,7 +161,7 @@ export default function HeroMesh({
     const setApplyHover = (fn: (i: number) => void) => { applyHover = fn; };
 
     const onMove = (e: PointerEvent) => {
-      if (zoomActive) return; // camera is locked during the zoom
+      if (!activeRef.current || zoomActive) return; // backdrop mode / mid-zoom
       const rect = cv.getBoundingClientRect();
       if (rect.width === 0) return;
       const x = e.clientX - rect.left, y = e.clientY - rect.top;
@@ -164,7 +176,7 @@ export default function HeroMesh({
     };
     const onLeave = () => { target.seen = false; applyHover(-1); };
     const onClick = (e: MouseEvent) => {
-      if (zoomActive) return;
+      if (!activeRef.current || zoomActive) return;
       const i = hoverIdx.current;
       if (i < 0 || !nodes[i]) return;
       const el = e.target as Element | null;
@@ -335,9 +347,10 @@ export default function HeroMesh({
           return bestJ >= 0 ? bestJ : best;
         };
 
-        // Click-zoom camera state. i >= 0 while a zoom is in flight; yaw/pitch
-        // freeze at click time so the only motion is the dolly + pan.
-        const zoom = { i: -1, t0: 0, yaw: 0, pitch: 0, sx: 0, sy: 0, done: false };
+        // Click-zoom camera state. i >= 0 while zoomed in or animating;
+        // target 1 = dive in, 0 = ease back out. yaw/pitch freeze at click
+        // time so the only motion is the dolly + pan.
+        const zoom = { i: -1, target: 0, p: 0, navigated: false, yaw: 0, pitch: 0, sx: 0, sy: 0 };
         let lastYaw = 0, lastPitch = TILT; // refreshed every layout pass
 
         placeCard.current = (i: number) => {
@@ -380,7 +393,7 @@ export default function HeroMesh({
             panY = zoom.sy + (cyp - zoom.sy) * zp - (cyp + y2 * R);
           }
           const driftScale = AMP * e * (1 - zp); // drift settles as we dive in
-          const seen = target.seen && !zooming ? 1 : 0;
+          const seen = target.seen && !zooming && activeRef.current ? 1 : 0;
           const hi = hoverIdx.current;
           for (let i = 0; i < N; i++) {
             // Rotate: yaw about Y, then pitch about X; orthographic project
@@ -565,7 +578,9 @@ export default function HeroMesh({
         startZoom = (i: number) => {
           zoomActive = true;
           zoom.i = i;
-          zoom.t0 = performance.now();
+          zoom.target = 1;
+          zoom.p = 0;
+          zoom.navigated = false;
           zoom.yaw = lastYaw;
           zoom.pitch = lastPitch;
           zoom.sx = bx0[i];
@@ -573,25 +588,42 @@ export default function HeroMesh({
           applyHover(-1); // drop the card; the canvas ring carries the focus
         };
 
+        // Route changes: leaving home drops hover/steering (the zoomed or
+        // ambient mesh becomes a passive backdrop); returning home with a
+        // held zoom eases the camera back out to the full sphere.
+        routeCtl.current = (home: boolean) => {
+          if (!home) {
+            target.seen = false;
+            applyHover(-1);
+          } else if (zoom.i >= 0) {
+            zoom.target = 0;
+            zoom.navigated = false;
+          }
+        };
+
+        let prevNow = t0;
+
         const loop = (now: number) => {
           if (cancelled || !running) return;
           const size = sizeCanvas();
           if (size) {
             const t = (now - t0) / 1000;
+            const dt = Math.min(0.1, (now - prevNow) / 1000);
+            prevNow = now;
             const e = 1 - Math.pow(1 - Math.min(1, (now - t0) / ENTRANCE_MS), 3); // easeOutCubic
-            // Zoom progress: eased dolly, white fade over the last 40%, then
-            // navigate once the fade fully covers the hero.
+            // Zoom progress: eased dolly toward target (1 = in, 0 = out).
+            // Navigation fires mid-dive; the canvas persists across the route
+            // change so the zoomed mesh carries straight into the next page.
             let zp = 0;
             if (zoom.i >= 0) {
-              const raw = Math.min(1, (now - zoom.t0) / ZOOM_MS);
-              zp = easeInOut(raw);
-              if (fadeRef.current) {
-                fadeRef.current.style.opacity = String(Math.min(1, Math.max(0, (raw - 0.6) / 0.4)));
-              }
-              if (raw >= 1 && !zoom.done) {
-                zoom.done = true;
+              const dir = zoom.target === 1 ? 1 : -1;
+              zoom.p = Math.min(1, Math.max(0, zoom.p + (dir * dt * 1000) / ZOOM_MS));
+              zp = easeInOut(zoom.p);
+              if (zoom.target === 1 && !zoom.navigated && zoom.p >= NAV_AT) {
+                zoom.navigated = true;
                 router.push(`/disease/${encodeURIComponent(nodes[zoom.i].id)}`);
               }
+              if (zoom.target === 0 && zoom.p <= 0) { zoom.i = -1; zoomActive = false; }
             }
             layout(t, e, size.W, size.H, zp);
             // Ease the filter crossfade toward its target
@@ -635,31 +667,24 @@ export default function HeroMesh({
 
   return (
     <>
-      {/* Warm wash behind the mesh: two blurred blobs for color richness */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* Persistent full-bleed backdrop: white base, warm wash, mesh canvas.
+          Fixed at -z-10 so every route's content stacks above it, and the
+          canvas never remounts across navigations (no white reload). */}
+      <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-white">
         <div className="absolute -left-32 top-1/4 size-[480px] rounded-full bg-indigo-200/40 blur-3xl" />
         <div className="absolute -right-32 bottom-1/4 size-[480px] rounded-full bg-amber-100/60 blur-3xl" />
+        <canvas
+          ref={canvasRef}
+          className={`absolute inset-0 h-full w-full ${className}`}
+        />
       </div>
-      <canvas
-        ref={canvasRef}
-        aria-hidden
-        className={`pointer-events-none absolute inset-0 h-full w-full ${className}`}
-      />
-      {/* White fade that covers the hero at the end of a click-zoom so the
-          route change lands on a matching white frame. Opacity is driven
-          imperatively from the animation loop. */}
-      <div
-        ref={fadeRef}
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-30 bg-white opacity-0"
-      />
       {/* Hover card: anchored to the hovered node, follows its drift.
-          pointer-events-auto so the user can mouse into it and click. */}
+          Fixed and z-30 so it stacks above page content and stays clickable. */}
       {hover && (
         <div
           ref={cardRef}
           data-hover-card
-          className="pointer-events-auto absolute left-0 top-0 z-20 w-60 rounded-lg border border-slate-200 bg-white/95 px-3 py-2.5 shadow-lg backdrop-blur-sm"
+          className="pointer-events-auto fixed left-0 top-0 z-30 w-60 rounded-lg border border-slate-200 bg-white/95 px-3 py-2.5 shadow-lg backdrop-blur-sm"
         >
           <p className="truncate text-[13px] font-medium text-slate-900">{hover.name}</p>
           <p className="mt-0.5 text-[11px] text-slate-500">
