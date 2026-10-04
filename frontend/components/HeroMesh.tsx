@@ -57,6 +57,7 @@ const FILTER_DEPTH_A = [0.55, 0.8, 1]; // matched geometry: back hemisphere stay
 // Hover tuning
 const HIT_JUDGED = 20;  // px: prefer judged nodes within this radius
 const HIT_ANY = 12;     // px: otherwise any node within this radius
+const HIT_MATCHED = 36; // px: filtering active — matched nodes get a big grab radius
 // Click-zoom tuning: camera dollies into the clicked node, pans it to
 // center, dims unrelated geometry, then fades to white and navigates.
 const ZOOM_MS = 700;
@@ -309,17 +310,18 @@ export default function HeroMesh({
         const R2 = RADIUS * RADIUS;
 
         hitTest = (mx: number, my: number): number => {
-          // While filtering, matched nodes own the cursor (bigger radius)
+          // While filtering, matched nodes own the cursor entirely: ghosted
+          // non-matches are near-invisible, so hovering them is just noise.
           if (flt.on && flt.strength > 0.3) {
-            let bestM = -1, bestMD = HIT_JUDGED * HIT_JUDGED;
+            let bestM = -1, bestMD = HIT_MATCHED * HIT_MATCHED;
             for (let k = 0; k < matchedIdx.length; k++) {
               const i = matchedIdx[k];
-              if (depth[i] <= 0.05) continue;
+              if (depth[i] <= -0.6) continue; // matched back nodes stay visible → clickable
               const dx = bx0[i] - mx, dy = by0[i] - my;
               const d = dx * dx + dy * dy;
               if (d < bestMD) { bestMD = d; bestM = i; }
             }
-            if (bestM >= 0) return bestM;
+            return bestM;
           }
           let best = -1, bestD = HIT_ANY * HIT_ANY;
           let bestJ = -1, bestJD = HIT_JUDGED * HIT_JUDGED;
