@@ -94,12 +94,23 @@ export function useVoiceSession({
     try {
       // Mic permission first so the session doesn't fail mid-handshake.
       await navigator.mediaDevices.getUserMedia({ audio: true });
+      // WebRTC transport: native mic capture + playback, most reliable
+      // across browsers. Falls back to websocket if the token route 404s
+      // (older deployed backend).
+      const tok = await fetch(`${API_BASE}/v1/voice/token`, {
+        signal: AbortSignal.timeout(10000),
+      });
+      if (tok.ok) {
+        const { token } = await tok.json();
+        startSession({ conversationToken: token, connectionType: "webrtc" });
+        return;
+      }
       const res = await fetch(`${API_BASE}/v1/voice/signed-url`, {
         signal: AbortSignal.timeout(10000),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => null);
-        throw new Error(body?.detail ?? `signed-url failed (${res.status})`);
+        throw new Error(body?.detail ?? `voice auth failed (${res.status})`);
       }
       const { signed_url } = await res.json();
       startSession({ signedUrl: signed_url, connectionType: "websocket" });

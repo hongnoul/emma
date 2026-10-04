@@ -2,7 +2,7 @@
 // ambient background, a centered search bar that filters the mesh in real
 // time, and bubble buttons as the client-facing flow selector
 // (physician / patient / explorer). The card-shell app lives under
-// app/(atlas)/ and keeps its own chrome. All interactivity lives in the
+// app/(emmatics)/ and keeps its own chrome. All interactivity lives in the
 // ApexHero client island.
 import ApexHero from "@/components/ApexHero";
 

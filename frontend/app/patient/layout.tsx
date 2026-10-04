@@ -21,7 +21,7 @@ const fraunces = Fraunces({
   variable: "--font-fraunces",
 });
 
-// Standalone app shell: /patient lives outside the (atlas) card chrome and
+// Standalone app shell: /patient lives outside the (emmatics) card chrome and
 // owns the whole viewport on mobile and desktop.
 export default function PatientLayout({ children }: { children: React.ReactNode }) {
   return <div className={fraunces.variable}>{children}</div>;

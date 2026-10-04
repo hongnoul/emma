@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 
-// Floating pill header shared by the card-shell (atlas) and full-bleed
+// Floating pill header shared by the card-shell (emmatics) and full-bleed
 // (focus) route groups.
 export default function EmmaticsHeader() {
   return (

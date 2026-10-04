@@ -59,6 +59,27 @@ def signed_url():
     return {"signed_url": body.get("signed_url"), "agent_id": agent_id}
 
 
+@router.get("/token")
+def webrtc_token():
+    """Short-lived WebRTC conversation token. WebRTC gives the browser native
+    mic capture, echo cancellation, and audio playback — more reliable than
+    the websocket transport across browsers (Safari in particular)."""
+    api_key = os.environ.get("ELEVENLABS_API_KEY")
+    agent_id = os.environ.get("ELEVENLABS_AGENT_ID")
+    if not api_key or not agent_id:
+        raise HTTPException(503, "voice not configured: set ELEVENLABS_API_KEY "
+                                 "and ELEVENLABS_AGENT_ID")
+    req = urllib.request.Request(
+        f"{_EL_BASE}/convai/conversation/token?agent_id={agent_id}",
+        headers={"xi-api-key": api_key})
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            body = _json.loads(r.read())
+    except Exception as e:  # noqa: BLE001
+        raise HTTPException(502, f"elevenlabs token failed: {e}")
+    return {"token": body.get("token"), "agent_id": agent_id}
+
+
 # ---------------------------------------------------------------- agent tools
 
 @router.get("/tools/atlas-brief")

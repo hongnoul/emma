@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 // Root layout is chrome-free so the apex landing page (/) can be full-bleed.
-// The card shell (header, container, bottom tab bar) lives in app/(atlas)/layout.tsx.
+// The card shell (header, container, bottom tab bar) lives in app/(emmatics)/layout.tsx.
 // MeshBackdrop mounts the atlas canvas once, fixed at -z-10; it persists
 // across route changes so a click-zoom on the landing page carries straight
 // into the destination with no white reload.
