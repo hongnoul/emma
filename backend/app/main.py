@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .routers.api import router
 from .routers.ehr import router as ehr_router
+from .routers.research import router as research_router
 from .routers.v1 import router as v1_router
 
 app = FastAPI(title="Rare Disease Atlas API", version="0.1.0",
@@ -15,6 +16,7 @@ app.add_middleware(CORSMiddleware, allow_origins=_origins,
                    allow_methods=["*"], allow_headers=["*"])
 app.include_router(router)
 app.include_router(ehr_router)
+app.include_router(research_router)
 app.include_router(v1_router)
 
 

@@ -99,6 +99,9 @@ export default function DiseasePage({ params }: { params: Promise<{ id: string }
         </div>
         <div className="flex gap-2">
           <Button asChild variant="outline">
+            <Link href={`/research/${id}`}>Basic research</Link>
+          </Button>
+          <Button asChild variant="outline">
             <Link href={`/opportunities/${id}`}>Research opportunities</Link>
           </Button>
           <Button asChild>

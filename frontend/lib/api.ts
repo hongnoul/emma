@@ -87,6 +87,32 @@ export interface EvalReport {
   notes: string;
 }
 
+// ---- basic research (live PubMed/PMC via backend proxy) ----
+
+export interface ResearchPaper {
+  pmid: string; title: string; journal: string; date: string;
+  authors: string[]; pmcid: string | null; doi: string | null;
+  models: string[];
+  classification: { label: string; kind: string; source: string; snippet: string }[];
+}
+
+export interface BasicResearch {
+  disease: { id: string; label: string };
+  total: number; papers: ResearchPaper[]; counts: Record<string, number>;
+  classificationError: string | null; error: string | null;
+}
+
+export interface PaperFullText {
+  id: string; title: string; license: string | null;
+  sections: { type: string; heading: string | null; paragraphs: string[] }[];
+}
+
+export interface PaperDetail {
+  paper: Omit<ResearchPaper, "models" | "classification"> | null;
+  fullText: PaperFullText | null;
+  error: string | null;
+}
+
 // ---- calls ----
 
 export const api = {
@@ -99,6 +125,8 @@ export const api = {
   connection: (a: string, b: string) => get<ConnectionExplanation>(`/api/connections/${a}/${b}`),
   edge: (id: string) => get<GraphEdge>(`/api/edges/${id}`),
   evals: (judge: "mock" | "laya" = "mock") => get<EvalReport>(`/api/evals?judge=${judge}`),
+  research: (id: string) => get<BasicResearch>(`/api/diseases/${id}/research`),
+  paper: (pmid: string) => get<PaperDetail>(`/api/papers/${pmid}`),
 };
 
 // Shared tiny helpers (kept here to avoid a components/ tree)
