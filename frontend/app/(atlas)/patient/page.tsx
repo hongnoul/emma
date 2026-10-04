@@ -10,6 +10,12 @@
 //    sage→muted-foreground, warm→foreground-weight accents.
 import { useEffect, useRef, useState } from "react";
 import { api, DiseaseDetail, GraphEdge } from "@/lib/api";
+import {
+  VoiceButton,
+  VoiceProvider,
+  useVoiceSession,
+  type VoiceMsg,
+} from "@/components/patient-voice";
 
 // The prototype pinned MONDO:0020066 (Ehlers-Danlos) for its live research
 // feed. Our atlas content varies by deployment, so the ID is configurable
@@ -163,7 +169,7 @@ export default function PatientApp() {
           <main className="no-scrollbar min-h-0 flex-1 overflow-y-auto px-3 pb-4 pt-3">
             {tab === "journey" && <JourneyTab onGo={setTab} />}
             {tab === "home" && <OverviewTab onGo={setTab} />}
-            {tab === "chat" && <ChatTab />}
+            {tab === "chat" && <ChatTab onGo={setTab} />}
             {tab === "community" && <CommunityTab />}
             {tab === "research" && <ResearchTab />}
           </main>
@@ -523,7 +529,15 @@ interface ChatMsg {
   src?: string;
 }
 
-function ChatTab() {
+function ChatTab({ onGo }: { onGo: (t: Tab) => void }) {
+  return (
+    <VoiceProvider>
+      <ChatTabInner onGo={onGo} />
+    </VoiceProvider>
+  );
+}
+
+function ChatTabInner({ onGo }: { onGo: (t: Tab) => void }) {
   const [msgs, setMsgs] = useState<ChatMsg[]>([
     {
       from: "ai",
@@ -538,6 +552,14 @@ function ChatTab() {
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
+
+  const voice = useVoiceSession({
+    onTranscript: (m: VoiceMsg) => setMsgs((prev) => [...prev, m]),
+    onSwitchTab: (t) => {
+      if (["journey", "home", "chat", "community", "research"].includes(t))
+        onGo(t as Tab);
+    },
+  });
 
   useEffect(() => {
     const main = endRef.current?.closest("main");
@@ -614,10 +636,20 @@ function ChatTab() {
             Rarepath AI
           </p>
           <p className="text-[10.5px] text-muted-foreground">
-            Trained on 3,400 physician & researcher records
+            {voice.active
+              ? voice.isSpeaking
+                ? "Speaking…"
+                : "Listening — just talk"
+              : "Trained on 3,400 physician & researcher records"}
           </p>
         </div>
       </div>
+
+      {voice.error && (
+        <p className="mt-2 rounded-xl bg-foreground/5 px-3 py-2 text-[10.5px] text-foreground/60">
+          Voice unavailable · {voice.error}
+        </p>
+      )}
 
       <div className="mt-3 flex-1 space-y-2.5 text-[12.5px]">
         {msgs.map((m, i) =>
@@ -676,8 +708,19 @@ function ChatTab() {
         <input
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask about symptoms, adherence, side effects…"
+          placeholder={
+            voice.active
+              ? "Voice session active — speak or type…"
+              : "Ask about symptoms, adherence, side effects…"
+          }
           className="flex-1 bg-transparent text-[12px] outline-none placeholder:text-foreground/40"
+        />
+        <VoiceButton
+          active={voice.active}
+          connecting={voice.connecting}
+          isSpeaking={voice.isSpeaking}
+          onStart={voice.start}
+          onStop={voice.stop}
         />
         <button className="grid size-8 place-items-center rounded-full bg-primary text-primary-foreground">
           ↑
