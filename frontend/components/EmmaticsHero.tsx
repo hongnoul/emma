@@ -21,7 +21,7 @@ const LINK_COLOR: Record<Band, string> = {
 
 interface Hit { kind: "node"; i: number } // nearest-node hit (links resolved via its edges)
 
-export default function EmmaticsHero() {
+export default function EmmaticsHero({ onFailed }: { onFailed?: () => void } = {}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -43,7 +43,8 @@ export default function EmmaticsHero() {
     fetch("/emmatics-umap.json")
       .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
       .then(setData)
-      .catch(() => setFailed(true));
+      .catch(() => { setFailed(true); onFailed?.(); });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => { bandRef.current = bandFilter; schedule(); }, [bandFilter]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -249,6 +250,8 @@ export default function EmmaticsHero() {
             {([["accept", "≥0.90"], ["review", "0.60–0.90"], ["low", "<0.60"]] as [Band, string][]).map(([b, rng]) => (
               <button key={b}
                 onClick={() => setBandFilter(bandFilter === b ? null : b)}
+                onMouseEnter={() => { bandRef.current = b; schedule(); }}
+                onMouseLeave={() => { bandRef.current = bandFilter; schedule(); }}
                 className={`text-[11px] px-2 py-1 rounded-full border transition ${
                   bandFilter === b ? "ring-1 ring-white/60" : ""} ${
                   b === "accept" ? "bg-green-500/15 border-green-500/40 text-green-300"

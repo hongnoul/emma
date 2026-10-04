@@ -131,6 +131,9 @@ export interface Meta {
   judge?: string;
 }
 
+export interface AttentionItem { node: V1Node & { type: string }; degree: number; judged: number; review: number }
+export interface AttentionResponse { generation_id: string; total: number; items: AttentionItem[] }
+
 // ---- calls ----
 
 export const v1 = {
@@ -138,6 +141,12 @@ export const v1 = {
   entities: (q: string, types = "", limit = 20) =>
     get<EntitiesResponse>(`/v1/entities?q=${encodeURIComponent(q)}&types=${types}&limit=${limit}`),
   entity: (curie: string) => get<EntityDetail>(`/v1/entities/${encodeURIComponent(curie)}`),
+  attention: (params: { lo?: number; hi?: number; types?: string; limit?: number } = {}) => {
+    const qs = Object.entries(params)
+      .filter(([, v]) => v !== undefined && v !== "")
+      .map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`).join("&");
+    return get<AttentionResponse>(`/v1/attention${qs ? `?${qs}` : ""}`);
+  },
   edges: (params: Record<string, string | number | boolean | undefined>) => {
     const qs = Object.entries(params)
       .filter(([, v]) => v !== undefined && v !== "")

@@ -48,6 +48,18 @@ class EdgesResponse(Envelope):
     items: list[Edge]
 
 
+class AttentionItem(BaseModel):
+    node: Node
+    degree: int                   # total edges touching the node
+    judged: int                   # judged edges touching the node
+    review: int                   # judged edges in [lo, hi) — needs a verdict
+
+
+class AttentionResponse(Envelope):
+    total: int                    # nodes with at least one review-band edge
+    items: list[AttentionItem]
+
+
 class PathResponse(Envelope):
     path: list[PathStep]
     known: list[str]
@@ -100,6 +112,39 @@ def fetch(curie: str):
     return EntityDetail(generation_id=store.generation, node=n,
                         connections=store.adjacency_summary(curie),
                         parents=parents, subtypes=subtypes[:50])
+
+
+@router.get("/attention", response_model=AttentionResponse)
+def attention(lo: float = Query(0.4, ge=0, le=1), hi: float = Query(0.9, ge=0, le=1),
+              types: str = Query("", description="comma-separated NodeTypes"),
+              limit: int = Query(50, ge=1, le=200)):
+    """Physician worklist: nodes ranked by how many of their judged edges sit
+    in the review band [lo, hi). One O(edges) pass, so it scales to the bulk
+    generation where shipping the whole graph to the client does not."""
+    store = get_store()
+    want = {t.strip() for t in types.split(",") if t.strip()}
+    stats: dict[str, list[int]] = {}  # id -> [degree, judged, review]
+    for e in store.edges.values():
+        judged = e.edge_valid is not None
+        in_band = judged and lo <= e.edge_valid < hi
+        for nid in (e.source, e.target):
+            s = stats.setdefault(nid, [0, 0, 0])
+            s[0] += 1
+            if judged:
+                s[1] += 1
+            if in_band:
+                s[2] += 1
+    items = []
+    for nid, (deg, judged, review) in stats.items():
+        if review == 0:
+            continue
+        n = store.nodes.get(nid)
+        if n is None or (want and n.type not in want):
+            continue
+        items.append(AttentionItem(node=n, degree=deg, judged=judged, review=review))
+    items.sort(key=lambda it: (-it.review, -it.degree, it.node.name))
+    return AttentionResponse(generation_id=store.generation, total=len(items),
+                             items=items[:limit])
 
 
 @router.get("/edges", response_model=EdgesResponse)
