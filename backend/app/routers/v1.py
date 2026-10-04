@@ -10,7 +10,7 @@ from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
 from ..models.schemas import Edge, Node, PathStep
-from ..services import atlas
+from ..services import knowledge as atlas
 from ..services.evals import run_evals
 from ..services.graph_store import get_store
 
@@ -196,23 +196,23 @@ def _predict(svc, state: str, questions: dict) -> dict:
 def _live_judge():
     """Return the decision service if a real judge is configured, else None."""
     import os
-    if os.environ.get("ATLAS_JUDGE") not in ("laya", "openai"):
+    if os.environ.get("EMMATICS_JUDGE", os.environ.get("ATLAS_JUDGE")) not in ("laya", "openai"):
         return None
     from ..services.decision_service import get_decision_service
     return get_decision_service()
 
 
 _JUDGE_501 = ("on-demand judging not enabled on this deployment "
-              "(set ATLAS_JUDGE=openai with OPENAI_API_KEY, or "
-              "ATLAS_JUDGE=laya with the laya package installed)")
+              "(set EMMATICS_JUDGE=openai with OPENAI_API_KEY, or "
+              "EMMATICS_JUDGE=laya with the laya package installed)")
 
 
 @router.post("/judge")
 def judge(req: JudgeRequest):
     """Judge an arbitrary state with a question pack.
 
-    Requires a real judge on the serving process: ATLAS_JUDGE=openai (OpenAI
-    logprobs judge, needs OPENAI_API_KEY) or ATLAS_JUDGE=laya (local Laya).
+    Requires a real judge on the serving process: EMMATICS_JUDGE=openai (OpenAI
+    logprobs judge, needs OPENAI_API_KEY) or EMMATICS_JUDGE=laya (local Laya).
     Without one, returns 501 so clients can degrade gracefully; stored edge
     judgments are unaffected (they are precomputed into the graph).
     """
@@ -331,7 +331,7 @@ def meta():
     rels = Counter(e.rel_type for e in store.edges.values())
     return {"generation_id": store.generation, "nodes": len(store.nodes),
             "edges": len(store.edges), "node_types": dict(types), "rel_types": dict(rels),
-            "judge": os.environ.get("ATLAS_JUDGE") or "none"}
+            "judge": os.environ.get("EMMATICS_JUDGE", os.environ.get("ATLAS_JUDGE")) or "none"}
 
 
 # ---- benchmark history: record eval runs, diff over time ----

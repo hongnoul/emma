@@ -9,7 +9,7 @@
 set -euo pipefail
 
 : "${ELEVENLABS_API_KEY:?set ELEVENLABS_API_KEY=sk_...}"
-API_BASE="${ATLAS_API_BASE:-https://rare-disease-atlas-api.fly.dev}"
+API_BASE="${EMMATICS_API_BASE:-${ATLAS_API_BASE:-https://rare-disease-atlas-api.fly.dev}"
 EL="https://api.elevenlabs.io"
 
 el() { # el METHOD PATH JSON_BODY
@@ -46,8 +46,8 @@ print(json.dumps({"tool_config": {
 }}))
 PY
 )
-ATLAS_TOOL_ID=$(el POST /v1/convai/tools "$WEBHOOK_TOOL" | jqpy "['id']")
-echo "   atlas_brief: $ATLAS_TOOL_ID"
+EMMATICS_TOOL_ID=$(el POST /v1/convai/tools "$WEBHOOK_TOOL" | jqpy "['id']")
+echo "   emmatics_brief: $EMMATICS_TOOL_ID"
 
 say "2/5 Creating switch_tab client tool…"
 CLIENT_TOOL=$(python3 <<'PY'
@@ -107,7 +107,7 @@ CHECKIN_TOOL_ID=$(el POST /v1/convai/tools "$CHECKIN_TOOL" | jqpy "['id']")
 echo "   fill_checkin: $CHECKIN_TOOL_ID"
 
 say "3/5 Creating agent…"
-AGENT=$(python3 - "$ATLAS_TOOL_ID" "$SWITCH_TOOL_ID" "$CHECKIN_TOOL_ID" <<'PY'
+AGENT=$(python3 - "$EMMATICS_TOOL_ID" "$SWITCH_TOOL_ID" "$CHECKIN_TOOL_ID" <<'PY'
 import json, sys
 prompt = """You are Rarepath, a warm voice companion for rare-disease patients. You are speaking with Adira, who is on day 118 of treatment under Dr. Santoso.
 

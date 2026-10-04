@@ -75,7 +75,7 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
       sigmaRef.current = sigma;
       graphRef.current = graph;
       // Exposed for debugging and end-to-end tests (see scripts/e2e_graph_click.mjs).
-      (window as unknown as Record<string, unknown>).__atlasSigma = sigma;
+      (window as unknown as Record<string, unknown>).__emmaticsSigma = sigma;
     });
 
     return () => { cancelled = true; sigma?.kill(); sigmaRef.current = null; graphRef.current = null; };

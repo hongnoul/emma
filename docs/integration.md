@@ -22,7 +22,7 @@ graph is republished atomically and you never want to mix generations.
 | Fetch | `GET /v1/entities/{curie}` | one node + adjacency summary + hierarchy |
 | Traverse | `GET /v1/edges?from=&to=&node=&rel_types=&provenance=&min_valid=&judged_only=&limit=&offset=` | the workhorse: any edge query |
 | Path | `GET /v1/paths?from=&to=&audience=` | why-connected: route + known/inferred/uncertain + evidence states + `trust` block (per-edge gate action, `p_path`, weakest link). `audience=patient` applies the stricter gate |
-| Judge | `POST /v1/judge {state, pack_id}` | on-demand judgment; 501 unless the deployment runs with ATLAS_JUDGE=openai (or laya). `pack_id` accepts `edge-validate-v2` (adds `superseded`) |
+| Judge | `POST /v1/judge {state, pack_id}` | on-demand judgment; 501 unless the deployment runs with EMMATICS_JUDGE=openai (or laya). `pack_id` accepts `edge-validate-v2` (adds `superseded`) |
 | Evals | `GET /v1/evals?judge=mock\|laya\|openai\|laya-v2\|openai-v2` | calibration report: how much to trust edge_valid, plus `policy` (90/40 thresholds, 3:1 FP cost, contested IDs), trap results, precision gate |
 
 `GET /v1/meta` lists node/edge type counts for the current generation.
@@ -103,7 +103,7 @@ Claude Desktop config:
   "command": "/path/to/emma/backend/.venv/bin/python",
   "args": ["-m", "app.mcp_server"],
   "cwd": "/path/to/emma/backend",
-  "env": {"ATLAS_GRAPH_PATH": "data/graph.bulk.json"}
+  "env": {"EMMATICS_GRAPH_PATH": "data/graph.bulk.json"}
 }}}
 ```
 

@@ -31,8 +31,8 @@ class SmartConfig(BaseModel):
 
 @router.get("/smart-config", response_model=SmartConfig)
 def smart_config():
-    api_base = os.environ.get("ATLAS_PUBLIC_BASE", "https://rare-disease-atlas-api.fly.dev")
-    web_base = os.environ.get("ATLAS_WEB_BASE", "https://rare-disease-atlas-khaki.vercel.app")
+    api_base = os.environ.get("EMMATICS_PUBLIC_BASE", os.environ.get("ATLAS_PUBLIC_BASE", "https://rare-disease-atlas-api.fly.dev"))
+    web_base = os.environ.get("EMMATICS_WEB_BASE", os.environ.get("ATLAS_WEB_BASE", "https://rare-disease-atlas-khaki.vercel.app"))
     return SmartConfig(smart_app_url=f"{web_base}/ehr-launch.html",
                        atlas_analyze_endpoint=f"{api_base}/v1/ehr/analyze-bundle")
 

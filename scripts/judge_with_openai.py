@@ -34,7 +34,7 @@ from app.services.openai_judge import OpenAIJudge, BudgetExceeded, SPEND  # noqa
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--model", default=None, help="override ATLAS_OPENAI_MODEL")
+    ap.add_argument("--model", default=None, help="override EMMATICS_OPENAI_MODEL")
     ap.add_argument("--budget", type=float, default=None, help="spend cap in USD")
     ap.add_argument("--graph", default="graph.json", help="graph file in data/")
     ap.add_argument("--pack", default="edge-validate-v1", help="question pack id")

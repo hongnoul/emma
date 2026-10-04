@@ -296,7 +296,7 @@ edge("DEMO-DIS-001", "DEMO-PUB-003", "SUPPORTED_BY", "Pathway-sharing claim for 
 edge("DEMO-DIS-002", "DEMO-PUB-003", "SUPPORTED_BY", "Pathway-sharing claim for Disorder B appears in DEMO-PUB-003.", source_db="DEMO-PUBMED")
 edge("DEMO-DIS-002", "DEMO-PUB-007", "SUPPORTED_BY", "Natural history cohort for Disorder B.", source_db="DEMO-PUBMED")
 
-# --- atlas-inferred connections (the interesting layer) ---
+# --- Emmatics-inferred connections (the interesting layer) ---
 edge("DEMO-DIS-001", "DEMO-DIS-002", "SHARES_MECHANISM",
      "Disorders A and B both disrupt the demo lysosomal degradation pathway (LYSA1 hydrolase upstream of the LYSB2 export step).",
      provenance="inferred", pubs=["DEMO-PUB-001", "DEMO-PUB-002", "DEMO-PUB-003"], p_valid=0.88,

@@ -1,6 +1,7 @@
 # Fly.io config for the Emmatics API.
 # Deploy: fly launch --copy-config --no-deploy && fly deploy
 # The image bakes the published graph generation; redeploy to publish a new one.
+# NOTE: app slug stays rare-disease-atlas-api so existing deploys keep working.
 app = "rare-disease-atlas-api"
 primary_region = "ewr"
 

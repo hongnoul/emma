@@ -1,7 +1,7 @@
 "use client";
 // Edge workbench: full decision block, leave-one-out evidence ablation
 // ("which symptom carries the belief?"), and a what-if editor that re-judges
-// the edited state live. The latter two require a live judge (ATLAS_JUDGE);
+// the edited state live. The latter two require a live judge (EMMATICS_JUDGE);
 // the page degrades gracefully to read-only when judging is 501.
 import { use, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";

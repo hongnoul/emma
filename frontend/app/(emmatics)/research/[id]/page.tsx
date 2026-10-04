@@ -1,5 +1,5 @@
 "use client";
-// Basic research page. Faithful port of the atlas prototype's
+// Basic research page. Faithful port of the earlier prototype's
 // research.$mondoId route: PubMed lab/animal-model studies with
 // organism/model filter chips, per-paper classification evidence, and
 // links to the full-text reader. Data via the repo FastAPI proxy

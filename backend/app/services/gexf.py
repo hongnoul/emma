@@ -1,4 +1,4 @@
-"""GEXF export: serialize the atlas graph for Gephi desktop.
+"""GEXF export: serialize the Emmatics graph for Gephi desktop.
 
 GEXF is Gephi's native format. Node type and provenance become Gephi
 attributes so they can drive partition coloring and filters; p(valid)

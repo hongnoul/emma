@@ -17,7 +17,7 @@ RAW = ROOT / "data" / "raw"
 
 MONARCH = "https://api.monarchinitiative.org/v3/api"
 EUTILS = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
-USER_AGENT = "rare-disease-atlas-prototype/0.1 (research prototype)"
+USER_AGENT = "emmatics-prototype/0.1 (research prototype)"
 
 
 def _get(url: str, cache_name: str, source: str, refresh: bool = False, sleep: float = 0.4) -> dict:

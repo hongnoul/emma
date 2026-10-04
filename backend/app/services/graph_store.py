@@ -14,7 +14,7 @@ from pathlib import Path
 from ..models.schemas import Edge, Node
 
 import os as _os
-DATA_DIR = Path(_os.environ.get("ATLAS_DATA_DIR") or Path(__file__).resolve().parents[3] / "data")
+DATA_DIR = Path(_os.environ.get("EMMATICS_DATA_DIR", _os.environ.get("ATLAS_DATA_DIR") or Path(__file__).resolve().parents[3] / "data"))
 
 
 class GraphStore:
@@ -174,10 +174,10 @@ class GraphStore:
 
 @lru_cache(maxsize=1)
 def get_store() -> GraphStore:
-    """Default: data/graph.json (demo). Override with ATLAS_GRAPH_PATH to
+    """Default: data/graph.json (demo). Override with EMMATICS_GRAPH_PATH to
     serve a pipeline-built generation, e.g. data/graph.real.json."""
     import os
-    override = os.environ.get("ATLAS_GRAPH_PATH")
+    override = os.environ.get("EMMATICS_GRAPH_PATH", os.environ.get("ATLAS_GRAPH_PATH"))
     if override:
         p = Path(override)
         if not p.is_absolute():

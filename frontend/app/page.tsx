@@ -1,4 +1,4 @@
-// Apex landing page: full-bleed white hero with the atlas UMAP mesh as an
+// Apex landing page: full-bleed white hero with the Emmatics UMAP mesh as an
 // ambient background, a centered search bar that filters the mesh in real
 // time, and bubble buttons as the client-facing flow selector
 // (physician / patient / explorer). The card-shell app lives under

@@ -14,14 +14,14 @@ giving a probability distribution per question -- the same contract Laya's
     }}
 
 Spend cap: every response's usage is priced and accumulated; once the total
-crosses ``ATLAS_OPENAI_BUDGET_USD`` (default $5), further calls raise
+crosses ``EMMATICS_OPENAI_BUDGET_USD`` (default $5), further calls raise
 ``BudgetExceeded`` instead of silently spending more.
 
 Env:
     OPENAI_API_KEY            required (falls back to ~/.codex/auth.json)
-    ATLAS_OPENAI_MODEL        default gpt-4o-mini (must expose logprobs;
+    EMMATICS_OPENAI_MODEL       default gpt-4o-mini (must expose logprobs;
                               reasoning models like o-series do not)
-    ATLAS_OPENAI_BUDGET_USD   default 5.0
+    EMMATICS_OPENAI_BUDGET_USD  default 5.0
 
 Zero non-stdlib dependencies: uses urllib so the backend needs no new package.
 """
@@ -73,7 +73,7 @@ class _Spend:
             if self.usd >= budget:
                 raise BudgetExceeded(
                     f"OpenAI judge spend cap hit: ${self.usd:.4f} >= ${budget:.2f} "
-                    f"after {self.calls} calls (raise ATLAS_OPENAI_BUDGET_USD to continue)")
+                    f"after {self.calls} calls (raise EMMATICS_OPENAI_BUDGET_USD to continue)")
 
 
 SPEND = _Spend()
@@ -101,9 +101,9 @@ _NO = {"no", "false", "n"}
 
 class OpenAIJudge:
     def __init__(self, model: str | None = None, budget_usd: float | None = None):
-        self.model = model or os.environ.get("ATLAS_OPENAI_MODEL", DEFAULT_MODEL)
+        self.model = model or os.environ.get("EMMATICS_OPENAI_MODEL", os.environ.get("ATLAS_OPENAI_MODEL", DEFAULT_MODEL))
         self.budget = budget_usd if budget_usd is not None else float(
-            os.environ.get("ATLAS_OPENAI_BUDGET_USD", "5.0"))
+            os.environ.get("EMMATICS_OPENAI_BUDGET_USD", os.environ.get("ATLAS_OPENAI_BUDGET_USD", "5.0")))
         self._key = resolve_api_key()
 
     # ------------------------------------------------------------- transport

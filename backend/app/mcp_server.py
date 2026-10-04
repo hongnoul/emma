@@ -9,8 +9,8 @@ Run (stdio, for Claude Desktop / local agents):
 Run (HTTP/SSE, for remote agents once deployed):
     .venv/bin/python -m app.mcp_server --http --port 8001
 
-Env: ATLAS_GRAPH_PATH / ATLAS_DATA_DIR as for the API; ATLAS_JUDGE=laya to
-enable the atlas_judge tool with the real model.
+Env: EMMATICS_GRAPH_PATH / EMMATICS_DATA_DIR as for the API; EMMATICS_JUDGE=laya to
+enable the emmatics_judge tool with the real model.
 """
 from __future__ import annotations
 
@@ -18,7 +18,7 @@ import os
 
 from fastmcp import FastMCP
 
-from .services import atlas
+from .services import knowledge as atlas
 from .services.evals import run_evals
 from .services.graph_store import get_store
 
@@ -28,7 +28,7 @@ mcp = FastMCP(
         "Evidence-backed rare-disease knowledge graph. Diseases, genes, and "
         "phenotypes are connected by typed edges; inferred connections carry "
         "calibrated probabilities (edge_valid) from a decision model plus the "
-        "evidence snippet they were judged on. Always check atlas_evals to "
+        "evidence snippet they were judged on. Always check emmatics_evals to "
         "understand how much to trust the probabilities. Nothing returned is "
         "medical advice."
     ),
@@ -36,7 +36,7 @@ mcp = FastMCP(
 
 
 @mcp.tool
-def atlas_search(query: str, types: str = "", limit: int = 10) -> dict:
+def emmatics_search(query: str, types: str = "", limit: int = 10) -> dict:
     """Resolve a query to entities (Disease, Gene, Phenotype...). Returns
     matches with hierarchy context (parents, subtype_count) and per-relation
     connection counts so you can pick the best-connected node."""
@@ -59,7 +59,7 @@ def atlas_search(query: str, types: str = "", limit: int = 10) -> dict:
 
 
 @mcp.tool
-def atlas_get(curie: str) -> dict:
+def emmatics_get(curie: str) -> dict:
     """Fetch one entity by CURIE (e.g. MONDO:0008062, HP:0002524) with its
     description and adjacency summary."""
     store = get_store()
@@ -71,7 +71,7 @@ def atlas_get(curie: str) -> dict:
 
 
 @mcp.tool
-def atlas_connections(curie: str, rel_types: str = "", min_confidence: float = 0.0,
+def emmatics_connections(curie: str, rel_types: str = "", min_confidence: float = 0.0,
                       limit: int = 25) -> dict:
     """Edges touching an entity. rel_types: comma-separated filter, e.g.
     'PHENOTYPE_SIMILAR,SHARES_GENE_MECHANISM'. min_confidence filters judged
@@ -97,7 +97,7 @@ def atlas_connections(curie: str, rel_types: str = "", min_confidence: float = 0
 
 
 @mcp.tool
-def atlas_explain(from_curie: str, to_curie: str) -> dict:
+def emmatics_explain(from_curie: str, to_curie: str) -> dict:
     """Why are two entities connected? Returns the path, what is known vs
     inferred vs uncertain, and the evidence edges with their states."""
     c = atlas.explain_connection(from_curie, to_curie)
@@ -115,7 +115,7 @@ def atlas_explain(from_curie: str, to_curie: str) -> dict:
 
 
 @mcp.tool
-def atlas_evals(judge: str = "mock") -> dict:
+def emmatics_evals(judge: str = "mock") -> dict:
     """Calibration report for the edge judge (accuracy, Brier, ECE,
     reliability bins vs a hand-labeled gold set). judge='laya' scores the
     real zero-shot model. Use this to decide how much to trust edge_valid."""
@@ -124,14 +124,14 @@ def atlas_evals(judge: str = "mock") -> dict:
 
 
 @mcp.tool
-def atlas_judge(state: str, pack_id: str = "edge-validate-v1") -> dict:
+def emmatics_judge(state: str, pack_id: str = "edge-validate-v1") -> dict:
     """Judge an arbitrary evidence state with a typed question pack using the
-    local decision model. Requires ATLAS_JUDGE=laya on this process;
+    local decision model. Requires EMMATICS_JUDGE=laya on this process;
     otherwise returns an explanatory error (stored judgments in the graph
     are unaffected)."""
-    if os.environ.get("ATLAS_JUDGE") != "laya":
-        return {"error": "on-demand judging disabled (set ATLAS_JUDGE=laya with laya installed); "
-                         "stored edge judgments remain available via atlas_connections"}
+    if os.environ.get("EMMATICS_JUDGE", os.environ.get("ATLAS_JUDGE")) != "laya":
+        return {"error": "on-demand judging disabled (set EMMATICS_JUDGE=laya with laya installed); "
+                         "stored edge judgments remain available via emmatics_connections"}
     from .services.decision_service import get_decision_service
     svc = get_decision_service()
     pack = svc.packs.get(pack_id)
@@ -141,7 +141,7 @@ def atlas_judge(state: str, pack_id: str = "edge-validate-v1") -> dict:
     return {"pack_id": pack_id, "answers": result["answers"]}
 
 
-@mcp.resource("atlas://generation")
+@mcp.resource("emmatics://generation")
 def generation() -> dict:
     """Current graph generation and size."""
     store = get_store()
@@ -149,11 +149,60 @@ def generation() -> dict:
             "edges": len(store.edges)}
 
 
-@mcp.resource("atlas://question-packs")
+@mcp.resource("emmatics://question-packs")
 def question_packs() -> dict:
     """Typed question packs used by the judge."""
     from .services.decision_service import get_decision_service
     return get_decision_service().packs
+
+
+
+# Legacy aliases: keep old atlas_* tool names working for existing agents.
+@mcp.tool
+def atlas_search(query: str, types: str = "", limit: int = 10) -> dict:
+    """Legacy alias for emmatics_search."""
+    return emmatics_search(query, types, limit)
+
+
+@mcp.tool
+def atlas_get(curie: str) -> dict:
+    """Legacy alias for emmatics_get."""
+    return emmatics_get(curie)
+
+
+@mcp.tool
+def atlas_connections(curie: str, rel_types: str = "", min_confidence: float = 0.0,
+                      limit: int = 25) -> dict:
+    """Legacy alias for emmatics_connections."""
+    return emmatics_connections(curie, rel_types, min_confidence, limit)
+
+
+@mcp.tool
+def atlas_explain(from_curie: str, to_curie: str) -> dict:
+    """Legacy alias for emmatics_explain."""
+    return emmatics_explain(from_curie, to_curie)
+
+
+@mcp.tool
+def atlas_evals(judge: str = "mock") -> dict:
+    """Legacy alias for emmatics_evals."""
+    return emmatics_evals(judge)
+
+
+@mcp.tool
+def atlas_judge(state: str, pack_id: str = "edge-validate-v1") -> dict:
+    """Legacy alias for emmatics_judge."""
+    return emmatics_judge(state, pack_id)
+
+
+@mcp.resource("atlas://generation")
+def _legacy_generation() -> dict:
+    return generation()
+
+
+@mcp.resource("atlas://question-packs")
+def _legacy_question_packs() -> dict:
+    return question_packs()
 
 
 if __name__ == "__main__":

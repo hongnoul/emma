@@ -7,7 +7,7 @@ from ..models.schemas import (
     ConnectionExplanation, DiseaseDetail, Edge, EvalReport, GraphPayload,
     Opportunity, RelatedDisease, SearchResult,
 )
-from ..services import atlas
+from ..services import knowledge as atlas
 from ..services.decision_service import get_decision_service
 from ..services.evals import run_evals
 from ..services.graph_store import get_store
@@ -31,7 +31,7 @@ def graph_gexf():
     from fastapi.responses import Response
     from ..services.gexf import to_gexf
     return Response(content=to_gexf(get_store()), media_type="application/xml",
-                    headers={"Content-Disposition": 'attachment; filename="rare-disease-atlas.gexf"'})
+                    headers={"Content-Disposition": 'attachment; filename="emmatics.gexf"'})
 
 
 @router.get("/diseases/{disease_id}", response_model=DiseaseDetail)

@@ -5,7 +5,7 @@
 // backend) → WebSocket session via @elevenlabs/react. Transcripts stream
 // into the existing chat bubbles through onMessage; client tools let the
 // agent drive the UI (switch tabs). Emmatics answers come from the server
-// tool /v1/voice/tools/atlas-brief, which only speaks evidence that
+// tool /v1/voice/tools/emmatics-brief, which only speaks evidence that
 // passed the patient-audience trust gate.
 import { useCallback, useState } from "react";
 import {

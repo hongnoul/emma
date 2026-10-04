@@ -1,5 +1,5 @@
 "use client";
-// Disease detail page (focus route). The persistent atlas mesh stays
+// Disease detail page (focus route). The persistent Emmatics mesh stays
 // docked on this disease's node: the hero section places a MeshStage on
 // the left half, and the zoomed sphere anchors the node to that rect
 // (tracking layout and scroll). Deep loads dive in on arrival, so the
@@ -98,7 +98,7 @@ export default function DiseasePage({ params }: { params: Promise<{ id: string }
 
   return (
     <div className="mx-auto max-w-6xl px-4 md:px-8">
-      {/* Node section: the focused atlas node is a first-class layout
+      {/* Node section: the focused Emmatics node is a first-class layout
           element. MeshStage's rect anchors the zoomed sphere's node (left
           half on desktop); the editorial header sits beside it. */}
       <section className="grid min-h-[46vh] items-center gap-8 py-6 md:grid-cols-2">

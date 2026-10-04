@@ -1,6 +1,6 @@
 """Basic-research router: live PubMed/PMC lookups for the research pages.
 
-Python port of the Lovable atlas prototype's connectors
+Python port of the Lovable prototype's connectors
 (sources.server.ts + research-classification.ts):
   - pubmedByQuery (esearch + esummary)
   - pubmedResearchRecords (efetch XML: abstract, publication types, MeSH)
@@ -33,7 +33,7 @@ router = APIRouter(prefix="/api")
 
 EUTILS = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
 BIOC = "https://www.ncbi.nlm.nih.gov/research/bionlp/RESTful/pmcoa.cgi/BioC_json"
-UA = "RareDiseaseAtlas/1.0 (research tool)"
+UA = "Emmatics/1.0 (research tool)"
 CACHE_TTL = 7 * 24 * 3600  # 7 days, mirroring the prototype
 
 _cache: dict[str, tuple[float, Any]] = {}

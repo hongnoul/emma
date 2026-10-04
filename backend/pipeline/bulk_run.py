@@ -13,7 +13,7 @@ Channels (per teammate's design):
                          judged by Laya (inferred channel)
 
 Judging checkpoints to data/raw/bulk/judgments.jsonl; re-runs resume.
-Output: data/graph.bulk.json (serve with ATLAS_GRAPH_PATH=data/graph.bulk.json).
+Output: data/graph.bulk.json (serve with EMMATICS_GRAPH_PATH=data/graph.bulk.json).
 """
 from __future__ import annotations
 
@@ -379,14 +379,14 @@ def main():
     gen = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
     payload = {
         "_notice": ("REAL DATA bulk generation: all annotated rare diseases from MONDO/HPO/HPOA "
-                    "releases. PHENOTYPE_SIMILAR edges are atlas hypotheses (judged by local Laya "
+                    "releases. PHENOTYPE_SIMILAR edges are Emmatics hypotheses (judged by local Laya "
                     "where decision blocks present); SHARES_GENE_MECHANISM edges are derived from "
                     "curated causal-gene data. Not medical advice."),
         "generation": gen, "nodes": list(nodes.values()), "edges": edges,
     }
     (DATA / "graph.bulk.json").write_text(json.dumps(payload))
     log(f"published -> data/graph.bulk.json ({len(nodes)} nodes, {len(edges)} edges)")
-    log("serve: ATLAS_GRAPH_PATH=data/graph.bulk.json uvicorn app.main:app")
+    log("serve: EMMATICS_GRAPH_PATH=data/graph.bulk.json uvicorn app.main:app")
 
 
 if __name__ == "__main__":

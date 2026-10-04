@@ -320,7 +320,7 @@ export interface paths {
          * Judge
          * @description Judge an arbitrary state with a question pack.
          *
-         *     Requires the serving process to have Laya available (ATLAS_JUDGE=laya).
+         *     Requires the serving process to have Laya available (EMMATICS_JUDGE=laya).
          *     Without it, returns 501 so clients can degrade gracefully; stored edge
          *     judgments are unaffected (they are precomputed into the graph).
          */

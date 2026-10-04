@@ -11,7 +11,7 @@ from .routers.voice import router as voice_router
 app = FastAPI(title="Emmatics API", version="0.1.0",
               description="Prototype backed by synthetic demonstration data.")
 import os
-_raw = os.environ.get("ATLAS_CORS_ORIGINS", "*")
+_raw = os.environ.get("EMMATICS_CORS_ORIGINS", os.environ.get("ATLAS_CORS_ORIGINS", "*"))
 _origins = ["*"] if _raw.strip() == "*" else [o.strip() for o in _raw.split(",") if o.strip()]
 app.add_middleware(CORSMiddleware, allow_origins=_origins,
                    allow_methods=["*"], allow_headers=["*"])
@@ -46,5 +46,5 @@ def health():
     import os as _os
     from .services.graph_store import get_store, DATA_DIR
     store = get_store()
-    gp = _os.environ.get("ATLAS_GRAPH_PATH", "data/graph.json (demo)")
+    gp = _os.environ.get("EMMATICS_GRAPH_PATH", _os.environ.get("ATLAS_GRAPH_PATH", "data/graph.json (demo)"))
     return {"status": "ok", "graph": gp, "nodes": len(store.nodes), "edges": len(store.edges)}

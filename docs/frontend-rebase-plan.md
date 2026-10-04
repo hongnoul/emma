@@ -118,7 +118,7 @@ Porting mechanics:
 - Top-level nav: Atlas (public), Physician partition (existing
   `/physician/*` workbench stays as-is), Patient (`/patient`).
 - The existing `/physician` triage/paths workbench is repo-native and is NOT
-  replaced by zip2; zip2 is the public atlas layer. Patient app links
+  replaced by zip2; zip2 is the public knowledge-graph layer. Patient app links
   "physician" touchpoints (Dr. Santoso etc.) remain demo copy.
 - Delete nothing from the current frontend until its replacement page is
   reviewed side by side.
@@ -137,7 +137,7 @@ Porting mechanics:
 1. Phase 1 tokens (~1 commit, small)
 2. Phase 2 patient app (1–2 days of careful transcription; biggest faithful-
    layout risk because source is minified — budget review time)
-3. Phase 3 atlas pages, starting with disease + search merges (highest value,
+3. Phase 3 knowledge-graph pages, starting with disease + search merges (highest value,
    backend already exists), then research/paper/researcher (needs new
    endpoints — separate backend commits)
 4. Phase 4 nav + cleanup

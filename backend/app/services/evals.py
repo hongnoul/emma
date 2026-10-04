@@ -37,7 +37,7 @@ from ..models.schemas import EvalReport
 from .graph_store import get_store
 
 import os as _os
-DATA_DIR = Path(_os.environ.get("ATLAS_DATA_DIR") or Path(__file__).resolve().parents[3] / "data")
+DATA_DIR = Path(_os.environ.get("EMMATICS_DATA_DIR", _os.environ.get("ATLAS_DATA_DIR") or Path(__file__).resolve().parents[3] / "data"))
 N_BINS = 5
 
 

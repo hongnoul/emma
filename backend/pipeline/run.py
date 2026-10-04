@@ -342,7 +342,7 @@ def main() -> None:
     payload = {
         "_notice": ("REAL DATA generation built by backend/pipeline from Monarch Initiative "
                     "(aggregating MONDO, OMIM, Orphanet, HPOA) and PubMed. Inferred edges are "
-                    "atlas hypotheses judged by a calibrated judge model; they are not "
+                    "Emmatics hypotheses judged by a calibrated judge model; they are not "
                     "established facts."),
         "generation": gen_id,
         "cluster_seed": CLUSTER,
@@ -356,7 +356,7 @@ def main() -> None:
     (DATA / "graph.real.json").write_text(json.dumps(payload, indent=1))
     log(f"published generation {gen_id} -> data/graph.real.json "
         f"({len(nodes)} nodes, {len(edges)} edges)")
-    log("serve it with: ATLAS_GRAPH_PATH=data/graph.real.json uvicorn app.main:app")
+    log("serve it with: EMMATICS_GRAPH_PATH=data/graph.real.json uvicorn app.main:app")
 
 
 if __name__ == "__main__":

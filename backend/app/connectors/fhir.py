@@ -1,10 +1,10 @@
-"""FHIR R4 connector: stateless EHR Bundle -> Atlas query candidates.
+"""FHIR R4 connector: stateless EHR Bundle -> Emmatics query candidates.
 
 This is the entire EHR integration surface. The hospital EHR (Epic,
 Oracle Health, Meditech — all ONC-certified) exposes FHIR R4 + SMART
 launch. A thin SMART shim fetches the patient Bundle and POSTs it to
 /v1/ehr/analyze-bundle. This module parses the Bundle in-memory and
-returns *candidate codes + suggested Atlas /v1 queries*. It never stores
+returns *candidate codes + suggested Emmatics /v1 queries*. It never stores
 PHI, never writes to the chart, and performs no diagnosis.
 
 Reading this Bundle requires no new dependencies: plain dict traversal.
@@ -64,7 +64,7 @@ def _resources(bundle: dict) -> list[dict]:
 
 
 def analyze_bundle(bundle: dict) -> dict:
-    """Parse a FHIR R4 Bundle (or single resource) into Atlas candidates.
+    """Parse a FHIR R4 Bundle (or single resource) into Emmatics candidates.
 
     Returns JSON-safe dict with no raw narrative text, only codes/displays
     needed to build /v1/entities queries. Raises ValueError on bad input.
@@ -128,7 +128,7 @@ def analyze_bundle(bundle: dict) -> dict:
 
     conditions, phenotypes, genes = _dedup(conditions), _dedup(phenotypes), _dedup(genes)
 
-    # Suggested Atlas queries: display text first (synonym matching in
+    # Suggested Emmatics queries: display text first (synonym matching in
     # /v1/entities handles lay terms), code as fallback.
     def _q(item: dict, types: str, reason: str) -> dict:
         return {"q": item.get("display") or item.get("code", ""),
@@ -155,7 +155,8 @@ def analyze_bundle(bundle: dict) -> dict:
         "condition_candidates": conditions,
         "phenotype_candidates": phenotypes,
         "gene_candidates": genes,
-        "atlas_queries": atlas_queries,
+        "emmatics_queries": atlas_queries,
+        "atlas_queries": atlas_queries,  # legacy alias
         "disclaimer": ("Candidate proposals for physician review, not diagnoses. "
                        "Confirm phenotypes with the patient; gate differentials on /v1/paths trust bands."),
     }

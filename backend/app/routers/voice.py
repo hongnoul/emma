@@ -22,7 +22,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from ..services import trust as _trust
 from ..services.graph_store import get_store
-from ..services import atlas
+from ..services import knowledge as atlas
 
 router = APIRouter(prefix="/v1/voice", tags=["voice"])
 

@@ -1,6 +1,6 @@
 # Emmatics
 
-Prototype knowledge-graph atlas connecting rare diseases through genes,
+Prototype knowledge graph connecting rare diseases through genes,
 phenotypes, mechanisms, pathways, publications, studies, researchers,
 patient organizations, and reusable research assets.
 
@@ -10,7 +10,7 @@ publication, study, person, or organization in this repo is real.
 ## Architecture
 
 ```
-rare-disease-atlas (this repo)
+emmatics (this repo)
 ├── data/                      canonical dataset + generator
 │   ├── generate_mock_data.py  regenerates everything below (seeded, deterministic)
 │   ├── graph.json             nodes + edges (Laya-ready evidence schema)
@@ -23,7 +23,7 @@ rare-disease-atlas (this repo)
 │       ├── models/schemas.py  Pydantic models (the data contract)
 │       ├── services/
 │       │   ├── graph_store.py       data access (swap for Neo4j here)
-│       │   ├── atlas.py             domain queries (search, related, paths, opportunities)
+│       │   ├── knowledge.py         domain queries (search, related, paths, opportunities)
 │       │   ├── ai_service.py        OpenAI seam (mock templates today)
 │       │   ├── decision_service.py  Laya seam (replays stored judgments today)
 │       │   └── evals.py             accuracy / Brier / ECE harness
@@ -92,7 +92,7 @@ HAS_ASSET, SHARES_MECHANISM, RELATED_TO`.
 ### Evidence schema (the important part)
 
 Every edge carries provenance (`curated` from a source DB vs `inferred` by
-the atlas). Judged edges additionally carry a **decision block**, which is
+Emmatics). Judged edges additionally carry a **decision block**, which is
 deliberately shaped like the output of a calibrated typed-decision model
 (Laya / Jev-class "System One" models):
 

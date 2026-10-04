@@ -546,7 +546,7 @@ export default function HeroMesh({
             if (ns && ns.length > 0) {
               const m = ns.length;
               // UMAP-space distance per neighbor (unit-sphere chord): the
-              // atlas semantics the ring must preserve.
+              // Emmatics semantics the ring must preserve.
               let dLo = Infinity, dHi = -Infinity;
               const du = new Float32Array(m);
               for (let k = 0; k < m; k++) {

@@ -1,5 +1,5 @@
 "use client";
-// Paper reader. Faithful port of the atlas prototype's paper.$pmid route:
+// Paper reader. Faithful port of the earlier prototype's paper.$pmid route:
 // PMID header with external links, open-access full text section by section
 // from PMC BioC, graceful fallback when the paper is not open access.
 // Data via the repo FastAPI proxy (api.paper); monochrome shadcn tokens.

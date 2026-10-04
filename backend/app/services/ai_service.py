@@ -53,7 +53,7 @@ class AIService:
         return edge.state or edge.description
 
     def generate_research_opportunities(self, context: dict) -> list[dict]:
-        # TODO(openai): generate opportunity cards. Mock handled in atlas.opportunities().
+        # TODO(openai): generate opportunity cards. Mock handled in knowledge.opportunities().
         return []
 
     def suggest_next_step(self, disease: Node, other: Node, asset: Node) -> str:

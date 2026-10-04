@@ -37,7 +37,7 @@ from pathlib import Path
 from ..models.schemas import Edge
 
 import os as _os
-DATA_DIR = Path(_os.environ.get("ATLAS_DATA_DIR") or Path(__file__).resolve().parents[3] / "data")
+DATA_DIR = Path(_os.environ.get("EMMATICS_DATA_DIR", _os.environ.get("ATLAS_DATA_DIR") or Path(__file__).resolve().parents[3] / "data"))
 
 
 class DecisionService:
@@ -51,7 +51,7 @@ class DecisionService:
         """Return the decision block for an edge.
 
         Mock: replays the stored block (generated against the same pack).
-        For the real judge, set ATLAS_JUDGE=laya (see LayaDecisionService).
+        For the real judge, set EMMATICS_JUDGE=laya (see LayaDecisionService).
         """
         if edge.edge_valid is None:
             return {"edge_valid": None, "note": "edge has no state snippet; cannot judge"}
@@ -81,7 +81,7 @@ def _judge_state(edge: Edge) -> str | None:
 class LayaDecisionService(DecisionService):
     """Real judge backed by a locally hosted Laya model (pip install laya).
 
-    Enabled with ATLAS_JUDGE=laya. First call downloads the checkpoint
+    Enabled with EMMATICS_JUDGE=laya. First call downloads the checkpoint
     (~1.4 GB). Measured on an M-series Mac against the demo gold set:
     152 ms/edge for all 4 questions in one forward pass; zero-shot
     accuracy 0.742 / Brier 0.179 / ECE 0.162 (vs the mock's hand-tuned
@@ -93,7 +93,7 @@ class LayaDecisionService(DecisionService):
 
     def __init__(self):
         super().__init__()
-        from laya import Router  # lazy: only imported when ATLAS_JUDGE=laya
+        from laya import Router  # lazy: only imported when EMMATICS_JUDGE=laya
         self._router = Router(preload=False)
 
     def judge_edge(self, edge: Edge, pack_id: str = "edge-validate-v1") -> dict:
@@ -122,16 +122,16 @@ class OpenAIDecisionService(DecisionService):
     """Real judge backed by OpenAI logprobs (challenge requirement: 'leverage
     OpenAI's models or tools').
 
-    Enabled with ATLAS_JUDGE=openai. Each pack question becomes one
+    Enabled with EMMATICS_JUDGE=openai. Each pack question becomes one
     single-token Chat Completions call with logprobs; the top_logprobs mass is
     renormalized over the valid answers to recover a probability distribution
     (see openai_judge.py). Default model gpt-4o-mini; spend is estimated per
-    call and hard-capped by ATLAS_OPENAI_BUDGET_USD (default $5).
+    call and hard-capped by EMMATICS_OPENAI_BUDGET_USD (default $5).
     """
 
     def __init__(self):
         super().__init__()
-        from .openai_judge import OpenAIJudge  # lazy: only when ATLAS_JUDGE=openai
+        from .openai_judge import OpenAIJudge  # lazy: only when EMMATICS_JUDGE=openai
         self._router = OpenAIJudge()
 
     def judge_edge(self, edge: Edge, pack_id: str = "edge-validate-v1") -> dict:
@@ -159,7 +159,7 @@ class OpenAIDecisionService(DecisionService):
 @lru_cache(maxsize=1)
 def get_decision_service() -> DecisionService:
     import os
-    judge = os.environ.get("ATLAS_JUDGE")
+    judge = os.environ.get("EMMATICS_JUDGE", os.environ.get("ATLAS_JUDGE"))
     if judge == "laya":
         return LayaDecisionService()
     if judge == "openai":

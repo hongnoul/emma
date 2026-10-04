@@ -31,7 +31,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import os as _os
-DATA_DIR = Path(_os.environ.get("ATLAS_DATA_DIR") or Path(__file__).resolve().parents[3] / "data")
+DATA_DIR = Path(_os.environ.get("EMMATICS_DATA_DIR", _os.environ.get("ATLAS_DATA_DIR") or Path(__file__).resolve().parents[3] / "data"))
 BENCH_DIR = DATA_DIR / "benchmarks"
 
 # Metrics where lower is better (sign note in diffs).

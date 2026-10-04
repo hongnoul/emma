@@ -11,7 +11,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 
 type Verdict = "accept" | "reject";
-const STORE_KEY = "atlas-triage-verdicts-v1";
+const STORE_KEY = "emmatics-triage-verdicts-v1";
 
 function loadVerdicts(): Record<string, Verdict> {
   if (typeof window === "undefined") return {};

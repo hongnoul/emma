@@ -9,13 +9,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY backend/app ./app
 # Bake the published generation into the image. Swap which file to serve
-# with ATLAS_GRAPH_PATH (graph.json = demo, graph.real.json = 10-disease
+# with EMMATICS_GRAPH_PATH (graph.json = demo, graph.real.json = 10-disease
 # cluster, graph.bulk.json = all rare diseases).
 COPY data/graph.json data/question_packs.json data/gold_labels.json data/expert_labels.json data/trap_suite.json data/laya_judgments_zeroshot.json /data/
 COPY data/openai_judgments_zeroshot.json data/laya_judgments_v2.json data/openai_judgments_v2.json /data/
 COPY data/graph.real.json* data/graph.bulk.json* /data/
 
+ENV EMMATICS_DATA_DIR=/data
 ENV ATLAS_DATA_DIR=/data
+ENV EMMATICS_GRAPH_PATH=/data/graph.bulk.json
 ENV ATLAS_GRAPH_PATH=/data/graph.bulk.json
 ENV PORT=8000
 EXPOSE 8000
