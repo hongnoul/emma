@@ -720,15 +720,20 @@ function ChatTabInner({
       <div className="mt-3 flex-1 space-y-2.5 text-[12.5px]">
         {msgs.map((m, i) =>
           m.from === "ai" ? (
-            <div key={i} className="rise max-w-[88%]">
-              <div className="glass-soft rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-foreground/80">
-                {m.text}
+            <div key={i} className="rise flex max-w-[88%] items-start gap-2">
+              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-primary text-[11px] text-primary-foreground">
+                ◈
+              </span>
+              <div>
+                <div className="glass-soft rounded-2xl rounded-tl-sm px-3.5 py-2.5 text-foreground/80">
+                  {m.text}
+                </div>
+                {m.src && (
+                  <p className="mt-1 pl-1 text-[9.5px] uppercase tracking-wider text-muted-foreground">
+                    Source · {m.src}
+                  </p>
+                )}
               </div>
-              {m.src && (
-                <p className="mt-1 pl-1 text-[9.5px] uppercase tracking-wider text-muted-foreground">
-                  Source · {m.src}
-                </p>
-              )}
             </div>
           ) : (
             <div
@@ -740,8 +745,13 @@ function ChatTabInner({
           ),
         )}
         {typing && (
-          <div className="glass-soft w-14 rounded-2xl px-3 py-2 text-foreground/50">
-            •••
+          <div className="flex items-start gap-2">
+            <span className="grid size-7 shrink-0 place-items-center rounded-full bg-primary text-[11px] text-primary-foreground">
+              ◈
+            </span>
+            <div className="glass-soft w-14 rounded-2xl px-3 py-2 text-foreground/50">
+              •••
+            </div>
           </div>
         )}
         <div ref={endRef} />
