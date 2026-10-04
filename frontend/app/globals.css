@@ -60,3 +60,49 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ---- Patient app (Rarepath port) utilities — grayscale only ---- */
+/* Faithful to the prototype's glassmorphism but expressed with the
+   monochrome token system: white glass over a neutral canvas. */
+.glass {
+  background: oklch(1 0 0 / 0.58);
+  border: 1px solid oklch(1 0 0 / 0.75);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 8px 32px oklch(0.145 0 0 / 0.08);
+}
+.glass-soft {
+  background: oklch(1 0 0 / 0.6);
+  border: 1px solid oklch(1 0 0 / 0.75);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.font-display {
+  font-family: var(--font-fraunces, var(--font-sans)), serif;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+@keyframes rp-float1 {
+  0%, 100% { transform: translate(0) scale(1); }
+  50% { transform: translate(24px, 30px) scale(1.08); }
+}
+@keyframes rp-float2 {
+  0%, 100% { transform: translate(0) scale(1); }
+  50% { transform: translate(-20px, 24px) scale(1.1); }
+}
+@keyframes rp-float3 {
+  0%, 100% { transform: translate(0) scale(1); }
+  50% { transform: translate(18px, -26px) scale(1.06); }
+}
+@keyframes rp-rise {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+.blob1 { animation: 18s ease-in-out infinite rp-float1; }
+.blob2 { animation: 22s ease-in-out infinite rp-float2; }
+.blob3 { animation: 20s ease-in-out infinite rp-float3; }
+.rise { animation: 0.45s cubic-bezier(0.16, 1, 0.3, 1) both rp-rise; }

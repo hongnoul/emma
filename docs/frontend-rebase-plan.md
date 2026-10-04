@@ -37,22 +37,26 @@ Source material (unpacked locally, not committed):
   live `/search` + `/diseases/{id}/evidence` calls), Community (symptom
   cluster, groups, check-in slider flow, consent screen), Research feed.
 
-## Phase 1 — Design-token bridge (small, do first)
+## Phase 1 — Design-token bridge (SUPERSEDED by repo refactor 6823339)
 
-Zip1 uses semantic tokens: `brand`, `warm`, `sage`, `ink`, `canvas`, `glass`,
-`glass-soft`, `font-display` (Fraunces) + Inter. Zip2 uses standard shadcn
-tokens (`background/foreground/primary/muted/accent/...`) in oklch.
+The repo now standardizes on shadcn/ui with a **monochrome
+(black/white/grayscale) neutral theme**: css vars in `globals.css`,
+primitives in `components/ui/`, `cn` in `lib/utils.ts`. Rules all ported
+code must follow:
 
-- Extend `frontend/app/globals.css` with an `@theme` block defining the
-  union: shadcn-style semantic tokens for the atlas pages, plus
-  `--color-brand/--color-warm/--color-sage/--color-ink/--color-canvas` and
-  `.glass`/`.glass-soft` utilities scoped to the patient app.
-- Keep the repo's light-only slate baseline as the default; patient-app
-  tokens activate inside the patient route subtree only (wrap in a
-  `patient-theme` class on the patient layout so existing pages do not
-  reskin).
-- Fonts: add Fraunces (display) via `next/font` for the patient subtree;
-  keep repo default elsewhere.
+- shadcn primitives + semantic tokens only (`bg-background`, `text-muted-foreground`,
+  `border`, `bg-primary`, ...). **No chromatic Tailwind classes.**
+- Hue encoding is replaced by weight/fill hierarchy
+  (solid = established, secondary = review, dashed outline = hidden).
+- Token mapping for zip sources:
+  - zip1 `ink` → `foreground`, `canvas` → `background`, `brand` → `primary`,
+    `warm` → `accent`/`secondary`, `sage` → `muted`,
+    `glass`/`glass-soft` → `bg-card/60 backdrop-blur border` via small
+    utility classes added to `globals.css` (grayscale only).
+  - zip2 shadcn tokens map 1:1, but its oklch hues are discarded in favor
+    of the repo's neutral values.
+- Fraunces display font from zip1 is allowed (typography, not color), via
+  `next/font` scoped to the patient subtree.
 
 ## Phase 2 — Patient app (`/patient`)
 

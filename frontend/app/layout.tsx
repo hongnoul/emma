@@ -17,6 +17,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Link href="/" className="text-muted-foreground hover:text-foreground">Search</Link>
           <Link href="/evals" className="text-muted-foreground hover:text-foreground">Evals</Link>
           <Link href="/physician" className="font-medium hover:underline">Physician</Link>
+          <Link href="/patient" className="font-medium hover:underline">Patient</Link>
           <Badge variant="outline" className="ml-auto text-muted-foreground">
             Research prototype · not medical advice
           </Badge>
