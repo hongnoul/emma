@@ -144,6 +144,9 @@ export default function HeroMesh({
     let staticRO: ResizeObserver | null = null; // reduced-motion repaint
     // Assigned once data loads; hit test in canvas-relative px
     let hitTest: ((x: number, y: number) => number) | null = null;
+    // Focus-mode hit test: focused node + its ring neighbors only
+    let focusHit: ((x: number, y: number) => number) | null = null;
+    let focusSettled = () => false;
     let nodes: HeroNode[] = [];
     // Assigned in the animated path; null (reduced motion) = navigate directly
     let startZoom: ((i: number) => void) | null = null;
@@ -174,26 +177,42 @@ export default function HeroMesh({
     const setApplyHover = (fn: (i: number) => void) => { applyHover = fn; };
 
     const onMove = (e: PointerEvent) => {
-      if (!activeRef.current || zoomActive) return; // backdrop mode / mid-zoom
+      const focusMode = !activeRef.current && focusIdRef.current !== null;
+      if (!activeRef.current && !focusMode) return; // inert on other pages
+      if (activeRef.current && zoomActive) return;  // mid click-zoom on home
       const rect = cv.getBoundingClientRect();
       if (rect.width === 0) return;
       const x = e.clientX - rect.left, y = e.clientY - rect.top;
-      if (x >= 0 && y >= 0 && x <= rect.width && y <= rect.height) {
+      if (!focusMode && x >= 0 && y >= 0 && x <= rect.width && y <= rect.height) {
         target.x = x; target.y = y; target.seen = true;
       }
       if (!canHover || e.pointerType === "touch") return;
       const el = e.target as Element | null;
       if (el?.closest?.("[data-hover-card]")) return; // keep card while mousing into it
       if (el?.closest?.("a,button,input,[data-apex-search]")) { applyHover(-1); return; } // UI wins over mesh
+      if (focusMode) {
+        // Docked local graph: neighbors are hoverable, no steering
+        applyHover(focusSettled() && focusHit ? focusHit(x, y) : -1);
+        return;
+      }
       applyHover(hitTest ? hitTest(x, y) : -1);
     };
     const onLeave = () => { target.seen = false; applyHover(-1); };
     const onClick = (e: MouseEvent) => {
-      if (!activeRef.current || zoomActive) return;
+      const focusMode = !activeRef.current && focusIdRef.current !== null;
+      if (!activeRef.current && !focusMode) return;
+      if (activeRef.current && zoomActive) return;
       const i = hoverIdx.current;
       if (i < 0 || !nodes[i]) return;
       const el = e.target as Element | null;
       if (el?.closest?.("a,button,input,[data-apex-search],[data-hover-card]")) return;
+      if (focusMode) {
+        // Clicking a ring neighbor retargets the focus (route drives the camera)
+        if (nodes[i].id !== focusIdRef.current) {
+          router.push(`/disease/${encodeURIComponent(nodes[i].id)}`);
+        }
+        return;
+      }
       if (startZoom) startZoom(i);
       else router.push(`/disease/${encodeURIComponent(nodes[i].id)}`);
     };
@@ -276,6 +295,15 @@ export default function HeroMesh({
         const judged: number[] = [], plain: number[] = [];
         data.nodes.forEach((n, i) => { (n.deg > 0 ? judged : plain).push(i); });
         const judgedIdx = new Int32Array(judged), plainIdx = new Int32Array(plain);
+        // 1-hop neighborhood per node: the focus stage renders this as a
+        // legible local graph (neighbors pulled into the stage ring, labeled).
+        const nbr = new Map<number, { j: number; v: number }[]>();
+        const pushN = (a: number, b: number, v: number) => {
+          let arr = nbr.get(a);
+          if (!arr) { arr = []; nbr.set(a, arr); }
+          arr.push({ j: b, v });
+        };
+        for (const l of data.links) { pushN(l.s, l.t, l.v); pushN(l.t, l.s, l.v); }
 
         // ---- Filter state ----
         // Lowercased search keys + id lookup, built once. recompute() refills
@@ -398,7 +426,10 @@ export default function HeroMesh({
           el.style.transform = `translate3d(${Math.max(8, x)}px, ${Math.max(8, y)}px, 0)`;
         };
 
+        const layoutState = { zooming: false };
+        let stageR = 0; // focus ring radius, set per layout pass
         const layout = (t: number, e: number, W: number, H: number, zp = 0) => {
+          layoutState.zooming = zoom.i >= 0;
           // Ease cursor toward target; fall back to center when unseen
           const gx = target.seen ? target.x : W / 2;
           const gy = target.seen ? target.y : H / 2;
@@ -429,10 +460,12 @@ export default function HeroMesh({
             if (!zoom.sInit) { zoom.sx = nx; zoom.sy = ny; zoom.sInit = true; }
             const stage = meshBus.getStage();
             let ax = cxp, ay = cyp;
+            stageR = Math.min(W, H) * 0.3;
             if (stage) {
               const r = stage.getBoundingClientRect();
               ax = r.left + r.width / 2;
               ay = r.top + r.height / 2;
+              stageR = Math.max(90, Math.min(r.width, r.height) * 0.42);
             }
             panX = zoom.sx + (ax - zoom.sx) * zp - nx;
             panY = zoom.sy + (ay - zoom.sy) * zp - ny;
@@ -467,6 +500,36 @@ export default function HeroMesh({
             }
             px[i] = bx;
             py[i] = by;
+          }
+          // Focus neighborhood: the dolly flings UMAP-distant neighbors far
+          // offscreen, so the stage would show a node with amputated links.
+          // Re-lay the 1-hop neighbors on a ring around the focus: angular
+          // order preserved but spread evenly (clumped directions would
+          // stack labels), distance clamped to the stage, blended by zoom
+          // depth, so the section reads as the node's local graph.
+          if (zooming && zp > 0.01) {
+            const fx = px[zoom.i], fy = py[zoom.i];
+            const ns = nbr.get(zoom.i);
+            if (ns && ns.length > 0) {
+              const m = ns.length;
+              // Sort by current angle once per frame (m is small)
+              const order = ns.map(({ j }, k) => ({
+                k, j, a: Math.atan2(py[j] - fy, px[j] - fx),
+              })).sort((p, q) => p.a - q.a);
+              // Even angular spread anchored at the first neighbor's angle;
+              // single neighbors keep their own direction.
+              const a0 = order[0].a;
+              const step = (Math.PI * 2) / Math.max(m, 1);
+              for (let r = 0; r < m; r++) {
+                const { j, a } = order[r];
+                const ta = m > 1 ? a0 + r * step : a;
+                const d = Math.hypot(px[j] - fx, py[j] - fy) || 1;
+                const tgt = Math.min(Math.max(d, stageR * 0.55), stageR * 0.9);
+                const tx = fx + Math.cos(ta) * tgt, ty = fy + Math.sin(ta) * tgt;
+                px[j] += (tx - px[j]) * zp;
+                py[j] += (ty - py[j]) * zp;
+              }
+            }
           }
         };
 
@@ -542,7 +605,7 @@ export default function HeroMesh({
           // Hover highlight: brighten links touching the node, ring the node.
           // During a zoom the clicked node owns the highlight.
           const hi = zoom.i >= 0 ? zoom.i : hoverIdx.current;
-          if (hi >= 0) {
+          if (hi >= 0 && zoom.i < 0) {
             ctx.lineWidth = 1.2;
             for (const l of data.links) {
               if (l.s !== hi && l.t !== hi) continue;
@@ -560,6 +623,60 @@ export default function HeroMesh({
             ctx.lineWidth = 1.5;
             ctx.beginPath();
             ctx.arc(px[hi], py[hi], 7.5, 0, Math.PI * 2);
+            ctx.stroke();
+          }
+
+          // Focus pass: the docked node's local graph, drawn legibly. Links
+          // to ring-pulled neighbors keep triage colors; neighbors get dots
+          // sized by judged degree and, once settled, name labels.
+          if (zoom.i >= 0 && zp > 0.01) {
+            const fi = zoom.i;
+            const ns = nbr.get(fi) ?? [];
+            const fa = zp * e;
+            ctx.lineWidth = 1.3;
+            for (const { j, v } of ns) {
+              ctx.strokeStyle = `rgba(${LINK_COLOR[bandOf(v)]},${0.8 * fa})`;
+              ctx.beginPath();
+              ctx.moveTo(px[fi], py[fi]);
+              ctx.lineTo(px[j], py[j]);
+              ctx.stroke();
+            }
+            const hovI = hoverIdx.current;
+            for (const { j } of ns) {
+              const r = j === hovI ? 5 : 3.4;
+              ctx.fillStyle = `rgba(67,56,202,${(j === hovI ? 0.95 : 0.65) * fa})`;
+              ctx.beginPath();
+              ctx.arc(px[j], py[j], r, 0, Math.PI * 2);
+              ctx.fill();
+            }
+            // Labels once the dock has mostly settled (avoid mid-flight noise)
+            if (zp > 0.7) {
+              const la = (zp - 0.7) / 0.3 * e;
+              ctx.font = "11px ui-sans-serif, system-ui, sans-serif";
+              ctx.textBaseline = "middle";
+              for (const { j } of ns) {
+                const n = nodes[j];
+                const name = n.n.startsWith("MONDO:") ? n.id : n.n;
+                const label = name.length > 26 ? name.slice(0, 25) + "\u2026" : name;
+                const left = px[j] < px[fi];
+                ctx.textAlign = left ? "right" : "left";
+                const tx = px[j] + (left ? -8 : 8);
+                const w = ctx.measureText(label).width;
+                ctx.fillStyle = `rgba(255,255,255,${0.75 * la})`;
+                ctx.fillRect(left ? tx - w - 3 : tx - 3, py[j] - 8, w + 6, 16);
+                ctx.fillStyle = `rgba(51,65,85,${(j === hovI ? 1 : 0.85) * la})`;
+                ctx.fillText(label, tx, py[j]);
+              }
+            }
+            // Focused node core + ring on top
+            ctx.fillStyle = `rgba(67,56,202,${0.95 * fa})`;
+            ctx.beginPath();
+            ctx.arc(px[fi], py[fi], 4.2, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = `rgba(67,56,202,${0.55 * fa})`;
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.arc(px[fi], py[fi], 9, 0, Math.PI * 2);
             ctx.stroke();
           }
         };
@@ -619,6 +736,22 @@ export default function HeroMesh({
           const fs0 = filterState.current;
           if (fs0.q || fs0.ids?.length) recompute(fs0.q, fs0.ids);
         }
+
+        // Focus-mode interactivity: hit test over the docked local graph
+        // (focused node + ring neighbors), active once the dock settles.
+        focusSettled = () => zoom.i >= 0 && zoom.target === 1 && zoom.p > 0.85;
+        focusHit = (mx: number, my: number): number => {
+          if (zoom.i < 0) return -1;
+          const R2n = 14 * 14;
+          let best = -1, bestD = R2n;
+          const ns = nbr.get(zoom.i) ?? [];
+          for (const { j } of ns) {
+            const dx = px[j] - mx, dy = py[j] - my;
+            const d = dx * dx + dy * dy;
+            if (d < bestD) { bestD = d; best = j; }
+          }
+          return best;
+        };
 
         startZoom = (i: number) => {
           zoomActive = true;
