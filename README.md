@@ -142,15 +142,41 @@ mock data generator, the decision service, and future Laya calls all share it.
 | `GET /api/evals` | accuracy, Brier, ECE, reliability bins vs gold labels |
 | `GET /api/question-packs` | typed-question definitions |
 
-## Evals
+## Evals + Trust layer
 
 `backend/app/services/evals.py` scores every judged edge's `edge_valid`
-probability against `data/gold_labels.json` (31 hand-labeled edges, including
-deliberate traps: confident-but-false edges and a stale legacy annotation).
-Metrics: accuracy@0.5, Brier score, ECE with 5 reliability bins.
+probability against `data/expert_labels.json` (domain-expert overlay, Oct 2026:
+31 edges, 3 contested with soft targets, 3 expert overrides of the demo gold)
+falling back to `data/gold_labels.json`. Metrics: accuracy@0.5, Brier, soft-Brier
+(vs 0.5 contested targets), ECE with 5 reliability bins, per-judge temperature
+(NLL grid search), zombie-trap pass rate (`data/trap_suite.json`, 5 patterns),
+90%-precision gate with abstention rate, and expert-cost accounting (FP=3, FN=1).
+
+Measured (expert-validated, demo n=31):
+
+| Judge | Acc | Brier | ECE | Traps | Cost@0.5 |
+|---|---|---|---|---|---|
+| mock | 0.935 | 0.089 | 0.133 | 3/5 | 6.0 |
+| laya v1 | 0.774 | 0.153 | 0.130 | 1/5 | 15.0 |
+| openai v1 | 0.968 | 0.035 | 0.041 | 5/5 | 1.0 |
+| openai v2 | 0.968 | 0.035 | — | 5/5 | 1.0 |
+
+`GET /v1/evals?judge=mock|laya|openai|laya-v2|openai-v2` returns the full report
+plus `policy` (90/40 thresholds, 3:1 costs, contested edge IDs). `GET /v1/paths`
+returns per-edge gate actions plus `p_path` with weakest-link attribution;
+`?audience=patient` applies the stricter gate (established only at ≥0.90 with
+replicated evidence, hidden below 0.40).
+
+`backend/app/services/trust.py` is the policy module: temperature scaling,
+conformal-style precision gating, cost-sensitive decisions, path propagation.
+`edge-validate-v2` pack splits supported into model-only/patient and adds a
+`superseded` question for zombie knowledge; committed v2 judgments
+(`data/openai_judgments_v2.json`, `data/laya_judgments_v2.json`) show OpenAI
+flagging all zombie traps superseded≥0.90 while Laya misses them.
 
 This harness is the acceptance test for swapping in a real judge: run it
 before and after; if ECE worsens, fit a temperature per question pack.
+Thresholds are small-sample estimates until the ~200-edge real gold set lands.
 
 ## Frontend philosophy
 

@@ -21,9 +21,9 @@ graph is republished atomically and you never want to mix generations.
 | Resolve | `GET /v1/entities?q=&types=&limit=` | search any entity; returns match kind, parents (SUBTYPE_OF), subtype_count, per-relation connection counts |
 | Fetch | `GET /v1/entities/{curie}` | one node + adjacency summary + hierarchy |
 | Traverse | `GET /v1/edges?from=&to=&node=&rel_types=&provenance=&min_valid=&judged_only=&limit=&offset=` | the workhorse: any edge query |
-| Path | `GET /v1/paths?from=&to=` | why-connected: route + known/inferred/uncertain + evidence states |
-| Judge | `POST /v1/judge {state, pack_id}` | on-demand judgment; 501 unless the deployment runs with ATLAS_JUDGE=openai (or laya) |
-| Evals | `GET /v1/evals?judge=mock\|laya\|openai` | calibration report: how much to trust edge_valid |
+| Path | `GET /v1/paths?from=&to=&audience=` | why-connected: route + known/inferred/uncertain + evidence states + `trust` block (per-edge gate action, `p_path`, weakest link). `audience=patient` applies the stricter gate |
+| Judge | `POST /v1/judge {state, pack_id}` | on-demand judgment; 501 unless the deployment runs with ATLAS_JUDGE=openai (or laya). `pack_id` accepts `edge-validate-v2` (adds `superseded`) |
+| Evals | `GET /v1/evals?judge=mock\|laya\|openai\|laya-v2\|openai-v2` | calibration report: how much to trust edge_valid, plus `policy` (90/40 thresholds, 3:1 FP cost, contested IDs), trap results, precision gate |
 
 `GET /v1/meta` lists node/edge type counts for the current generation.
 
@@ -65,6 +65,26 @@ shared gene is the proof); `PHENOTYPE_SIMILAR` is judged inference;
 `SUBTYPE_OF` is MONDO hierarchy (aggregate subtypes at render time, never
 treat an umbrella disease as one biological entity); `HAS_PHENOTYPE` /
 `CAUSED_BY` are curated annotations.
+
+## Trust gating (expert policy, Oct 2026)
+
+Every `/v1/paths` response carries a `trust` block. Consume it, do not
+reimplement thresholds client-side:
+
+- `trust.edges[]`: per-edge `{edge_id, p_valid, band, action, reason, caveat}`.
+  Bands: `established` (≥0.90), `review` (0.40–0.90), `hidden` (<0.40).
+- `trust.p_path`: whole-path confidence (product of edge probs, discounted by
+  max contradiction). `trust.weakest_link` / `trust.weakest_p`: which hop to
+  highlight when the path is shaky.
+- `audience=patient`: established requires ≥0.90 **plus** replicated evidence
+  **plus** no serious contradiction; solid-but-contradicted edges suppress with
+  a pending reason. `audience=researcher` (default): same edges show with a
+  warning and the contradicting paper attached.
+- Middle-band UI copy (expert-approved): "Early or limited evidence, not yet
+  confirmed. Discuss with your doctor before making any decisions based on this."
+- Never render `provenance:inferred` as fact. Never treat umbrella `SUBTYPE_OF`
+  parents as one disease. Zombie traps (superseded case reports, stale DB
+  annotations) score `superseded≥0.70` on the v2 pack: render struck-through.
 
 ## MCP (agents)
 

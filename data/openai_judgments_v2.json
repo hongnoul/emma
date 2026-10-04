@@ -1,0 +1,381 @@
+{
+  "_notice": "Zero-shot judgments from the OpenAI logprobs judge over the demo edges, produced by scripts/judge_with_openai.py. Regenerable; kept so evals can compare judges without an API key.",
+  "model": "openai/gpt-4o-mini",
+  "question_pack": "edge-validate-v2",
+  "judged_at": "2026-10-03",
+  "estimated_cost_usd": 0.003,
+  "judgments": {
+    "DEMO-EDGE-001": {
+      "edge_valid": 1.0,
+      "superseded": 0.0004,
+      "evidence_level": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 0.4754,
+        "3": 0.3702,
+        "4": 0.1543
+      },
+      "contradicted": 0.0
+    },
+    "DEMO-EDGE-002": {
+      "edge_valid": 1.0,
+      "superseded": 0.0041,
+      "evidence_level": {
+        "0": 0.0,
+        "1": 0.0,
+        "2": 0.9999,
+        "3": 0.0001,
+        "4": 0.0
+      },
+      "contradicted": 0.0006
+    },
+    "DEMO-EDGE-003": {
+      "edge_valid": 1.0,
+      "superseded": 0.0041,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0006
+    },
+    "DEMO-EDGE-004": {
+      "edge_valid": 1.0,
+      "superseded": 0.0293,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0
+    },
+    "DEMO-EDGE-005": {
+      "edge_valid": 1.0,
+      "superseded": 0.018,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0006
+    },
+    "DEMO-EDGE-006": {
+      "edge_valid": 0.9993,
+      "superseded": 0.018,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0041
+    },
+    "DEMO-EDGE-007": {
+      "edge_valid": 1.0,
+      "superseded": 0.0141,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0
+    },
+    "DEMO-EDGE-008": {
+      "edge_valid": 1.0,
+      "superseded": 0.0067,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0001
+    },
+    "DEMO-EDGE-009": {
+      "edge_valid": 1.0,
+      "superseded": 0.011,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0
+    },
+    "DEMO-EDGE-010": {
+      "edge_valid": 0.9933,
+      "superseded": 0.2227,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0002
+    },
+    "DEMO-EDGE-011": {
+      "edge_valid": 0.0,
+      "superseded": 1.0,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 1.0
+    },
+    "DEMO-EDGE-014": {
+      "edge_valid": 1.0,
+      "superseded": 0.0032,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0
+    },
+    "DEMO-EDGE-015": {
+      "edge_valid": 1.0,
+      "superseded": 0.0032,
+      "evidence_level": {
+        "0": 0.9985,
+        "1": 0.0015,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0003
+    },
+    "DEMO-EDGE-016": {
+      "edge_valid": 1.0,
+      "superseded": 0.0474,
+      "evidence_level": {
+        "0": 0.9999,
+        "1": 0.0001,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0004
+    },
+    "DEMO-EDGE-017": {
+      "edge_valid": 1.0,
+      "superseded": 0.0086,
+      "evidence_level": {
+        "0": 0.9999,
+        "1": 0.0001,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0003
+    },
+    "DEMO-EDGE-018": {
+      "edge_valid": 1.0,
+      "superseded": 0.0052,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0001
+    },
+    "DEMO-EDGE-019": {
+      "edge_valid": 1.0,
+      "superseded": 0.0759,
+      "evidence_level": {
+        "0": 0.9999,
+        "1": 0.0001,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0
+    },
+    "DEMO-EDGE-020": {
+      "edge_valid": 0.0,
+      "superseded": 1.0,
+      "evidence_level": {
+        "0": 0.9968,
+        "1": 0.0032,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 1.0
+    },
+    "DEMO-EDGE-021": {
+      "edge_valid": 0.6225,
+      "superseded": 0.0052,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0012
+    },
+    "DEMO-EDGE-022": {
+      "edge_valid": 0.9998,
+      "superseded": 0.018,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0001
+    },
+    "DEMO-EDGE-023": {
+      "edge_valid": 1.0,
+      "superseded": 0.0067,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.0001
+    },
+    "DEMO-EDGE-078": {
+      "edge_valid": 1.0,
+      "superseded": 0.7311,
+      "evidence_level": {
+        "0": 0.0001,
+        "1": 0.0757,
+        "2": 0.922,
+        "3": 0.0023,
+        "4": 0.0
+      },
+      "contradicted": 0.0052
+    },
+    "DEMO-EDGE-079": {
+      "edge_valid": 1.0,
+      "superseded": 0.0474,
+      "evidence_level": {
+        "0": 0.0,
+        "1": 0.1318,
+        "2": 0.8597,
+        "3": 0.0084,
+        "4": 0.0
+      },
+      "contradicted": 0.0001
+    },
+    "DEMO-EDGE-080": {
+      "edge_valid": 1.0,
+      "superseded": 0.4378,
+      "evidence_level": {
+        "0": 0.9914,
+        "1": 0.0086,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.4378
+    },
+    "DEMO-EDGE-081": {
+      "edge_valid": 0.0,
+      "superseded": 0.9047,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.9975
+    },
+    "DEMO-EDGE-082": {
+      "edge_valid": 0.0,
+      "superseded": 1.0,
+      "evidence_level": {
+        "0": 0.9948,
+        "1": 0.0052,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 1.0
+    },
+    "DEMO-EDGE-083": {
+      "edge_valid": 0.0,
+      "superseded": 0.977,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 1.0
+    },
+    "DEMO-EDGE-084": {
+      "edge_valid": 0.0759,
+      "superseded": 0.3775,
+      "evidence_level": {
+        "0": 0.9968,
+        "1": 0.0032,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.9948
+    },
+    "DEMO-EDGE-085": {
+      "edge_valid": 0.0373,
+      "superseded": 0.0474,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.4378
+    },
+    "DEMO-EDGE-086": {
+      "edge_valid": 0.0,
+      "superseded": 0.9047,
+      "evidence_level": {
+        "0": 1.0,
+        "1": 0.0,
+        "2": 0.0,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.9948
+    },
+    "DEMO-EDGE-087": {
+      "edge_valid": 0.0009,
+      "superseded": 0.0953,
+      "evidence_level": {
+        "0": 0.6638,
+        "1": 0.3135,
+        "2": 0.0227,
+        "3": 0.0,
+        "4": 0.0
+      },
+      "contradicted": 0.9997
+    }
+  }
+}

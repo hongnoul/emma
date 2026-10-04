@@ -95,7 +95,7 @@ def judge(edge_id: str):
 
 
 @router.get("/evals", response_model=EvalReport)
-def evals(judge: str = Query("mock", pattern="^(mock|laya)$")):
+def evals(judge: str = Query("mock", pattern="^(mock|laya|openai|laya-v2|openai-v2)$")):
     return run_evals(judge)
 
 

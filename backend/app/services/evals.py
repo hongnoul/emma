@@ -44,6 +44,8 @@ N_BINS = 5
 _JUDGMENT_FILES = {
     "laya": "laya_judgments_zeroshot.json",
     "openai": "openai_judgments_zeroshot.json",
+    "laya-v2": "laya_judgments_v2.json",
+    "openai-v2": "openai_judgments_v2.json",
 }
 
 
@@ -52,6 +54,14 @@ def _stored_probs(judge: str) -> dict[str, float] | None:
     if not f.exists():
         return None
     return {k: v["edge_valid"] for k, v in json.loads(f.read_text())["judgments"].items()}
+
+
+def _stored_full(judge: str) -> dict | None:
+    """Full judgment records (with superseded/evidence_level when present)."""
+    f = DATA_DIR / _JUDGMENT_FILES.get(judge, "")
+    if not f or not f.exists():
+        return None
+    return json.loads(f.read_text())["judgments"]
 
 
 def _expert_labels() -> tuple[dict[str, int], dict[str, float], dict]:
@@ -117,14 +127,25 @@ def run_evals(judge: str = "mock") -> EvalReport:
     brier_cal = (sum((p - y) ** 2 for p, y in cal_pairs) / len(cal_pairs)
                  if cal_pairs else 0.0)
     traps = trap_suite()
+    full = _stored_full(judge) if judge in _JUDGMENT_FILES else None
     trap_results = []
     for t in traps:
         eid = t["edge_id"]
         p = prob_map.get(eid)
         passed = p is not None and p < 0.40
-        trap_results.append({"edge_id": eid, "pattern": t["pattern"],
-                             "p_valid": round(p, 3) if p is not None else None,
-                             "passed": passed})
+        row = {"edge_id": eid, "pattern": t["pattern"],
+               "p_valid": round(p, 3) if p is not None else None,
+               "passed": passed}
+        if full and eid in full and full[eid].get("superseded") is not None:
+            sup = full[eid]["superseded"]
+            row["superseded"] = sup
+            # v2: a trap also passes if the judge explicitly flags superseded
+            if sup >= 0.70 and t["pattern"] in ("superseded_case_report",
+                                                "stale_database_annotation",
+                                                "generic_phenotypes_plus_stale_annotation"):
+                row["passed"] = True
+                row["passed_via"] = "superseded_flag"
+        trap_results.append(row)
     trap_rate = (sum(1 for r in trap_results if r["passed"]) / len(trap_results)
                  if trap_results else None)
     gate = precision_gate(prob_map, hard, target_precision=0.90)
@@ -142,10 +163,12 @@ def run_evals(judge: str = "mock") -> EvalReport:
         f"judge={judge} vs expert-validated labels (n={n}, {n_contested} contested, "
         f"{n_overrides} expert overrides of demo gold). "
         + ("Real zero-shot Laya (convaiinnovations/laya). "
-           if judge == "laya" else
+           if judge.startswith("laya") else
            "OpenAI logprobs judge (single-token answers, renormalized top_logprobs). "
-           if judge == "openai" else
+           if judge.startswith("openai") else
            "Mock-judge probabilities (hand-tuned, deliberately miscalibrated traps). ")
+        + ("Question pack edge-validate-v2 (5-level ladder + superseded). "
+           if judge.endswith("-v2") else "")
         + f"Soft-Brier {brier_soft:.3f} (contested=0.5 targets); "
           f"T={temperature} calibrated Brier {brier_cal:.3f}. "
         + (f"Zombie traps {sum(1 for r in trap_results if r['passed'])}/{len(trap_results)}. "

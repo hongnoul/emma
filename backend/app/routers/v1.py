@@ -308,7 +308,7 @@ def ablate(edge_id: str, pack_id: str = "edge-validate-v1"):
 
 
 @router.get("/evals")
-def evals(judge: str = Query("mock", pattern="^(mock|laya|openai)$")):
+def evals(judge: str = Query("mock", pattern="^(mock|laya|openai|laya-v2|openai-v2)$")):
     from ..services.evals import expert_extra
     from ..services import trust as _trust
     r = run_evals(judge)
