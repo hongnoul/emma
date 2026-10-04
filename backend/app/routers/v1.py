@@ -332,3 +332,56 @@ def meta():
     return {"generation_id": store.generation, "nodes": len(store.nodes),
             "edges": len(store.edges), "node_types": dict(types), "rel_types": dict(rels),
             "judge": os.environ.get("ATLAS_JUDGE") or "none"}
+
+
+# ---- benchmark history: record eval runs, diff over time ----
+
+_BENCH_JUDGES = ("mock", "laya", "openai", "laya-v2", "openai-v2")
+
+
+@router.get("/evals/history")
+def evals_history(judge: str | None = Query(None, pattern="^(mock|laya|openai|laya-v2|openai-v2)$"),
+                  limit: int = Query(50, ge=1, le=200)):
+    """Newest-first benchmark run summaries (metadata + metrics)."""
+    from ..services import benchmarks as _bench
+    return {"generation_id": get_store().generation,
+            "runs": _bench.list_runs(judge, limit)}
+
+
+@router.get("/evals/diff")
+def evals_diff(from_id: str | None = Query(None, description="stored run_id"),
+               to_id: str | None = Query(None, description="stored run_id"),
+               judge_a: str | None = Query(None, pattern="^(mock|laya|openai|laya-v2|openai-v2)$"),
+               judge_b: str | None = Query(None, pattern="^(mock|laya|openai|laya-v2|openai-v2)$")):
+    """Diff two stored runs (from_id/to_id) or two live judges (judge_a/judge_b).
+
+    Metric deltas are to − from; for Brier/ECE/cost negative is better.
+    """
+    from ..services import benchmarks as _bench
+    if from_id and to_id:
+        d = _bench.diff_runs(from_id, to_id)
+        if d is None:
+            raise HTTPException(404, "one or both run_ids not found")
+        return {"generation_id": get_store().generation, **d}
+    if judge_a and judge_b:
+        return {"generation_id": get_store().generation,
+                **_bench.diff_live(judge_a, judge_b)}
+    raise HTTPException(422, "pass from_id+to_id (stored runs) or judge_a+judge_b (live)")
+
+
+class RecordRequest(BaseModel):
+    judge: str = "mock"
+    note: str = ""
+
+
+@router.post("/evals/record")
+def evals_record(req: RecordRequest):
+    """Snapshot one judge's evals into data/benchmarks/ for later diffing."""
+    from ..services import benchmarks as _bench
+    if req.judge not in _BENCH_JUDGES:
+        raise HTTPException(404, f"unknown judge: {req.judge}")
+    try:
+        rec = _bench.record(req.judge, req.note)
+    except Exception as e:
+        raise HTTPException(500, str(e))
+    return {"generation_id": get_store().generation, "run": rec}

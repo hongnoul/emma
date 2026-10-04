@@ -1,0 +1,190 @@
+{
+  "run_id": "20261004T031618Z_openai-v2",
+  "recorded_at": "2026-10-04T03:16:18Z",
+  "judge": "openai-v2",
+  "generation_id": "demo",
+  "git_sha": "bb6a474",
+  "metrics": {
+    "n": 31,
+    "accuracy": 0.968,
+    "brier": 0.035,
+    "ece": 0.041,
+    "brier_soft": 0.057,
+    "temperature": 2.7,
+    "brier_calibrated": 0.033,
+    "trap_pass_rate": 1.0,
+    "precision": 0.92,
+    "accepted": 25,
+    "abstention_rate": 0.194,
+    "gate_threshold": 0.001,
+    "cost_0_5": 1.0,
+    "cost_0_75": 2.0
+  },
+  "bins": [
+    {
+      "range": [
+        0.0,
+        0.2
+      ],
+      "count": 9,
+      "mean_pred": 0.013,
+      "frac_true": 0.111
+    },
+    {
+      "range": [
+        0.2,
+        0.4
+      ],
+      "count": 0,
+      "mean_pred": null,
+      "frac_true": null
+    },
+    {
+      "range": [
+        0.4,
+        0.6
+      ],
+      "count": 0,
+      "mean_pred": null,
+      "frac_true": null
+    },
+    {
+      "range": [
+        0.6,
+        0.8
+      ],
+      "count": 1,
+      "mean_pred": 0.623,
+      "frac_true": 1.0
+    },
+    {
+      "range": [
+        0.8,
+        1.0
+      ],
+      "count": 21,
+      "mean_pred": 1.0,
+      "frac_true": 1.0
+    }
+  ],
+  "notes": "judge=openai-v2 vs expert-validated labels (n=31, 3 contested, 3 expert overrides of demo gold). OpenAI logprobs judge (single-token answers, renormalized top_logprobs). Question pack edge-validate-v2 (5-level ladder + superseded). Soft-Brier 0.057 (contested=0.5 targets); T=2.7 calibrated Brier 0.033. Zombie traps 5/5. 90%-precision gate at p>=0.001 (25/31 accepted, abstains 0.194). Expert cost (3:1) 1.0 at 0.5, 2.0 at 0.75. Small-sample demo: thresholds are estimates until the ~200-edge real gold set lands.",
+  "precision_gate": {
+    "threshold": 0.001,
+    "accepted": 25,
+    "precision": 0.92,
+    "abstention_rate": 0.194,
+    "n": 31,
+    "target": 0.9
+  },
+  "cost_at_0_5": {
+    "false_positives": 0,
+    "false_negatives": 1,
+    "total_cost": 1.0,
+    "cost_per_edge": 0.032,
+    "threshold": 0.5,
+    "fp_cost": 3.0,
+    "fn_cost": 1.0,
+    "n": 31
+  },
+  "cost_at_0_75": {
+    "false_positives": 0,
+    "false_negatives": 2,
+    "total_cost": 2.0,
+    "cost_per_edge": 0.065,
+    "threshold": 0.75,
+    "fp_cost": 3.0,
+    "fn_cost": 1.0,
+    "n": 31
+  },
+  "trap_results": [
+    {
+      "edge_id": "DEMO-EDGE-011",
+      "pattern": "superseded_case_report",
+      "p_valid": 0.0,
+      "passed": true,
+      "superseded": 1.0,
+      "passed_via": "superseded_flag"
+    },
+    {
+      "edge_id": "DEMO-EDGE-020",
+      "pattern": "stale_database_annotation",
+      "p_valid": 0.0,
+      "passed": true,
+      "superseded": 1.0,
+      "passed_via": "superseded_flag"
+    },
+    {
+      "edge_id": "DEMO-EDGE-082",
+      "pattern": "generic_phenotypes_plus_stale_annotation",
+      "p_valid": 0.0,
+      "passed": true,
+      "superseded": 1.0,
+      "passed_via": "superseded_flag"
+    },
+    {
+      "edge_id": "DEMO-EDGE-083",
+      "pattern": "low_IC_phenotype_overlap",
+      "p_valid": 0.0,
+      "passed": true,
+      "superseded": 0.977
+    },
+    {
+      "edge_id": "DEMO-EDGE-086",
+      "pattern": "single_cooccurrence_case_report",
+      "p_valid": 0.0,
+      "passed": true,
+      "superseded": 0.9047
+    }
+  ],
+  "contested": {
+    "DEMO-EDGE-006": {
+      "p_valid": 0.999,
+      "soft_target": 0.5,
+      "verdict": "Contested"
+    },
+    "DEMO-EDGE-020": {
+      "p_valid": 0.0,
+      "soft_target": 0.35,
+      "verdict": "Contested (leaning False)"
+    },
+    "DEMO-EDGE-078": {
+      "p_valid": 1.0,
+      "soft_target": 0.5,
+      "verdict": "Contested"
+    }
+  },
+  "probs": {
+    "DEMO-EDGE-001": 1.0,
+    "DEMO-EDGE-002": 1.0,
+    "DEMO-EDGE-003": 1.0,
+    "DEMO-EDGE-004": 1.0,
+    "DEMO-EDGE-005": 1.0,
+    "DEMO-EDGE-006": 0.9993,
+    "DEMO-EDGE-007": 1.0,
+    "DEMO-EDGE-008": 1.0,
+    "DEMO-EDGE-009": 1.0,
+    "DEMO-EDGE-010": 0.9933,
+    "DEMO-EDGE-011": 0.0,
+    "DEMO-EDGE-014": 1.0,
+    "DEMO-EDGE-015": 1.0,
+    "DEMO-EDGE-016": 1.0,
+    "DEMO-EDGE-017": 1.0,
+    "DEMO-EDGE-018": 1.0,
+    "DEMO-EDGE-019": 1.0,
+    "DEMO-EDGE-020": 0.0,
+    "DEMO-EDGE-021": 0.6225,
+    "DEMO-EDGE-022": 0.9998,
+    "DEMO-EDGE-023": 1.0,
+    "DEMO-EDGE-078": 1.0,
+    "DEMO-EDGE-079": 1.0,
+    "DEMO-EDGE-080": 1.0,
+    "DEMO-EDGE-081": 0.0,
+    "DEMO-EDGE-082": 0.0,
+    "DEMO-EDGE-083": 0.0,
+    "DEMO-EDGE-084": 0.0759,
+    "DEMO-EDGE-085": 0.0373,
+    "DEMO-EDGE-086": 0.0,
+    "DEMO-EDGE-087": 0.0009
+  },
+  "note": "baseline: trust layer + v2 packs"
+}

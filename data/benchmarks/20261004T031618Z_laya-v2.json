@@ -1,0 +1,187 @@
+{
+  "run_id": "20261004T031618Z_laya-v2",
+  "recorded_at": "2026-10-04T03:16:18Z",
+  "judge": "laya-v2",
+  "generation_id": "demo",
+  "git_sha": "bb6a474",
+  "metrics": {
+    "n": 31,
+    "accuracy": 0.774,
+    "brier": 0.152,
+    "ece": 0.13,
+    "brier_soft": 0.148,
+    "temperature": 1.4,
+    "brier_calibrated": 0.154,
+    "trap_pass_rate": 0.2,
+    "precision": 0.9,
+    "accepted": 20,
+    "abstention_rate": 0.355,
+    "gate_threshold": 0.653,
+    "cost_0_5": 15.0,
+    "cost_0_75": 11.0
+  },
+  "bins": [
+    {
+      "range": [
+        0.0,
+        0.2
+      ],
+      "count": 4,
+      "mean_pred": 0.076,
+      "frac_true": 0.25
+    },
+    {
+      "range": [
+        0.2,
+        0.4
+      ],
+      "count": 3,
+      "mean_pred": 0.262,
+      "frac_true": 0.667
+    },
+    {
+      "range": [
+        0.4,
+        0.6
+      ],
+      "count": 2,
+      "mean_pred": 0.565,
+      "frac_true": 0.5
+    },
+    {
+      "range": [
+        0.6,
+        0.8
+      ],
+      "count": 9,
+      "mean_pred": 0.719,
+      "frac_true": 0.667
+    },
+    {
+      "range": [
+        0.8,
+        1.0
+      ],
+      "count": 13,
+      "mean_pred": 0.884,
+      "frac_true": 1.0
+    }
+  ],
+  "notes": "judge=laya-v2 vs expert-validated labels (n=31, 3 contested, 3 expert overrides of demo gold). Real zero-shot Laya (convaiinnovations/laya). Question pack edge-validate-v2 (5-level ladder + superseded). Soft-Brier 0.148 (contested=0.5 targets); T=1.4 calibrated Brier 0.154. Zombie traps 1/5. 90%-precision gate at p>=0.653 (20/31 accepted, abstains 0.355). Expert cost (3:1) 15.0 at 0.5, 11.0 at 0.75. Small-sample demo: thresholds are estimates until the ~200-edge real gold set lands.",
+  "precision_gate": {
+    "threshold": 0.653,
+    "accepted": 20,
+    "precision": 0.9,
+    "abstention_rate": 0.355,
+    "n": 31,
+    "target": 0.9
+  },
+  "cost_at_0_5": {
+    "false_positives": 4,
+    "false_negatives": 3,
+    "total_cost": 15.0,
+    "cost_per_edge": 0.484,
+    "threshold": 0.5,
+    "fp_cost": 3.0,
+    "fn_cost": 1.0,
+    "n": 31
+  },
+  "cost_at_0_75": {
+    "false_positives": 1,
+    "false_negatives": 8,
+    "total_cost": 11.0,
+    "cost_per_edge": 0.355,
+    "threshold": 0.75,
+    "fp_cost": 3.0,
+    "fn_cost": 1.0,
+    "n": 31
+  },
+  "trap_results": [
+    {
+      "edge_id": "DEMO-EDGE-011",
+      "pattern": "superseded_case_report",
+      "p_valid": 0.723,
+      "passed": false,
+      "superseded": 0.6059
+    },
+    {
+      "edge_id": "DEMO-EDGE-020",
+      "pattern": "stale_database_annotation",
+      "p_valid": 0.204,
+      "passed": true,
+      "superseded": 0.3865
+    },
+    {
+      "edge_id": "DEMO-EDGE-082",
+      "pattern": "generic_phenotypes_plus_stale_annotation",
+      "p_valid": 0.784,
+      "passed": false,
+      "superseded": 0.3121
+    },
+    {
+      "edge_id": "DEMO-EDGE-083",
+      "pattern": "low_IC_phenotype_overlap",
+      "p_valid": 0.579,
+      "passed": false,
+      "superseded": 0.107
+    },
+    {
+      "edge_id": "DEMO-EDGE-086",
+      "pattern": "single_cooccurrence_case_report",
+      "p_valid": 0.643,
+      "passed": false,
+      "superseded": 0.119
+    }
+  ],
+  "contested": {
+    "DEMO-EDGE-006": {
+      "p_valid": 0.926,
+      "soft_target": 0.5,
+      "verdict": "Contested"
+    },
+    "DEMO-EDGE-020": {
+      "p_valid": 0.204,
+      "soft_target": 0.35,
+      "verdict": "Contested (leaning False)"
+    },
+    "DEMO-EDGE-078": {
+      "p_valid": 0.749,
+      "soft_target": 0.5,
+      "verdict": "Contested"
+    }
+  },
+  "probs": {
+    "DEMO-EDGE-001": 0.7201,
+    "DEMO-EDGE-002": 0.3678,
+    "DEMO-EDGE-003": 0.7824,
+    "DEMO-EDGE-004": 0.8778,
+    "DEMO-EDGE-005": 0.8897,
+    "DEMO-EDGE-006": 0.9263,
+    "DEMO-EDGE-007": 0.8673,
+    "DEMO-EDGE-008": 0.8995,
+    "DEMO-EDGE-009": 0.9104,
+    "DEMO-EDGE-010": 0.9553,
+    "DEMO-EDGE-011": 0.7234,
+    "DEMO-EDGE-014": 0.7852,
+    "DEMO-EDGE-015": 0.8369,
+    "DEMO-EDGE-016": 0.8399,
+    "DEMO-EDGE-017": 0.632,
+    "DEMO-EDGE-018": 0.5505,
+    "DEMO-EDGE-019": 0.8045,
+    "DEMO-EDGE-020": 0.2036,
+    "DEMO-EDGE-021": 0.8792,
+    "DEMO-EDGE-022": 0.8909,
+    "DEMO-EDGE-023": 0.9085,
+    "DEMO-EDGE-078": 0.7488,
+    "DEMO-EDGE-079": 0.2152,
+    "DEMO-EDGE-080": 0.0651,
+    "DEMO-EDGE-081": 0.0889,
+    "DEMO-EDGE-082": 0.784,
+    "DEMO-EDGE-083": 0.5788,
+    "DEMO-EDGE-084": 0.0648,
+    "DEMO-EDGE-085": 0.6526,
+    "DEMO-EDGE-086": 0.643,
+    "DEMO-EDGE-087": 0.087
+  },
+  "note": "baseline: trust layer + v2 packs"
+}

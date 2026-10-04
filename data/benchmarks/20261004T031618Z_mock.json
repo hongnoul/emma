@@ -1,0 +1,182 @@
+{
+  "run_id": "20261004T031618Z_mock",
+  "recorded_at": "2026-10-04T03:16:18Z",
+  "judge": "mock",
+  "generation_id": "demo",
+  "git_sha": "bb6a474",
+  "metrics": {
+    "n": 31,
+    "accuracy": 0.935,
+    "brier": 0.089,
+    "ece": 0.133,
+    "brier_soft": 0.079,
+    "temperature": 0.8,
+    "brier_calibrated": 0.083,
+    "trap_pass_rate": 0.6,
+    "precision": 0.92,
+    "accepted": 25,
+    "abstention_rate": 0.194,
+    "gate_threshold": 0.55,
+    "cost_0_5": 6.0,
+    "cost_0_75": 7.0
+  },
+  "bins": [
+    {
+      "range": [
+        0.0,
+        0.2
+      ],
+      "count": 0,
+      "mean_pred": null,
+      "frac_true": null
+    },
+    {
+      "range": [
+        0.2,
+        0.4
+      ],
+      "count": 4,
+      "mean_pred": 0.292,
+      "frac_true": 0.0
+    },
+    {
+      "range": [
+        0.4,
+        0.6
+      ],
+      "count": 4,
+      "mean_pred": 0.5,
+      "frac_true": 0.5
+    },
+    {
+      "range": [
+        0.6,
+        0.8
+      ],
+      "count": 4,
+      "mean_pred": 0.715,
+      "frac_true": 0.5
+    },
+    {
+      "range": [
+        0.8,
+        1.0
+      ],
+      "count": 19,
+      "mean_pred": 0.891,
+      "frac_true": 1.0
+    }
+  ],
+  "notes": "judge=mock vs expert-validated labels (n=31, 3 contested, 3 expert overrides of demo gold). Mock-judge probabilities (hand-tuned, deliberately miscalibrated traps). Soft-Brier 0.079 (contested=0.5 targets); T=0.8 calibrated Brier 0.083. Zombie traps 3/5. 90%-precision gate at p>=0.55 (25/31 accepted, abstains 0.194). Expert cost (3:1) 6.0 at 0.5, 7.0 at 0.75. Small-sample demo: thresholds are estimates until the ~200-edge real gold set lands.",
+  "precision_gate": {
+    "threshold": 0.55,
+    "accepted": 25,
+    "precision": 0.92,
+    "abstention_rate": 0.194,
+    "n": 31,
+    "target": 0.9
+  },
+  "cost_at_0_5": {
+    "false_positives": 2,
+    "false_negatives": 0,
+    "total_cost": 6.0,
+    "cost_per_edge": 0.194,
+    "threshold": 0.5,
+    "fp_cost": 3.0,
+    "fn_cost": 1.0,
+    "n": 31
+  },
+  "cost_at_0_75": {
+    "false_positives": 1,
+    "false_negatives": 4,
+    "total_cost": 7.0,
+    "cost_per_edge": 0.226,
+    "threshold": 0.75,
+    "fp_cost": 3.0,
+    "fn_cost": 1.0,
+    "n": 31
+  },
+  "trap_results": [
+    {
+      "edge_id": "DEMO-EDGE-011",
+      "pattern": "superseded_case_report",
+      "p_valid": 0.3,
+      "passed": true
+    },
+    {
+      "edge_id": "DEMO-EDGE-020",
+      "pattern": "stale_database_annotation",
+      "p_valid": 0.22,
+      "passed": true
+    },
+    {
+      "edge_id": "DEMO-EDGE-082",
+      "pattern": "generic_phenotypes_plus_stale_annotation",
+      "p_valid": 0.78,
+      "passed": false
+    },
+    {
+      "edge_id": "DEMO-EDGE-083",
+      "pattern": "low_IC_phenotype_overlap",
+      "p_valid": 0.3,
+      "passed": true
+    },
+    {
+      "edge_id": "DEMO-EDGE-086",
+      "pattern": "single_cooccurrence_case_report",
+      "p_valid": 0.72,
+      "passed": false
+    }
+  ],
+  "contested": {
+    "DEMO-EDGE-006": {
+      "p_valid": 0.74,
+      "soft_target": 0.5,
+      "verdict": "Contested"
+    },
+    "DEMO-EDGE-020": {
+      "p_valid": 0.22,
+      "soft_target": 0.35,
+      "verdict": "Contested (leaning False)"
+    },
+    "DEMO-EDGE-078": {
+      "p_valid": 0.88,
+      "soft_target": 0.5,
+      "verdict": "Contested"
+    }
+  },
+  "probs": {
+    "DEMO-EDGE-001": 0.95,
+    "DEMO-EDGE-002": 0.93,
+    "DEMO-EDGE-003": 0.91,
+    "DEMO-EDGE-004": 0.9,
+    "DEMO-EDGE-005": 0.88,
+    "DEMO-EDGE-006": 0.74,
+    "DEMO-EDGE-007": 0.92,
+    "DEMO-EDGE-008": 0.89,
+    "DEMO-EDGE-009": 0.87,
+    "DEMO-EDGE-010": 0.55,
+    "DEMO-EDGE-011": 0.3,
+    "DEMO-EDGE-014": 0.94,
+    "DEMO-EDGE-015": 0.9,
+    "DEMO-EDGE-016": 0.9,
+    "DEMO-EDGE-017": 0.91,
+    "DEMO-EDGE-018": 0.88,
+    "DEMO-EDGE-019": 0.8,
+    "DEMO-EDGE-020": 0.22,
+    "DEMO-EDGE-021": 0.93,
+    "DEMO-EDGE-022": 0.85,
+    "DEMO-EDGE-023": 0.86,
+    "DEMO-EDGE-078": 0.88,
+    "DEMO-EDGE-079": 0.82,
+    "DEMO-EDGE-080": 0.62,
+    "DEMO-EDGE-081": 0.35,
+    "DEMO-EDGE-082": 0.78,
+    "DEMO-EDGE-083": 0.3,
+    "DEMO-EDGE-084": 0.42,
+    "DEMO-EDGE-085": 0.55,
+    "DEMO-EDGE-086": 0.72,
+    "DEMO-EDGE-087": 0.48
+  },
+  "note": "baseline: trust layer + v2 packs"
+}
