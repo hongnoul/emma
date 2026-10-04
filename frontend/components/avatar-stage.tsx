@@ -101,7 +101,7 @@ export default function AvatarStage({
         headBone.getWorldPosition(target);
         target.y += 0.04;
       }
-      camera.position.set(0, target.y + 0.02, 0.62);
+      camera.position.set(0, target.y + 0.02, 0.72);
       camera.lookAt(target);
     });
 
@@ -183,7 +183,17 @@ export default function AvatarStage({
 
       // ---- lip sync ----------------------------------------------------
       const freq = speakingRef.current ? freqRef.current?.() : undefined;
-      if (freq && freq.length) {
+      if (speakingRef.current && (!freq || !freq.length)) {
+        // No audio source (dev preview): synthesize plausible babble.
+        const open =
+          0.25 +
+          0.2 * Math.sin(t * 9.1) * Math.sin(t * 3.7) +
+          0.12 * Math.sin(t * 13.3);
+        lerpMorph("jawOpen", Math.max(0, open) * 0.5, 0.3);
+        lerpMorph("viseme_aa", Math.max(0, Math.sin(t * 5.3)) * 0.5, 0.3);
+        lerpMorph("viseme_E", Math.max(0, Math.sin(t * 7.9 + 1)) * 0.4, 0.3);
+        lerpMorph("viseme_O", Math.max(0, Math.sin(t * 4.1 + 2)) * 0.4, 0.3);
+      } else if (freq && freq.length) {
         // ~48kHz / fftSize 2048 → ~23.4 Hz per bin.
         const voicing = band(freq, 2, 16); //   ~50–375 Hz
         const vowelLo = band(freq, 16, 50); //  ~375–1200 Hz (aa/O/U)
