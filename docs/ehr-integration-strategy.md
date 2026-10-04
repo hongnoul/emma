@@ -99,12 +99,17 @@ probabilities; the physician decides.
 4. Put the two screenshots + sandbox patient ID in the pitch appendix.
 
 Validation status (Oct 2026): endpoint + edge-case suite and the full
-Bundle -> entities -> edges -> trust-gated path chain pass on both
-graphs. Real clinical display strings (Niemann-Pick disease,
-Splenomegaly, Hepatomegaly) resolve to MONDO/HPO entities on the real
-graph (`ATLAS_GRAPH_PATH=data/graph.real.json`); the synthetic demo
-graph resolves its own DEMO-* vocabulary. `scripts/smoke_test.py` covers
-the EHR endpoints as regression tests. No PHI is stored; Bundle bodies
+Bundle -> entities -> edges -> trust-gated path chain pass on demo and
+real graphs (real clinical strings like Niemann-Pick disease,
+Splenomegaly, Hepatomegaly resolve to MONDO/HPO; NPC1 resolves to
+HGNC). On the production bulk graph the same flow resolves 3/3 test
+queries, with one data gap noted: Fabry disease (MONDO:0010526) is
+absent from the bulk build (present in the 10-disease real graph) and
+should be checked at next bulk rebuild. `scripts/smoke_test.py` covers
+the EHR endpoints as regression tests.
+**Deploy note: production Fly API predates the EHR routes
+(`GET /v1/ehr/status` returns 404 there); redeploy with
+`scripts/deploy.sh` to publish them.** No PHI is stored; Bundle bodies
 are in-memory only.
 
 ### Phase 2 — hospital pilot (IT-light)
