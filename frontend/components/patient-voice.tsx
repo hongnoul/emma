@@ -85,7 +85,7 @@ export function useVoiceSession({
     },
   });
 
-  const { status, isSpeaking, startSession, endSession } = conversation;
+  const { status, isSpeaking, startSession, endSession, getOutputByteFrequencyData } = conversation;
   const active = status === "connected";
 
   const start = useCallback(async () => {
@@ -125,7 +125,18 @@ export function useVoiceSession({
     endSession();
   }, [endSession]);
 
-  return { active, connecting, isSpeaking, error, start, stop, status };
+  return {
+    active,
+    connecting,
+    isSpeaking,
+    error,
+    start,
+    stop,
+    status,
+    // Live output-audio spectrum (AnalyserNode byte frequency data) for
+    // driving the lip-synced avatar. Safe to call every animation frame.
+    getOutputByteFrequencyData,
+  };
 }
 
 // Mic toggle used in the ChatTab composer row.

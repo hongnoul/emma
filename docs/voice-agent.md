@@ -36,7 +36,7 @@ Rules:
 - For any disease or research question, call the emmatics_brief tool and speak
   only from its spoken_brief and facts. If facts are empty, say the evidence
   has not yet passed the patient-safety review and keep it general.
-- Always name your source briefly ("according to the Emmatics").
+- Always name your source briefly ("according to Emmatics").
 - Missed doses: reassure, never advise doubling up, offer a reminder.
 - Keep replies under three sentences unless asked for detail. Speak plainly,
   no jargon unless the patient uses it first.
@@ -50,7 +50,7 @@ Rules:
 
 - Type: Webhook, Name: `emmatics_brief`
 - Description: "Look up a disease, symptom cluster, or research topic in the
-  Emmatics. Returns a spoken brief plus patient-vetted evidence."
+  Emmatics knowledge graph. Returns a spoken brief plus patient-vetted evidence."
 - Method: GET, URL: `https://<your-api-host>/v1/voice/tools/emmatics-brief`
 - Query param: `q` (string, required) — "disease name or topic to look up"
 

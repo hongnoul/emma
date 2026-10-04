@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # One-shot provisioning of the Rarepath voice agent on ElevenLabs.
-# Creates workspace tools (atlas_brief webhook + switch_tab client), creates
+# Creates workspace tools (emmatics_brief webhook + switch_tab client), creates
 # the agent referencing them, enables auth, sets Fly secrets, verifies prod.
 #
 # Usage:  ELEVENLABS_API_KEY=sk_... ./scripts/provision-voice-agent.sh
@@ -21,18 +21,18 @@ el() { # el METHOD PATH JSON_BODY
 jqpy() { python3 -c "import json,sys; print(json.load(sys.stdin)$1)"; }
 say() { printf '\n\033[1m%s\033[0m\n' "$*"; }
 
-say "1/5 Creating atlas_brief webhook tool…"
+say "1/5 Creating emmatics_brief webhook tool…"
 WEBHOOK_TOOL=$(python3 - "$API_BASE" <<'PY'
 import json, sys
 print(json.dumps({"tool_config": {
   "type": "webhook",
-  "name": "atlas_brief",
+  "name": "emmatics_brief",
   "description": ("Look up a disease, symptom cluster, or research topic in "
-                  "the Emmatics. Returns a spoken brief plus "
+                  "the Emmatics knowledge graph. Returns a spoken brief plus "
                   "patient-vetted evidence that passed the patient trust gate. "
                   "Call this for every disease or research question."),
   "api_schema": {
-    "url": f"{sys.argv[1]}/v1/voice/tools/atlas-brief",
+    "url": f"{sys.argv[1]}/v1/voice/tools/emmatics-brief",
     "method": "GET",
     "query_params_schema": {
       "properties": {
@@ -114,7 +114,7 @@ prompt = """You are Rarepath, a warm voice companion for rare-disease patients. 
 Rules:
 - You are NOT a diagnostician. Never diagnose, never adjust medication. Symptoms get logged and routed to Dr. Santoso.
 - For any disease or research question, call the emmatics_brief tool and speak only from its spoken_brief and facts. If facts are empty, say the evidence has not yet passed the patient-safety review and keep it general.
-- Always name your source briefly ("according to the Emmatics").
+- Always name your source briefly ("according to Emmatics").
 - Missed doses: reassure, never advise doubling up, offer a reminder.
 - Keep replies under three sentences unless asked for detail. Speak plainly, no jargon unless the patient uses it first.
 - Use the switch_tab client tool when the patient wants to see something: journey, home, chat, community, research.

@@ -9,6 +9,7 @@
 //    repo design refactor: brand→primary, ink→foreground,
 //    sage→muted-foreground, warm→foreground-weight accents.
 import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { api, DiseaseDetail, GraphEdge } from "@/lib/api";
 import {
   VoiceButton,
@@ -17,6 +18,16 @@ import {
   type CheckinDraft,
   type VoiceMsg,
 } from "@/components/patient-voice";
+
+// three.js avatar is heavy — load client-side only, when the chat tab mounts.
+const AvatarStage = dynamic(() => import("@/components/avatar-stage"), {
+  ssr: false,
+  loading: () => (
+    <div className="grid h-full w-full place-items-center text-[10.5px] text-muted-foreground">
+      Loading companion…
+    </div>
+  ),
+});
 
 // The prototype pinned MONDO:0020066 (Ehlers-Danlos) for its live research
 // feed. Our knowledge-graph content varies by deployment, so the ID is configurable
@@ -573,6 +584,12 @@ function ChatTabInner({
   ]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
+  // Dev-only avatar preview (window event "rarepath:avatar") — verify the
+  // talking head without an ElevenLabs session. detail: {show, speaking}.
+  const [avatarPreview, setAvatarPreview] = useState<{
+    show: boolean;
+    speaking: boolean;
+  } | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
   const voice = useVoiceSession({
@@ -583,6 +600,16 @@ function ChatTabInner({
     },
     onFillCheckin: onDraftCheckin,
   });
+
+  useEffect(() => {
+    if (process.env.NODE_ENV === "production") return;
+    const h = (e: Event) => {
+      const d = (e as CustomEvent).detail ?? {};
+      setAvatarPreview({ show: d.show !== false, speaking: !!d.speaking });
+    };
+    window.addEventListener("rarepath:avatar", h);
+    return () => window.removeEventListener("rarepath:avatar", h);
+  }, []);
 
   useEffect(() => {
     const main = endRef.current?.closest("main");
@@ -672,6 +699,22 @@ function ChatTabInner({
         <p className="mt-2 rounded-xl bg-foreground/5 px-3 py-2 text-[10.5px] text-foreground/60">
           Voice unavailable · {voice.error}
         </p>
+      )}
+
+      {(voice.active || avatarPreview?.show) && (
+        <div className="rise mt-3 overflow-hidden rounded-2xl">
+          <div className="glass-soft relative h-56 w-full">
+            <AvatarStage
+              speaking={voice.isSpeaking || !!avatarPreview?.speaking}
+              getFrequencyData={
+                voice.active ? voice.getOutputByteFrequencyData : undefined
+              }
+            />
+            <p className="pointer-events-none absolute bottom-2 left-3 text-[9.5px] uppercase tracking-wider text-muted-foreground">
+              {voice.isSpeaking ? "Rarepath · speaking" : "Rarepath · listening"}
+            </p>
+          </div>
+        </div>
       )}
 
       <div className="mt-3 flex-1 space-y-2.5 text-[12.5px]">
