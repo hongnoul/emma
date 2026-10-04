@@ -1,7 +1,8 @@
 "use client";
-// Physician partition home: the graph's nodes are the main section, grouped
-// by type with judged-edge context. Band stats and the three workflow entry
-// points (triage, edge workbench, path inspector) are compact secondary rows.
+// Physician partition home: the graph's nodes are the main section, sorted
+// so the ones with the most review-band edges surface first. The band stat
+// cards are triage shortcuts (each links into the queue preset to that
+// probability band); the tab strip in the layout is the only other nav.
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { v1, Meta, EdgesResponse } from "@/lib/v1";
@@ -84,7 +85,8 @@ export default function PhysicianHome() {
         <h1 className="text-2xl font-semibold">Evidence interrogation workbench</h1>
         <p className="text-sm text-muted-foreground max-w-2xl">
           Every node below sits in a judged graph. Pick a node to triage its
-          uncertain connections, or jump straight into a workflow.
+          uncertain connections, or open a band card to work through the whole
+          queue.
         </p>
         {meta && (
           <p className="text-xs text-muted-foreground">
@@ -100,15 +102,17 @@ export default function PhysicianHome() {
 
       {bands && (
         <section className="grid max-w-2xl grid-cols-3 gap-2 sm:gap-4">
-          {[
-            ["established ≥ 0.90", bands.established, "bg-primary text-primary-foreground"],
-            ["review 0.40–0.90", bands.review, "bg-secondary text-secondary-foreground border"],
-            ["hidden < 0.40", bands.hidden, "border border-dashed text-muted-foreground"],
-          ].map(([label, n, cls]) => (
-            <div key={label as string} className={`rounded-lg p-3 text-center ${cls}`}>
-              <p className="text-xl font-semibold">{(n as number).toLocaleString()}</p>
+          {([
+            ["established ≥ 0.90", bands.established, "bg-primary text-primary-foreground", "/physician/triage?lo=0.9&hi=1"],
+            ["review 0.40–0.90", bands.review, "bg-secondary text-secondary-foreground border", "/physician/triage"],
+            ["hidden < 0.40", bands.hidden, "border border-dashed text-muted-foreground", "/physician/triage?lo=0&hi=0.4"],
+          ] as const).map(([label, n, cls, href]) => (
+            <Link key={label} href={href}
+              className={`rounded-lg p-3 text-center transition hover:shadow-sm ${cls}`}>
+              <p className="text-xl font-semibold">{n.toLocaleString()}</p>
               <p className="text-xs">{label}</p>
-            </div>
+              <p className="mt-1 text-[10px] opacity-70">triage →</p>
+            </Link>
           ))}
         </section>
       )}
@@ -159,7 +163,7 @@ export default function PhysicianHome() {
                         {s ? `${s.degree} edge${s.degree === 1 ? "" : "s"}` : "–"}
                         {s && s.review > 0 && (
                           <span className="ml-2 rounded border px-1.5 py-0.5 text-[10px] text-foreground">
-                            {s.review} to review
+                            triage {s.review} →
                           </span>
                         )}
                       </span>
@@ -173,16 +177,6 @@ export default function PhysicianHome() {
             })}
           </ul>
         )}
-      </section>
-
-      {/* ---- secondary: workflow entry points ---- */}
-      <section className="grid gap-2 sm:grid-cols-3">
-        <WorkflowLink href="/physician/triage" title="Triage queue"
-          body="j/k · a/r through the review band." />
-        <WorkflowLink href="/physician/triage" title="Edge workbench"
-          body="Decision block, ablation, what-if editor." />
-        <WorkflowLink href="/physician/paths" title="Path inspector"
-          body="Hop probabilities and the weakest link." />
       </section>
 
       <p className="text-xs text-muted-foreground max-w-2xl">
@@ -209,11 +203,3 @@ function TypePill({ label, active, onClick }: { label: string; active: boolean; 
   );
 }
 
-function WorkflowLink({ href, title, body }: { href: string; title: string; body: string }) {
-  return (
-    <Link href={href} className="rounded-lg border bg-background px-4 py-3 transition hover:border-foreground/30 hover:shadow-sm">
-      <h3 className="text-sm font-semibold">{title}</h3>
-      <p className="text-xs text-muted-foreground">{body}</p>
-    </Link>
-  );
-}

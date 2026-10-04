@@ -25,15 +25,22 @@ export default function TriagePage() {
 
 function TriageInner() {
   const router = useRouter();
-  const nodeFilter = useSearchParams().get("node");
+  const sp = useSearchParams();
+  const nodeFilter = sp.get("node");
+  // Band presets arrive from the overview's band cards (?lo=&hi=);
+  // default is the expert-policy review band.
+  const parseBound = (v: string | null, fallback: number) => {
+    const n = v == null ? NaN : Number(v);
+    return Number.isFinite(n) && n >= 0 && n <= 1 ? n : fallback;
+  };
   const [edges, setEdges] = useState<V1Edge[] | null>(null);
   const [total, setTotal] = useState(0);
   const [cursor, setCursor] = useState(0);
   const [verdicts, setVerdicts] = useState<Record<string, Verdict>>({});
   const [history, setHistory] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [lo, setLo] = useState(0.4);
-  const [hi, setHi] = useState(0.9);
+  const [lo, setLo] = useState(() => parseBound(sp.get("lo"), 0.4));
+  const [hi, setHi] = useState(() => parseBound(sp.get("hi"), 0.9));
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => { setVerdicts(loadVerdicts()); }, []);
