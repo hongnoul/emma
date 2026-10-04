@@ -534,30 +534,58 @@ export default function HeroMesh({
           }
           // Focus neighborhood: the dolly flings UMAP-distant neighbors far
           // offscreen, so the stage would show a node with amputated links.
-          // Re-lay the 1-hop neighbors on a ring around the focus: angular
-          // order preserved but spread evenly (clumped directions would
-          // stack labels), distance clamped to the stage, blended by zoom
-          // depth, so the section reads as the node's local graph.
+          // Re-lay the 1-hop neighbors around the focus preserving meaning:
+          // ring radius encodes true UMAP distance (closer in phenotype
+          // space = closer to the node), direction is kept from the sphere
+          // projection, and angles are only nudged apart the minimum needed
+          // for legible labels. Blended by zoom depth.
           if (zooming && zp > 0.01) {
             if (fNbrFor !== zoom.i) rebuildFocusNbr();
             const fx = px[zoom.i], fy = py[zoom.i];
             const ns = fNbr;
             if (ns && ns.length > 0) {
               const m = ns.length;
-              // Sort by current angle once per frame (m is small)
+              // UMAP-space distance per neighbor (unit-sphere chord): the
+              // atlas semantics the ring must preserve.
+              let dLo = Infinity, dHi = -Infinity;
+              const du = new Float32Array(m);
+              for (let k = 0; k < m; k++) {
+                const j = ns[k].j;
+                const dd = Math.hypot(
+                  ux[j] - ux[zoom.i], uy[j] - uy[zoom.i], uz[j] - uz[zoom.i],
+                );
+                du[k] = dd;
+                if (dd < dLo) dLo = dd;
+                if (dd > dHi) dHi = dd;
+              }
+              const span = dHi - dLo || 1;
+              // Preserve each neighbor's projected direction; sort to nudge
               const order = ns.map(({ j }, k) => ({
                 k, j, a: Math.atan2(py[j] - fy, px[j] - fx),
               })).sort((p, q) => p.a - q.a);
-              // Even angular spread anchored at the first neighbor's angle;
-              // single neighbors keep their own direction.
-              const a0 = order[0].a;
-              const step = (Math.PI * 2) / Math.max(m, 1);
+              // Minimal angular separation pass (labels need ~0.3 rad)
+              const minGap = Math.min((Math.PI * 2) / m, 0.3);
+              for (let r = 1; r < m; r++) {
+                if (order[r].a - order[r - 1].a < minGap) {
+                  order[r].a = order[r - 1].a + minGap;
+                }
+              }
+              // Wrap: last vs first across the 2π seam
+              if (m > 1) {
+                const wrap = order[0].a + Math.PI * 2 - order[m - 1].a;
+                if (wrap < minGap) {
+                  const shift = (minGap - wrap) / 2;
+                  order[0].a += shift;
+                  order[m - 1].a -= shift;
+                }
+              }
               for (let r = 0; r < m; r++) {
-                const { j, a } = order[r];
-                const ta = m > 1 ? a0 + r * step : a;
-                const d = Math.hypot(px[j] - fx, py[j] - fy) || 1;
-                const tgt = Math.min(Math.max(d, stageR * 0.55), stageR * 0.9);
-                const tx = fx + Math.cos(ta) * tgt, ty = fy + Math.sin(ta) * tgt;
+                const { k, j, a } = order[r];
+                // Radius maps UMAP distance into the stage: nearest ~0.45R,
+                // farthest ~0.95R, so relative proximity stays readable.
+                const prox = (du[k] - dLo) / span;
+                const tgt = stageR * (0.45 + 0.5 * prox);
+                const tx = fx + Math.cos(a) * tgt, ty = fy + Math.sin(a) * tgt;
                 px[j] += (tx - px[j]) * zp;
                 py[j] += (ty - py[j]) * zp;
               }
