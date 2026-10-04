@@ -5,18 +5,9 @@ import { GraphEdge, GraphNode } from "./api";
 export const PROD_UPSTREAM = "https://rare-disease-atlas-api.fly.dev";
 
 async function get<T>(path: string): Promise<T> {
-  const candidates = ["/prod-api", PROD_UPSTREAM];
-  let lastErr: unknown = null;
-  for (const base of candidates) {
-    try {
-      const res = await fetch(`${base}${path}`, { cache: "no-store" });
-      if (!res.ok) throw new Error(`${res.status}: ${path}`);
-      return res.json();
-    } catch (e) {
-      lastErr = e;
-    }
-  }
-  throw lastErr instanceof Error ? lastErr : new Error(String(lastErr));
+  const res = await fetch(`${PROD_UPSTREAM}${path}`, { cache: "no-store" });
+  if (!res.ok) throw new Error(`${res.status}: ${path}`);
+  return res.json();
 }
 
 export interface MapNode {
