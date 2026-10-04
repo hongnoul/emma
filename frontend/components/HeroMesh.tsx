@@ -25,8 +25,15 @@
 // (substring over names/ids + id union), and the paint loop crossfades: the
 // full mesh recedes to a ghost while matched nodes/links draw bright in a
 // second batched pass. Hit-testing prefers matched nodes while filtering.
+//
+// Focus: /disease/[id] routes drive a persistent camera state, not a
+// one-shot transition. The focused node docks to the page's MeshStage rect
+// (read live each frame via meshBus, so it tracks layout and scroll); deep
+// loads dive in on arrival, switching diseases re-targets through a
+// zoom-out/zoom-in, and leaving the route eases back to the full sphere.
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import { meshBus } from "@/lib/mesh-bus";
 
 interface HeroNode { id: string; n: string; x: number; y: number; deg: number }
 interface HeroLink { id: string; s: number; t: number; v: number }
@@ -92,13 +99,19 @@ export default function HeroMesh({
   const placeCard = useRef<(i: number) => void>(() => {});
   // True on the landing page: hover, click-zoom and steering are enabled.
   const activeRef = useRef(pathname === "/");
-  // Route-change hook into the animation closure (zoom-out on return home)
-  const routeCtl = useRef<(home: boolean) => void>(() => {});
+  // Route-driven focus: /disease/[id] keeps the mesh zoomed on that node.
+  const focusCtl = useRef<(id: string | null) => void>(() => {});
+  const focusIdOf = (p: string | null) => {
+    const m = p?.match(/^\/disease\/([^/]+)/);
+    return m ? decodeURIComponent(m[1]) : null;
+  };
+  const focusIdRef = useRef<string | null>(focusIdOf(pathname));
 
   useEffect(() => {
-    const home = pathname === "/";
-    activeRef.current = home;
-    routeCtl.current(home);
+    activeRef.current = pathname === "/";
+    focusIdRef.current = focusIdOf(pathname);
+    focusCtl.current(focusIdRef.current);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
   // Filter plumbing: props land in refs so the one-shot canvas effect never
   // re-runs; the closure rebinds applyFilterRef once data loads.
@@ -347,11 +360,32 @@ export default function HeroMesh({
           return bestJ >= 0 ? bestJ : best;
         };
 
-        // Click-zoom camera state. i >= 0 while zoomed in or animating;
-        // target 1 = dive in, 0 = ease back out. yaw/pitch freeze at click
-        // time so the only motion is the dolly + pan.
-        const zoom = { i: -1, target: 0, p: 0, navigated: false, yaw: 0, pitch: 0, sx: 0, sy: 0 };
+        // Focus camera state: a persistent zoom onto one node, driven by the
+        // route (and adopted mid-flight from a click-zoom). target 1 = docked
+        // in, 0 = full sphere. pending holds a retarget while easing out.
+        // sx/sy = the node's screen position when the dive began (sInit lazy
+        // for route-driven dives, where it's only known after a layout pass).
+        const zoom = {
+          i: -1, target: 0, p: 0, navigated: false,
+          yaw: 0, pitch: 0, sx: 0, sy: 0, sInit: false, pending: -1,
+        };
         let lastYaw = 0, lastPitch = TILT; // refreshed every layout pass
+        // Face-on camera for a node: yaw/pitch that bring it to depth=1
+        // (viewport center, front hemisphere). Used for route-driven dives.
+        const faceOn = (i: number) => {
+          const yaw = Math.atan2(-ux[i], uz[i]);
+          const r = Math.hypot(ux[i], uz[i]);
+          return { yaw, pitch: Math.atan2(uy[i], r) };
+        };
+        const dive = (i: number) => {
+          const f = faceOn(i);
+          zoom.i = i;
+          zoom.target = 1;
+          zoom.navigated = true; // already on the route
+          zoom.yaw = f.yaw;
+          zoom.pitch = f.pitch;
+          zoom.sInit = false; // resolve sx/sy on the next layout pass
+        };
 
         placeCard.current = (i: number) => {
           const el = cardRef.current;
@@ -381,16 +415,27 @@ export default function HeroMesh({
           lastYaw = yaw; lastPitch = pitch;
           const cyaw = Math.cos(yaw), syaw = Math.sin(yaw);
           const cpit = Math.cos(pitch), spit = Math.sin(pitch);
-          // Pan so the clicked node glides from where it was clicked to the
-          // viewport center while the sphere inflates around it.
+          // Pan so the focused node glides from where the dive began to its
+          // anchor: the MeshStage rect center when a page registered one
+          // (read live, so the node tracks layout and scroll), else the
+          // viewport center. The sphere inflates around it.
           let panX = 0, panY = 0;
           if (zooming) {
             const zi = zoom.i;
             const x1 = ux[zi] * cyaw + uz[zi] * syaw;
             const z1 = uz[zi] * cyaw - ux[zi] * syaw;
             const y2 = uy[zi] * cpit - z1 * spit;
-            panX = zoom.sx + (cxp - zoom.sx) * zp - (cxp + x1 * R);
-            panY = zoom.sy + (cyp - zoom.sy) * zp - (cyp + y2 * R);
+            const nx = cxp + x1 * R, ny = cyp + y2 * R;
+            if (!zoom.sInit) { zoom.sx = nx; zoom.sy = ny; zoom.sInit = true; }
+            const stage = meshBus.getStage();
+            let ax = cxp, ay = cyp;
+            if (stage) {
+              const r = stage.getBoundingClientRect();
+              ax = r.left + r.width / 2;
+              ay = r.top + r.height / 2;
+            }
+            panX = zoom.sx + (ax - zoom.sx) * zp - nx;
+            panY = zoom.sy + (ay - zoom.sy) * zp - ny;
           }
           const driftScale = AMP * e * (1 - zp); // drift settles as we dive in
           const seen = target.seen && !zooming && activeRef.current ? 1 : 0;
@@ -581,25 +626,43 @@ export default function HeroMesh({
           zoom.target = 1;
           zoom.p = 0;
           zoom.navigated = false;
+          zoom.pending = -1;
           zoom.yaw = lastYaw;
           zoom.pitch = lastPitch;
           zoom.sx = bx0[i];
           zoom.sy = by0[i];
+          zoom.sInit = true;
           applyHover(-1); // drop the card; the canvas ring carries the focus
         };
 
-        // Route changes: leaving home drops hover/steering (the zoomed or
-        // ambient mesh becomes a passive backdrop); returning home with a
-        // held zoom eases the camera back out to the full sphere.
-        routeCtl.current = (home: boolean) => {
-          if (!home) {
-            target.seen = false;
-            applyHover(-1);
+        // Route-driven focus. A /disease/[id] route keeps the mesh docked on
+        // that node as persistent state: deep loads dive in, switching
+        // diseases retargets through a zoom-out/zoom-in, leaving the route
+        // eases back to the full sphere. A click-zoom already in flight for
+        // the same node is adopted rather than restarted.
+        focusCtl.current = (id: string | null) => {
+          target.seen = false;
+          applyHover(-1);
+          const idx = id !== null ? (idToIdx.get(id) ?? -1) : -1;
+          if (idx < 0) {
+            // No focus (home or unknown node): ease out if zoomed
+            zoom.pending = -1;
+            if (zoom.i >= 0) { zoom.target = 0; zoom.navigated = false; }
+            return;
+          }
+          zoomActive = true;
+          if (zoom.i === idx) {
+            zoom.target = 1; // adopt the in-flight click-zoom
+            zoom.navigated = true;
           } else if (zoom.i >= 0) {
+            zoom.pending = idx; // retarget: out, then dive into the new node
             zoom.target = 0;
-            zoom.navigated = false;
+          } else {
+            dive(idx);
           }
         };
+        // Deep load: the route effect ran before the artifact arrived
+        if (focusIdRef.current) focusCtl.current(focusIdRef.current);
 
         let prevNow = t0;
 
@@ -611,9 +674,9 @@ export default function HeroMesh({
             const dt = Math.min(0.1, (now - prevNow) / 1000);
             prevNow = now;
             const e = 1 - Math.pow(1 - Math.min(1, (now - t0) / ENTRANCE_MS), 3); // easeOutCubic
-            // Zoom progress: eased dolly toward target (1 = in, 0 = out).
-            // Navigation fires mid-dive; the canvas persists across the route
-            // change so the zoomed mesh carries straight into the next page.
+            // Focus progress: eased dolly toward target (1 = docked, 0 =
+            // full sphere). Click-zooms navigate mid-dive; the canvas
+            // persists across the route change so the motion carries over.
             let zp = 0;
             if (zoom.i >= 0) {
               const dir = zoom.target === 1 ? 1 : -1;
@@ -623,7 +686,16 @@ export default function HeroMesh({
                 zoom.navigated = true;
                 router.push(`/disease/${encodeURIComponent(nodes[zoom.i].id)}`);
               }
-              if (zoom.target === 0 && zoom.p <= 0) { zoom.i = -1; zoomActive = false; }
+              if (zoom.target === 0 && zoom.p <= 0) {
+                if (zoom.pending >= 0) {
+                  const nxt = zoom.pending;
+                  zoom.pending = -1;
+                  dive(nxt); // retarget: now dive into the new focus
+                } else {
+                  zoom.i = -1;
+                  zoomActive = false;
+                }
+              }
             }
             layout(t, e, size.W, size.H, zp);
             // Ease the filter crossfade toward its target

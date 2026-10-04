@@ -1,13 +1,14 @@
 "use client";
-// Disease detail page. Layout ported from the Rare Disease Atlas prototype
-// (TanStack Start zip): editorial header with action buttons, bordered
-// sections with mono sub-labels, genes table with evidence status, phenotype
-// chip cloud, two-column research grids. Data stays on the repo FastAPI via
-// lib/api.ts; provenance is encoded with weight/fill per the monochrome
-// system (solid = curated, outline = inferred).
+// Disease detail page (focus route). The persistent atlas mesh stays
+// docked on this disease's node: the hero section places a MeshStage on
+// the left half, and the zoomed sphere anchors the node to that rect
+// (tracking layout and scroll). Deep loads dive in on arrival, so the
+// zoom is route state, not a one-shot transition. Content below keeps the
+// prototype's editorial layout inside a card so it reads over the mesh.
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { api, DiseaseDetail, RelatedDisease, GraphNode, GraphEdge, pct } from "@/lib/api";
+import MeshStage from "@/components/MeshStage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -69,48 +70,70 @@ export default function DiseasePage({ params }: { params: Promise<{ id: string }
       .catch((e) => setError(String(e)));
   }, [id]);
 
-  if (error) return <p className="text-sm font-medium">{error}</p>;
-  if (!detail)
+  if (error)
     return (
-      <div className="py-8">
-        <p className="font-mono text-sm text-muted-foreground">
-          Gathering evidence for {id}…
-        </p>
+      <div className="mx-auto max-w-6xl px-4 py-10 md:px-8">
+        <div className="rounded-2xl border bg-background p-6 shadow-sm">
+          <p className="text-sm font-medium">{error}</p>
+        </div>
       </div>
     );
+
+  // Hero section renders immediately (the mesh is already diving toward the
+  // node); detail fields fill in as the API responds.
   const d = detail;
   const geneEdges = evidence.filter(
-    (e) => d.genes.some((g) => g.id === e.source || g.id === e.target),
+    (e) => d?.genes.some((g) => g.id === e.source || g.id === e.target) ?? false,
   );
 
   return (
-    <div className="mx-auto max-w-6xl py-2">
-      {/* Header */}
-      <div className="flex flex-wrap items-start justify-between gap-6">
-        <div className="max-w-3xl">
+    <div className="mx-auto max-w-6xl px-4 md:px-8">
+      {/* Node section: the focused atlas node is a first-class layout
+          element. MeshStage's rect anchors the zoomed sphere's node (left
+          half on desktop); the editorial header sits beside it. */}
+      <section className="grid min-h-[46vh] items-center gap-8 py-6 md:grid-cols-2">
+        <MeshStage className="relative hidden min-h-[36vh] md:block">
+          {/* Caption pinned under the docked node */}
+          <div className="absolute inset-x-0 bottom-0 text-center">
+            <p className="font-mono text-[11px] uppercase tracking-wide text-muted-foreground">
+              atlas position · {d?.disease.identifier ?? id}
+            </p>
+          </div>
+        </MeshStage>
+        <div className="max-w-xl">
           <p className="font-mono text-xs text-muted-foreground">
-            {d.disease.identifier ?? d.disease.id}
-            {d.disease.inheritance && ` · ${d.disease.inheritance}`}
+            {d?.disease.identifier ?? id}
+            {d?.disease.inheritance && ` · ${d.disease.inheritance}`}
           </p>
-          <h1 className="mt-1 text-4xl font-semibold">{d.disease.name}</h1>
-          {d.disease.description && (
+          <h1 className="mt-1 text-4xl font-semibold">
+            {d?.disease.name ?? "…"}
+          </h1>
+          {d?.disease.description && (
             <p className="mt-3 text-muted-foreground">{d.disease.description}</p>
           )}
+          <div className="mt-5 flex flex-wrap gap-2">
+            <Button asChild variant="outline">
+              <Link href={`/research/${id}`}>Basic research</Link>
+            </Button>
+            <Button asChild variant="outline">
+              <Link href={`/opportunities/${id}`}>Research opportunities</Link>
+            </Button>
+            <Button asChild>
+              <Link href={`/graph/${id}`}>Open knowledge graph →</Link>
+            </Button>
+          </div>
         </div>
-        <div className="flex flex-wrap gap-2">
-          <Button asChild variant="outline">
-            <Link href={`/research/${id}`}>Basic research</Link>
-          </Button>
-          <Button asChild variant="outline">
-            <Link href={`/opportunities/${id}`}>Research opportunities</Link>
-          </Button>
-          <Button asChild>
-            <Link href={`/graph/${id}`}>Open knowledge graph →</Link>
-          </Button>
-        </div>
-      </div>
+      </section>
 
-      <div className="mt-10 space-y-10">
+      {!d ? (
+        <div className="rounded-2xl border bg-background/90 p-6 shadow-sm backdrop-blur-sm">
+          <p className="font-mono text-sm text-muted-foreground">
+            Gathering evidence for {id}…
+          </p>
+        </div>
+      ) : (
+      <div className="rounded-2xl border bg-background/90 p-4 shadow-sm backdrop-blur-sm sm:p-8">
+      <div className="space-y-10">
         {/* What causes it: genes table with evidence status */}
         <Section
           title="What causes it"
@@ -312,6 +335,8 @@ export default function DiseasePage({ params }: { params: Promise<{ id: string }
           </Section>
         )}
       </div>
+      </div>
+      )}
     </div>
   );
 }

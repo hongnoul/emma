@@ -8,6 +8,7 @@ export interface MeshFilter { q: string; ids: string[] | null }
 
 let filter: MeshFilter = { q: "", ids: null };
 let matchCount: number | null = null;
+let stageEl: HTMLElement | null = null;
 const filterSubs = new Set<(f: MeshFilter) => void>();
 const countSubs = new Set<(n: number | null) => void>();
 
@@ -30,4 +31,8 @@ export const meshBus = {
     countSubs.add(fn);
     return () => { countSubs.delete(fn); };
   },
+  // Stage: a page section that claims the focused node. The mesh reads the
+  // element's live rect every frame, so the node tracks layout and scroll.
+  setStage(el: HTMLElement | null) { stageEl = el; },
+  getStage: () => stageEl,
 };
