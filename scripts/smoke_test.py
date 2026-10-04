@@ -7,6 +7,8 @@ Exit 0 = all checks pass. No test framework needed.
 """
 import json
 import sys
+import urllib.error
+import urllib.parse
 import urllib.request
 
 BASE = sys.argv[1] if len(sys.argv) > 1 else "http://localhost:8000"
@@ -75,9 +77,6 @@ packs = get("/api/question-packs")
 check("question packs served", "edge-validate-v1" in packs)
 
 # EHR integration (SMART on FHIR R4): stateless Bundle -> Atlas candidates
-import urllib.error
-
-
 def post(path, payload):
     req = urllib.request.Request(f"{BASE}{path}", data=json.dumps(payload).encode(),
                                  headers={"content-type": "application/json"}, method="POST")
