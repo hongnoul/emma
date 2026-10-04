@@ -59,6 +59,16 @@ npm run dev
 # http://localhost:3000 (expects backend on :8000)
 ```
 
+Prod-scale showcase (physician UMAP hero + triage on the bulk generation,
+17k nodes / 84k edges):
+
+```bash
+./scripts/demo.sh
+# backend :8001 on data/graph.bulk.json, frontend :3000 proxying to it
+# then open http://localhost:3000/physician
+# verify: node scripts/e2e_physician_hero.mjs   (10 CDP checks)
+```
+
 Regenerate data (deterministic, seeded):
 
 ```bash
