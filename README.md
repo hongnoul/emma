@@ -15,7 +15,7 @@ rare-disease-atlas (this repo)
 │   ├── generate_mock_data.py  regenerates everything below (seeded, deterministic)
 │   ├── graph.json             nodes + edges (Laya-ready evidence schema)
 │   ├── question_packs.json    typed-question definitions for the edge judge
-│   └── gold_labels.json       hand-labeled edge validity for evals
+│   └── expert_labels.json   domain-expert overlay (soft targets, overrides) for evals
 ├── backend/                   FastAPI (Python)
 │   └── app/
 │       ├── main.py            app entry, CORS
@@ -284,23 +284,27 @@ build target; the connector stubs below are its skeleton.
      `gpt-4o-mini` (override `ATLAS_OPENAI_MODEL`); spend is estimated per
      call and hard-capped by `ATLAS_OPENAI_BUDGET_USD` (default $5).
      `scripts/judge_with_openai.py` batch-judges the demo edges
-     (~$0.002, 9 s) and writes `data/openai_judgments_zeroshot.json`.
-     Zero-shot on the 31-edge demo gold set: accuracy 0.935, Brier 0.067,
-     ECE 0.074 — and it correctly rejects all the trap edges Laya misses.
+     (~$0.002, 9 s) and writes `data/openai_judgments_zeroshot.json`
+     (`--pack edge-validate-v2 --out openai_judgments_v2.json` for the
+     5-level ladder + superseded signal).
+     Expert-validated on the 31-edge overlay: accuracy 0.968, Brier 0.035,
+     ECE 0.041, 5/5 zombie traps killed — and v2 flags every zombie trap
+     superseded ≥ 0.90.
    - **Laya (local baseline)**: `backend/.venv/bin/pip install laya` (not in
      requirements.txt, since it pulls torch+transformers, ~2 GB), then run
      with `ATLAS_JUDGE=laya`. `scripts/judge_with_laya.py` writes
      `data/laya_judgments_zeroshot.json`. Measured here (M-series, CPU/MPS):
-     152 ms/edge for all 4 typed questions in one forward pass; zero-shot
-     accuracy 0.742, Brier 0.179, ECE 0.162, and it misses subtle traps
-     (the superseded legacy edge gets p(valid)=0.72).
-   Compare all three with `GET /api/evals?judge=mock|laya|openai`
-   (committed copies of both zero-shot judgment files ship with the repo, so
-   the comparison works without a key or model download). Fit per-pack
-   temperatures against a real gold set before gating automation on these
-   probabilities. Pipeline: extractor proposes an edge with a `state`
+     167 ms/edge for all 5 v2 questions in one forward pass; expert-validated
+     accuracy 0.774, Brier 0.153, 1/5 traps — it misses subtle traps
+     (the superseded legacy edge gets p(valid)=0.72, superseded=0.61).
+   Compare all five with `GET /v1/evals?judge=mock|laya|openai|laya-v2|openai-v2`
+   (committed copies of all four zero-shot judgment files ship with the repo, so
+   the comparison works without a key or model download). Per-judge
+   temperatures are fit automatically against the expert soft targets;
+   refit against the ~200-edge real gold set before gating automation.
+   Pipeline: extractor proposes an edge with a `state`
    snippet → `judge_edge()` fills the decision block → eval harness verifies
-   calibration against the gold set.
+   calibration against the expert-validated set.
 4. **Graph database** → `backend/app/services/graph_store.py`.
 
 ## Highest-priority TODOs (mock → real)
