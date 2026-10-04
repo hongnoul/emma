@@ -135,12 +135,12 @@ def analyze_bundle(bundle: dict) -> dict:
                 "types": types, "reason": reason,
                 "source_code": f"{item.get('system_hint')}:{item.get('code')}"}
 
-    atlas_queries = (
+    emmatics_queries = (
         [_q(c, "Disease", "chart condition -> MONDO candidate") for c in conditions[:10]]
         + [_q(p, "Phenotype", "chart observation -> HPO candidate") for p in phenotypes[:15]]
         + [_q(g, "Gene", "chart genetics -> HGNC candidate") for g in genes[:10]]
     )
-    atlas_queries = [q for q in atlas_queries if q["q"]][:30]
+    emmatics_queries = [q for q in emmatics_queries if q["q"]][:30]
 
     warnings = []
     if not conditions and not phenotypes:
@@ -155,8 +155,8 @@ def analyze_bundle(bundle: dict) -> dict:
         "condition_candidates": conditions,
         "phenotype_candidates": phenotypes,
         "gene_candidates": genes,
-        "emmatics_queries": atlas_queries,
-        "atlas_queries": atlas_queries,  # legacy alias
+        "emmatics_queries": emmatics_queries,
+        "atlas_queries": emmatics_queries,  # legacy alias
         "disclaimer": ("Candidate proposals for physician review, not diagnoses. "
                        "Confirm phenotypes with the patient; gate differentials on /v1/paths trust bands."),
     }

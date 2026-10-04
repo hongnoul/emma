@@ -19,7 +19,7 @@ import {
 } from "@/components/patient-voice";
 
 // The prototype pinned MONDO:0020066 (Ehlers-Danlos) for its live research
-// feed. Our atlas content varies by deployment, so the ID is configurable
+// feed. Our knowledge-graph content varies by deployment, so the ID is configurable
 // and the feed falls back to the first disease the graph returns.
 const FEED_DISEASE_ID =
   process.env.NEXT_PUBLIC_PATIENT_DISEASE_ID ?? "MONDO:0020066";

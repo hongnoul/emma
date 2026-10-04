@@ -18,7 +18,7 @@ import os
 
 from fastmcp import FastMCP
 
-from .services import knowledge as atlas
+from .services import knowledge
 from .services.evals import run_evals
 from .services.graph_store import get_store
 
@@ -100,7 +100,7 @@ def emmatics_connections(curie: str, rel_types: str = "", min_confidence: float 
 def emmatics_explain(from_curie: str, to_curie: str) -> dict:
     """Why are two entities connected? Returns the path, what is known vs
     inferred vs uncertain, and the evidence edges with their states."""
-    c = atlas.explain_connection(from_curie, to_curie)
+    c = knowledge.explain_connection(from_curie, to_curie)
     if c is None:
         return {"error": "one or both nodes not found"}
     return {

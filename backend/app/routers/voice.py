@@ -22,7 +22,7 @@ from fastapi import APIRouter, HTTPException, Query
 
 from ..services import trust as _trust
 from ..services.graph_store import get_store
-from ..services import knowledge as atlas
+from ..services import knowledge
 
 router = APIRouter(prefix="/v1/voice", tags=["voice"])
 
@@ -93,12 +93,12 @@ def atlas_brief(q: str = Query(..., min_length=1),
     question instead of chaining search/detail/evidence.
     """
     store = get_store()
-    hits = atlas.search(q)
+    hits = knowledge.search(q)
     hit = next((h for h in hits if h.type == "Disease"), hits[0] if hits else None)
     if hit is None:
         return {"found": False,
                 "spoken_brief": f"I couldn't find anything in Emmatics matching {q}."}
-    detail = atlas.disease_detail(hit.id) if hit.type == "Disease" else None
+    detail = knowledge.disease_detail(hit.id) if hit.type == "Disease" else None
 
     # Patient-gated evidence: only speak edges the trust layer would show
     # to a patient (band 'established'/'supported' per gate action).

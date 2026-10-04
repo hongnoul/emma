@@ -7,7 +7,7 @@ from ..models.schemas import (
     ConnectionExplanation, DiseaseDetail, Edge, EvalReport, GraphPayload,
     Opportunity, RelatedDisease, SearchResult,
 )
-from ..services import knowledge as atlas
+from ..services import knowledge
 from ..services.decision_service import get_decision_service
 from ..services.evals import run_evals
 from ..services.graph_store import get_store
@@ -17,12 +17,12 @@ router = APIRouter(prefix="/api")
 
 @router.get("/search", response_model=list[SearchResult])
 def search(q: str = Query("", description="query string")):
-    return atlas.search(q)
+    return knowledge.search(q)
 
 
 @router.get("/graph", response_model=GraphPayload)
 def graph():
-    return atlas.full_graph()
+    return knowledge.full_graph()
 
 
 @router.get("/graph.gexf")
@@ -36,7 +36,7 @@ def graph_gexf():
 
 @router.get("/diseases/{disease_id}", response_model=DiseaseDetail)
 def disease(disease_id: str):
-    d = atlas.disease_detail(disease_id)
+    d = knowledge.disease_detail(disease_id)
     if d is None:
         raise HTTPException(404, f"disease not found: {disease_id}")
     return d
@@ -46,33 +46,33 @@ def disease(disease_id: str):
 def related(disease_id: str):
     if get_store().get_node(disease_id) is None:
         raise HTTPException(404, f"disease not found: {disease_id}")
-    return atlas.related_diseases(disease_id)
+    return knowledge.related_diseases(disease_id)
 
 
 @router.get("/diseases/{disease_id}/graph", response_model=GraphPayload)
 def disease_graph(disease_id: str, depth: int = Query(2, ge=1, le=4)):
     if get_store().get_node(disease_id) is None:
         raise HTTPException(404, f"disease not found: {disease_id}")
-    return atlas.disease_graph(disease_id, depth)
+    return knowledge.disease_graph(disease_id, depth)
 
 
 @router.get("/diseases/{disease_id}/evidence", response_model=list[Edge])
 def evidence(disease_id: str):
     if get_store().get_node(disease_id) is None:
         raise HTTPException(404, f"disease not found: {disease_id}")
-    return atlas.disease_evidence(disease_id)
+    return knowledge.disease_evidence(disease_id)
 
 
 @router.get("/diseases/{disease_id}/opportunities", response_model=list[Opportunity])
 def opportunities(disease_id: str):
     if get_store().get_node(disease_id) is None:
         raise HTTPException(404, f"disease not found: {disease_id}")
-    return atlas.opportunities(disease_id)
+    return knowledge.opportunities(disease_id)
 
 
 @router.get("/connections/{source_id}/{target_id}", response_model=ConnectionExplanation)
 def connection(source_id: str, target_id: str):
-    c = atlas.explain_connection(source_id, target_id)
+    c = knowledge.explain_connection(source_id, target_id)
     if c is None:
         raise HTTPException(404, "one or both nodes not found")
     return c

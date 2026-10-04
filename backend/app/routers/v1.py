@@ -10,7 +10,7 @@ from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
 from ..models.schemas import Edge, Node, PathStep
-from ..services import knowledge as atlas
+from ..services import knowledge
 from ..services.evals import run_evals
 from ..services.graph_store import get_store
 
@@ -152,7 +152,7 @@ def path(from_id: str = Query(..., alias="from"), to_id: str = Query(..., alias=
     action; the whole path carries p_path with weakest-link attribution.
     """
     from ..services import trust as _trust
-    c = atlas.explain_connection(from_id, to_id)
+    c = knowledge.explain_connection(from_id, to_id)
     if c is None:
         raise HTTPException(404, "one or both nodes not found")
     store = get_store()
