@@ -19,6 +19,12 @@
 // its drift) names the disease and links to /disease/[id] and triage.
 // Hit-testing uses pre-repel base positions, skips the back hemisphere, and
 // the hovered node is exempt from repel, so nodes don't flee the cursor.
+//
+// Filter: the apex search bar passes `filter` (and optional `semanticIds`
+// from the backend search) down as props. Matching is recomputed per change
+// (substring over names/ids + id union), and the paint loop crossfades: the
+// full mesh recedes to a ghost while matched nodes/links draw bright in a
+// second batched pass. Hit-testing prefers matched nodes while filtering.
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -47,6 +53,7 @@ const YAW = 0.6;        // cursor-x steering range, rad
 const PITCH = 0.45;     // cursor-y steering range, rad
 const TILT = 0.35;      // base pitch, rad
 const DEPTH_A = [0.18, 0.5, 1]; // alpha multiplier per depth bucket (back/mid/front)
+const FILTER_DEPTH_A = [0.55, 0.8, 1]; // matched geometry: back hemisphere stays visible
 // Hover tuning
 const HIT_JUDGED = 20;  // px: prefer judged nodes within this radius
 const HIT_ANY = 12;     // px: otherwise any node within this radius
@@ -58,7 +65,20 @@ const easeInOut = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p 
 
 interface HoverInfo { i: number; id: string; name: string; deg: number }
 
-export default function HeroMesh({ className = "" }: { className?: string }) {
+export default function HeroMesh({
+  className = "",
+  filter = "",
+  semanticIds = null,
+  onMatchCount,
+}: {
+  className?: string;
+  /** live query from the apex search bar; "" disables filtering */
+  filter?: string;
+  /** extra disease ids from the semantic backend search, unioned in */
+  semanticIds?: string[] | null;
+  /** reports how many nodes match (null = filter inactive) */
+  onMatchCount?: (n: number | null) => void;
+}) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const fadeRef = useRef<HTMLDivElement>(null);
@@ -67,6 +87,20 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
   // Shared with the data closure below
   const hoverIdx = useRef(-1);
   const placeCard = useRef<(i: number) => void>(() => {});
+  // Filter plumbing: props land in refs so the one-shot canvas effect never
+  // re-runs; the closure rebinds applyFilterRef once data loads.
+  const applyFilterRef = useRef<(q: string, ids: string[] | null) => void>(() => {});
+  const filterState = useRef<{ q: string; ids: string[] | null }>({ q: "", ids: null });
+  const onMatchCountRef = useRef(onMatchCount);
+  onMatchCountRef.current = onMatchCount;
+
+  useEffect(() => {
+    filterState.current = {
+      q: (filter ?? "").trim().toLowerCase(),
+      ids: semanticIds ?? null,
+    };
+    applyFilterRef.current(filterState.current.q, filterState.current.ids);
+  }, [filter, semanticIds]);
 
   // Body cursor hints clickability even though the canvas is click-through
   useEffect(() => {
@@ -124,7 +158,7 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
       if (!canHover || e.pointerType === "touch") return;
       const el = e.target as Element | null;
       if (el?.closest?.("[data-hover-card]")) return; // keep card while mousing into it
-      if (el?.closest?.("a,button")) { applyHover(-1); return; } // UI wins over mesh
+      if (el?.closest?.("a,button,input,[data-apex-search]")) { applyHover(-1); return; } // UI wins over mesh
       applyHover(hitTest ? hitTest(x, y) : -1);
     };
     const onLeave = () => { target.seen = false; applyHover(-1); };
@@ -133,7 +167,7 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
       const i = hoverIdx.current;
       if (i < 0 || !nodes[i]) return;
       const el = e.target as Element | null;
-      if (el?.closest?.("a,button,[data-hover-card]")) return;
+      if (el?.closest?.("a,button,input,[data-apex-search],[data-hover-card]")) return;
       if (startZoom) startZoom(i);
       else router.push(`/disease/${encodeURIComponent(nodes[i].id)}`);
     };
@@ -217,6 +251,55 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
         data.nodes.forEach((n, i) => { (n.deg > 0 ? judged : plain).push(i); });
         const judgedIdx = new Int32Array(judged), plainIdx = new Int32Array(plain);
 
+        // ---- Filter state ----
+        // Lowercased search keys + id lookup, built once. recompute() refills
+        // the matched set on every query/semantic-id change; the paint loop
+        // crossfades via flt.strength (eased toward flt.target each frame).
+        const keys = data.nodes.map((n) => (n.n + " " + n.id).toLowerCase());
+        const idToIdx = new Map<string, number>();
+        data.nodes.forEach((n, i) => idToIdx.set(n.id, i));
+        const matched = new Uint8Array(N);
+        let matchedIdx = new Int32Array(0);
+        // Matched link endpoints per band (links touching a matched node)
+        let mBands = { accept: new Int32Array(0), review: new Int32Array(0), low: new Int32Array(0) };
+        const flt = { on: false, strength: 0, target: 0 };
+        const recompute = (q: string, ids: string[] | null) => {
+          flt.on = q.length > 0 || (ids !== null && ids.length > 0);
+          flt.target = flt.on ? 1 : 0;
+          if (!flt.on) {
+            onMatchCountRef.current?.(null);
+            return;
+          }
+          matched.fill(0);
+          let count = 0;
+          if (q.length > 0) {
+            for (let i = 0; i < N; i++) {
+              if (keys[i].includes(q)) { matched[i] = 1; count++; }
+            }
+          }
+          if (ids) {
+            for (const id of ids) {
+              const i = idToIdx.get(id);
+              if (i !== undefined && !matched[i]) { matched[i] = 1; count++; }
+            }
+          }
+          const mi = new Int32Array(count);
+          for (let i = 0, k = 0; i < N; i++) if (matched[i]) mi[k++] = i;
+          matchedIdx = mi;
+          const ma: number[] = [], mr: number[] = [], ml: number[] = [];
+          for (const l of data.links) {
+            if (!matched[l.s] && !matched[l.t]) continue;
+            const arr = bandOf(l.v) === "accept" ? ma : bandOf(l.v) === "review" ? mr : ml;
+            arr.push(l.s, l.t);
+          }
+          mBands = {
+            accept: new Int32Array(ma),
+            review: new Int32Array(mr),
+            low: new Int32Array(ml),
+          };
+          onMatchCountRef.current?.(count);
+        };
+
         // px/py: drawn positions. bx0/by0: base positions before repel
         // (stable under the cursor, used for hit testing).
         const px = new Float32Array(N), py = new Float32Array(N);
@@ -226,6 +309,18 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
         const R2 = RADIUS * RADIUS;
 
         hitTest = (mx: number, my: number): number => {
+          // While filtering, matched nodes own the cursor (bigger radius)
+          if (flt.on && flt.strength > 0.3) {
+            let bestM = -1, bestMD = HIT_JUDGED * HIT_JUDGED;
+            for (let k = 0; k < matchedIdx.length; k++) {
+              const i = matchedIdx[k];
+              if (depth[i] <= 0.05) continue;
+              const dx = bx0[i] - mx, dy = by0[i] - my;
+              const d = dx * dx + dy * dy;
+              if (d < bestMD) { bestMD = d; bestM = i; }
+            }
+            if (bestM >= 0) return bestM;
+          }
           let best = -1, bestD = HIT_ANY * HIT_ANY;
           let bestJ = -1, bestJD = HIT_JUDGED * HIT_JUDGED;
           for (let i = 0; i < N; i++) {
@@ -318,7 +413,7 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
         // Reused per-frame depth buckets (avoid allocation in the hot loop)
         const linkBuckets: number[][] = [[], [], []];
         const pointBuckets: number[][] = [[], [], []];
-        const strokeBand = (idx: Int32Array, rgb: string, alpha: number) => {
+        const strokeBand = (idx: Int32Array, rgb: string, alpha: number, depthA = DEPTH_A) => {
           if (idx.length === 0) return;
           for (const b of linkBuckets) b.length = 0;
           for (let k = 0; k < idx.length; k += 2) {
@@ -329,7 +424,7 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
           for (let b = 0; b < 3; b++) {
             const arr = linkBuckets[b];
             if (arr.length === 0) continue;
-            ctx.strokeStyle = `rgba(${rgb},${alpha * DEPTH_A[b]})`;
+            ctx.strokeStyle = `rgba(${rgb},${alpha * depthA[b]})`;
             ctx.beginPath();
             for (let k = 0; k < arr.length; k += 2) {
               ctx.moveTo(px[arr[k]], py[arr[k]]);
@@ -338,7 +433,7 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
             ctx.stroke();
           }
         };
-        const fillPoints = (idx: Int32Array, rgb: string, alpha: number, r: number) => {
+        const fillPoints = (idx: Int32Array, rgb: string, alpha: number, r: number, depthA = DEPTH_A) => {
           if (idx.length === 0) return;
           for (const b of pointBuckets) b.length = 0;
           for (let k = 0; k < idx.length; k++) {
@@ -348,7 +443,7 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
             const arr = pointBuckets[b];
             if (arr.length === 0) continue;
             const rr = r * (0.7 + 0.3 * b); // smaller when far: depth cue
-            ctx.fillStyle = `rgba(${rgb},${alpha * DEPTH_A[b]})`;
+            ctx.fillStyle = `rgba(${rgb},${alpha * depthA[b]})`;
             ctx.beginPath();
             for (let k = 0; k < arr.length; k++) {
               const i = arr[k];
@@ -361,7 +456,9 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
 
         const paint = (e: number, reviewAlpha: number, zp = 0) => {
           // Unrelated geometry recedes during the zoom; highlight holds
-          const dim = e * (1 - 0.75 * zp);
+          // and while a filter is active the whole base mesh ghosts out.
+          const fs = flt.strength;
+          const dim = e * (1 - 0.75 * zp) * (1 - 0.85 * fs);
           // Links: batched per triage band x depth bucket (back fades out)
           strokeBand(bands.accept, LINK_COLOR.accept, 0.18 * dim);
           strokeBand(bands.review, LINK_COLOR.review, (reviewAlpha + 0.02) * dim);
@@ -369,6 +466,18 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
           // Points: judged nodes slightly stronger; back hemisphere ghosts
           fillPoints(plainIdx, "100,116,139", 0.22 * dim, 1.2); // slate-500
           fillPoints(judgedIdx, "67,56,202", 0.45 * dim, 1.9);  // indigo-700
+
+          // Filter pass: matched geometry drawn bright on top of the ghost.
+          // Matched nodes punch through the depth fade (FILTER_DEPTH_A) so
+          // back-hemisphere results stay visible: a filter must show all hits.
+          if (fs > 0.01) {
+            const fe = e * fs * (1 - 0.75 * zp);
+            strokeBand(mBands.accept, LINK_COLOR.accept, 0.5 * fe, FILTER_DEPTH_A);
+            strokeBand(mBands.review, LINK_COLOR.review, 0.45 * fe, FILTER_DEPTH_A);
+            strokeBand(mBands.low, LINK_COLOR.low, 0.4 * fe, FILTER_DEPTH_A);
+            fillPoints(matchedIdx, "67,56,202", 0.14 * fe, 9, FILTER_DEPTH_A);   // soft halo
+            fillPoints(matchedIdx, "67,56,202", 0.95 * fe, 3.2, FILTER_DEPTH_A); // bright core
+          }
 
           // Hover highlight: brighten links touching the node, ring the node.
           // During a zoom the clicked node owns the highlight.
@@ -418,9 +527,14 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
             // t=0, settled entrance; cursor unseen so smooth stays centered
             smooth.x = size.W / 2;
             smooth.y = size.H / 2;
+            flt.strength = flt.target; // no easing without a frame loop
             layout(0, 1, size.W, size.H);
             paint(1, 0.17);
           };
+          // Filter changes repaint the static frame directly
+          applyFilterRef.current = (q, ids) => { recompute(q, ids); renderStatic(); };
+          const fs0 = filterState.current;
+          if (fs0.q || fs0.ids?.length) recompute(fs0.q, fs0.ids);
           renderStatic();
           staticRO = new ResizeObserver(() => renderStatic());
           staticRO.observe(cv);
@@ -436,6 +550,15 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
         // Seed cursor at center so the first frames don't jump
         smooth.x = cv.clientWidth / 2;
         smooth.y = cv.clientHeight / 2;
+
+        // Filter changes recompute the match set; the running loop picks the
+        // crossfade up via flt.strength easing. Apply any query typed before
+        // the artifact finished loading.
+        applyFilterRef.current = (q, ids) => recompute(q, ids);
+        {
+          const fs0 = filterState.current;
+          if (fs0.q || fs0.ids?.length) recompute(fs0.q, fs0.ids);
+        }
 
         startZoom = (i: number) => {
           zoomActive = true;
@@ -469,6 +592,9 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
               }
             }
             layout(t, e, size.W, size.H, zp);
+            // Ease the filter crossfade toward its target
+            flt.strength += (flt.target - flt.strength) * 0.12;
+            if (Math.abs(flt.target - flt.strength) < 0.005) flt.strength = flt.target;
             // Review band breathes 0.12..0.22 on a 4s cycle; accept/low hold steady
             const reviewAlpha = 0.17 + 0.05 * Math.sin((t * Math.PI * 2) / 4);
             paint(e, reviewAlpha, zp);
@@ -494,6 +620,7 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
     return () => {
       cancelled = true;
       cancelAnimationFrame(raf);
+      applyFilterRef.current = () => {};
       io.disconnect();
       staticRO?.disconnect();
       document.removeEventListener("visibilitychange", onVis);

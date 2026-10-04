@@ -1,9 +1,10 @@
 // Apex landing page: full-bleed white hero with the atlas UMAP mesh as an
-// ambient background and bubble buttons as the client-facing flow selector
+// ambient background, a centered search bar that filters the mesh in real
+// time, and bubble buttons as the client-facing flow selector
 // (physician / patient / explorer). The card-shell app lives under
-// app/(atlas)/ and keeps its own chrome.
-import HeroMesh from "@/components/HeroMesh";
-import BubbleSelector from "@/components/BubbleSelector";
+// app/(atlas)/ and keeps its own chrome. All interactivity lives in the
+// ApexHero client island.
+import ApexHero from "@/components/ApexHero";
 
 const FLOWS = [
   {
@@ -33,29 +34,5 @@ const FLOWS = [
 ];
 
 export default function Apex() {
-  return (
-    <div className="relative min-h-screen overflow-hidden bg-white">
-      <HeroMesh />
-
-      {/* hero copy + bubble selector over the mesh */}
-      <section className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 py-24 text-center">
-        <h1 className="flex justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/logo-text.svg"
-            alt="Emmatics"
-            className="h-48 w-auto sm:h-64"
-          />
-        </h1>
-        <p className="mt-6 max-w-2xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg">
-          4,700 diseases positioned by phenotype profile. Every connection shows
-          where it came from, and whether it is established or inferred.
-        </p>
-
-        <div className="mt-12 w-full">
-          <BubbleSelector items={FLOWS} />
-        </div>
-      </section>
-    </div>
-  );
+  return <ApexHero flows={FLOWS} />;
 }
