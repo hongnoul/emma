@@ -7,17 +7,17 @@ import { v1, Meta, EdgesResponse } from "@/lib/v1";
 
 export default function PhysicianHome() {
   const [meta, setMeta] = useState<Meta | null>(null);
-  const [bands, setBands] = useState<{ accept: number; review: number; low: number } | null>(null);
+  const [bands, setBands] = useState<{ established: number; review: number; hidden: number } | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     v1.meta().then(setMeta).catch((e) => setError(String(e)));
     Promise.all([
       v1.edges({ judged_only: true, min_valid: 0.9, limit: 1 }),
-      v1.edges({ judged_only: true, min_valid: 0.6, max_valid: 0.9, limit: 1 }),
-      v1.edges({ judged_only: true, max_valid: 0.6, limit: 1 }),
+      v1.edges({ judged_only: true, min_valid: 0.4, max_valid: 0.9, limit: 1 }),
+      v1.edges({ judged_only: true, max_valid: 0.4, limit: 1 }),
     ]).then(([a, r, l]: EdgesResponse[]) =>
-      setBands({ accept: a.total, review: r.total, low: l.total })
+      setBands({ established: a.total, review: r.total, hidden: l.total })
     ).catch(() => { /* non-fatal */ });
   }, []);
 
@@ -50,9 +50,9 @@ export default function PhysicianHome() {
       {bands && (
         <section className="grid grid-cols-3 gap-4 max-w-2xl">
           {[
-            ["auto-accept ≥ 0.90", bands.accept, "text-green-700 border-green-200 bg-green-50/50"],
-            ["review 0.60–0.90", bands.review, "text-amber-700 border-amber-200 bg-amber-50/50"],
-            ["low < 0.60", bands.low, "text-red-700 border-red-200 bg-red-50/50"],
+            ["established ≥ 0.90", bands.established, "text-green-700 border-green-200 bg-green-50/50"],
+            ["review 0.40–0.90", bands.review, "text-amber-700 border-amber-200 bg-amber-50/50"],
+            ["hidden < 0.40", bands.hidden, "text-red-700 border-red-200 bg-red-50/50"],
           ].map(([label, n, cls]) => (
             <div key={label as string} className={`border rounded-lg p-4 text-center ${cls}`}>
               <p className="text-2xl font-semibold">{(n as number).toLocaleString()}</p>

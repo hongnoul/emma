@@ -1,5 +1,5 @@
 "use client";
-// Triage queue: keyboard-driven review of the uncertain band (0.6–0.9).
+// Triage queue: keyboard-driven review of the review band (0.40–0.90, expert policy).
 // j/k or ↓/↑ navigate · a accept · r reject · u undo · enter opens workbench.
 // Verdicts persist to localStorage as a local gold set; the calibration
 // panel recomputes reliability against your verdicts live.
@@ -23,7 +23,7 @@ export default function TriagePage() {
   const [verdicts, setVerdicts] = useState<Record<string, Verdict>>({});
   const [history, setHistory] = useState<string[]>([]);
   const [error, setError] = useState<string | null>(null);
-  const [lo, setLo] = useState(0.6);
+  const [lo, setLo] = useState(0.4);
   const [hi, setHi] = useState(0.9);
   const listRef = useRef<HTMLDivElement>(null);
 
@@ -90,7 +90,7 @@ export default function TriagePage() {
     const labeled = edges.filter((e) => verdicts[e.id] && e.edge_valid != null);
     if (labeled.length === 0) return { n: 0, bins: [], brier: null as number | null };
     let brierSum = 0;
-    const bins = [0, 1, 2, 3, 4].map((i) => ({ lo: 0.6 + i * 0.06, hi: 0.6 + (i + 1) * 0.06, preds: [] as number[], trues: [] as number[] }));
+    const bins = [0, 1, 2, 3, 4].map((i) => ({ lo: 0.4 + i * 0.1, hi: 0.4 + (i + 1) * 0.1, preds: [] as number[], trues: [] as number[] }));
     for (const e of labeled) {
       const p = e.edge_valid!;
       const y = verdicts[e.id] === "accept" ? 1 : 0;
