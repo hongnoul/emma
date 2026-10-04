@@ -1,173 +1,110 @@
-"use client";
-// Landing + search, Rarepath-style layout: step badge, serif editorial
-// headline, stacked pill CTAs, card sections. Data stays on the repo
-// FastAPI via lib/api.ts and the monochrome shadcn token system.
-// Supports deep links: /?q=lysosomal
-import { Suspense, useEffect, useRef, useState } from "react";
+// Apex landing page: full-bleed white hero with the atlas UMAP mesh as an
+// ambient background and a BubbleMenu as the client-facing flow selector
+// (physician / patient / search / graph / evals). The card-shell app lives
+// under app/(atlas)/ and keeps its own chrome.
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { api, SearchResult } from "@/lib/api";
-import AtlasHero from "@/components/AtlasHero";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Cross } from "lucide-react";
+import HeroMesh from "@/components/HeroMesh";
+import BubbleMenu from "@/components/BubbleMenu";
 
-const EXAMPLES = ["lysosomal", "LYSA1", "seizures", "ciliary", "autophagy"];
+const FLOWS = [
+  {
+    label: "physician",
+    href: "/physician",
+    ariaLabel: "Physician workbench",
+    rotation: -8,
+    hoverStyles: { bgColor: "#3b82f6", textColor: "#ffffff" },
+  },
+  {
+    label: "patient",
+    href: "/patient",
+    ariaLabel: "Patient companion",
+    rotation: 8,
+    hoverStyles: { bgColor: "#10b981", textColor: "#ffffff" },
+  },
+  {
+    label: "search",
+    href: "/search",
+    ariaLabel: "Search the atlas",
+    rotation: 8,
+    hoverStyles: { bgColor: "#f59e0b", textColor: "#ffffff" },
+  },
+  {
+    label: "graph",
+    href: "/graph",
+    ariaLabel: "Explore the graph",
+    rotation: 8,
+    hoverStyles: { bgColor: "#ef4444", textColor: "#ffffff" },
+  },
+  {
+    label: "evals",
+    href: "/evals",
+    ariaLabel: "Evaluation dashboard",
+    rotation: -8,
+    hoverStyles: { bgColor: "#8b5cf6", textColor: "#ffffff" },
+  },
+];
 
-function SearchHome() {
-  const router = useRouter();
-  const initialQ = useSearchParams().get("q") ?? "";
-  const [q, setQ] = useState(initialQ);
-  const [results, setResults] = useState<SearchResult[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const searchRef = useRef<HTMLInputElement>(null);
-
-  async function run(query: string) {
-    setQ(query); setLoading(true); setError(null);
-    router.replace(query ? `/?q=${encodeURIComponent(query)}` : "/");
-    try { setResults(await api.search(query)); }
-    catch (e) { setError(String(e)); }
-    finally { setLoading(false); }
-  }
-
-  useEffect(() => {
-    if (initialQ) run(initialQ);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+export default function Apex() {
   return (
-    <div className="mx-auto max-w-4xl space-y-4">
-      {/* hero card */}
-      <section className="space-y-5 py-2 sm:py-4">
-        <Badge variant="outline" className="rounded-full px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
+    <div className="relative min-h-screen overflow-hidden bg-white">
+      <HeroMesh />
+
+      {/* bubble selector: logo bubble + toggle that pops the flow pills */}
+      <BubbleMenu
+        useFixedPosition
+        menuAriaLabel="Choose your flow"
+        logo={
+          <span className="flex items-center gap-2.5 whitespace-nowrap">
+            <span className="flex size-7 items-center justify-center rounded-full bg-primary text-primary-foreground">
+              <Cross className="size-3.5" />
+            </span>
+            <span className="font-serif text-base font-semibold tracking-tight text-foreground">
+              Rare Disease Atlas
+            </span>
+          </span>
+        }
+        items={FLOWS}
+      />
+
+      {/* hero copy over the mesh */}
+      <section className="pointer-events-none relative z-10 mx-auto flex min-h-screen max-w-4xl flex-col items-center justify-center px-6 text-center">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
           Disease · Gene · Variant · Phenotype
-        </Badge>
-        <h1 className="text-4xl font-semibold leading-[1.05] sm:text-5xl">
-          Every rare-disease link, with its evidence.
-        </h1>
-        <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-          The atlas matches diseases through biology, evidence, and shared
-          research — each connection shows where it came from, and whether it
-          is established or inferred.
         </p>
-        <div className="flex flex-col gap-3 pt-1">
-          <Button size="lg" className="h-13 w-full rounded-full text-base font-semibold"
-            onClick={() => searchRef.current?.focus()}>
+        <h1 className="mt-5 font-serif text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
+          Every rare-disease link,
+          <br />
+          with its evidence.
+        </h1>
+        <p className="mt-6 max-w-2xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg">
+          4,700 diseases positioned by phenotype profile. Every connection shows
+          where it came from, and whether it is established or inferred.
+        </p>
+        <div className="pointer-events-auto mt-10 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href="/physician"
+            className="rounded-full bg-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_4px_16px_rgba(0,0,0,0.15)] transition hover:scale-[1.04] active:scale-[0.97]"
+          >
+            I&apos;m a physician
+          </Link>
+          <Link
+            href="/patient"
+            className="rounded-full border bg-white px-7 py-3.5 text-sm font-semibold shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition hover:scale-[1.04] hover:bg-muted active:scale-[0.97]"
+          >
+            I&apos;m a patient
+          </Link>
+          <Link
+            href="/search"
+            className="rounded-full border bg-white px-7 py-3.5 text-sm font-semibold shadow-[0_4px_16px_rgba(0,0,0,0.08)] transition hover:scale-[1.04] hover:bg-muted active:scale-[0.97]"
+          >
             Search the atlas
-          </Button>
-          <Button asChild size="lg" variant="outline" className="h-13 w-full rounded-full text-base">
-            <Link href="/physician">Open the physician workbench</Link>
-          </Button>
+          </Link>
         </div>
-      </section>
-
-      <AtlasHero />
-
-      {/* search card */}
-      <section className="rounded-2xl border bg-muted/30 p-4 sm:p-6">
-        <h2 className="text-xl font-semibold">Search</h2>
-        <form className="mt-3" onSubmit={(e) => { e.preventDefault(); run(q); }}>
-          <Input
-            ref={searchRef}
-            className="h-12 rounded-xl bg-background px-4 text-base"
-            placeholder="Disease, gene, phenotype, or mechanism…"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-          />
-          {loading && <p className="mt-2 text-sm text-muted-foreground">Searching the atlas…</p>}
-          {error && (
-            <p className="mt-2 text-sm font-medium">
-              {error} — is the backend running on :8000?
-            </p>
-          )}
-          {results !== null && !loading && !error && (
-            results.length > 0 ? (
-              <ul className="mt-3 divide-y divide-border overflow-hidden rounded-xl border bg-background">
-                {results.map((r) => (
-                  <li key={r.id}>
-                    {r.type === "Disease" ? (
-                      <Link href={`/disease/${r.id}`} className="block px-4 py-3 hover:bg-muted">
-                        <div className="flex items-baseline justify-between gap-4">
-                          <span className="font-medium">{r.name}</span>
-                          <span className="font-mono text-xs text-muted-foreground">{r.identifier ?? r.id}</span>
-                        </div>
-                        {r.description && (
-                          <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{r.description}</p>
-                        )}
-                      </Link>
-                    ) : (
-                      <div className="block px-4 py-3">
-                        <div className="flex items-baseline justify-between gap-4">
-                          <span className="font-medium">
-                            {r.name}
-                            <Badge variant="secondary" className="ml-2">{r.type}</Badge>
-                          </span>
-                          <span className="font-mono text-xs text-muted-foreground">{r.identifier ?? r.id}</span>
-                        </div>
-                        {r.description && (
-                          <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{r.description}</p>
-                        )}
-                      </div>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p className="mt-3 text-sm text-muted-foreground">
-                No results. The atlas says so rather than guessing.
-              </p>
-            )
-          )}
-        </form>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {EXAMPLES.map((ex) => (
-            <button
-              key={ex}
-              type="button"
-              onClick={() => run(ex)}
-              className="rounded-full border bg-background px-3.5 py-1.5 text-sm hover:bg-muted"
-            >
-              {ex}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* journey card */}
-      <section className="rounded-2xl border bg-muted/30 p-4 sm:p-6">
-        <h2 className="text-xl font-semibold">How the atlas works</h2>
-        <ol className="mt-4 space-y-0">
-          {[
-            ["Discover connections", "Search links a disease to genes, variants, phenotypes, and related diseases."],
-            ["Understand the evidence", "Every edge carries provenance and a calibrated p(valid), never a bare claim."],
-            ["Find existing resources", "Publications, studies, researchers, and patient organizations on each page."],
-            ["Identify the next research step", "Derived opportunities state what exists, what is missing, and what to validate."],
-          ].map(([title, body], i, arr) => (
-            <li key={title} className="relative flex gap-4 pb-6 last:pb-0">
-              {i < arr.length - 1 && (
-                <span className="absolute left-[15px] top-8 h-[calc(100%-2rem)] w-px bg-border" aria-hidden />
-              )}
-              <span className="z-10 flex size-8 shrink-0 items-center justify-center rounded-full bg-primary font-mono text-xs font-semibold text-primary-foreground">
-                {i + 1}
-              </span>
-              <div className="pt-1">
-                <p className="font-semibold leading-tight">{title}</p>
-                <p className="mt-1 text-sm text-muted-foreground">{body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <p className="mt-12 text-[11px] text-muted-foreground/70">
+          Research prototype · not medical advice
+        </p>
       </section>
     </div>
-  );
-}
-
-export default function Home() {
-  // useSearchParams requires a Suspense boundary for static prerender.
-  return (
-    <Suspense>
-      <SearchHome />
-    </Suspense>
   );
 }

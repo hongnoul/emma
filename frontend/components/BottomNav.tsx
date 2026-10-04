@@ -6,7 +6,7 @@ import { Check, Compass, FlaskConical, Search, Stethoscope } from "lucide-react"
 import { cn } from "@/lib/utils";
 
 const TABS = [
-  { href: "/", label: "Search", icon: Search },
+  { href: "/search", label: "Search", icon: Search },
   { href: "/physician", label: "Physician", icon: Stethoscope },
   { href: "/physician/triage", label: "Triage", icon: Check },
   { href: "/physician/paths", label: "Paths", icon: Compass },
