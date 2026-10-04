@@ -3,7 +3,8 @@
 Run (from backend/):
     .venv/bin/python -m pipeline.run                 # uses raw cache when present
     .venv/bin/python -m pipeline.run --refresh       # force re-fetch
-    .venv/bin/python -m pipeline.run --no-judge      # skip Laya (structural only)
+    .venv/bin/python -m pipeline.run --no-judge      # skip judging (structural only)
+    .venv/bin/python -m pipeline.run --judge laya    # use local Laya instead of OpenAI
 
 Stages (docs/ingestion-pipeline.md):
   fetch     Monarch v3 (aggregates MONDO/OMIM/Orphanet/HPOA) + PubMed eutils
@@ -12,7 +13,9 @@ Stages (docs/ingestion-pipeline.md):
             and enforce one-node-per-curie
   assemble  build `state` evidence snippets; derive SHARES_MECHANISM
             candidates from shared causal genes
-  judge     batch Laya over judgeable edges (ATLAS_JUDGE=laya semantics)
+  judge     batch judge over judgeable edges: OpenAI logprobs judge by
+            default (--judge openai, challenge requirement) or local Laya
+            (--judge laya)
   gate      schema validation, referential integrity, volume sanity,
             trap behavior (contradicted legacy edges must not score high)
   publish   write data/generations/<ts>.json and promote to data/graph.real.json
@@ -221,12 +224,19 @@ def assemble_candidates(nodes, edges, disease_genes, disease_phenos, pub_snippet
 
 # ----------------------------------------------------------------- judge
 
-def judge_edges(edges, nodes) -> int:
-    from laya import Router  # heavy import, deliberate
+def judge_edges(edges, nodes, judge_name: str = "openai") -> int:
     packs = json.loads((DATA / "question_packs.json").read_text())["packs"]
     pack = packs["edge-validate-v1"]["questions"]
     level_names = pack["evidence_level"]["criteria"]
-    router = Router(preload=False)
+    if judge_name == "laya":
+        from laya import Router  # heavy import, deliberate
+        router = Router(preload=False)
+        model_id = "convaiinnovations/laya"
+    else:
+        sys.path.insert(0, str(ROOT / "backend"))
+        from app.services.openai_judge import OpenAIJudge
+        router = OpenAIJudge()
+        model_id = f"openai/{router.model}"
     n = 0
     for e in edges:
         if "state" not in e:
@@ -243,7 +253,7 @@ def judge_edges(edges, nodes) -> int:
             "evidence_level": {"expected": round(a["evidence_level"]["score"], 3),
                                "probs": {level_names[int(k)]: round(v, 4) for k, v in lv.items()}},
             "contradicted": round(a["contradicted"]["noul"], 4),
-            "decision_meta": {"model": "convaiinnovations/laya", "question_pack": "edge-validate-v1",
+            "decision_meta": {"model": model_id, "question_pack": "edge-validate-v1",
                               "judged_at": date.today().isoformat()},
         })
         n += 1
@@ -292,7 +302,9 @@ def gate(nodes, edges, judged: bool) -> list[str]:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--refresh", action="store_true", help="bypass raw cache")
-    ap.add_argument("--no-judge", action="store_true", help="skip Laya judging")
+    ap.add_argument("--no-judge", action="store_true", help="skip judging")
+    ap.add_argument("--judge", choices=["openai", "laya"], default="openai",
+                    help="judge backend (default: openai)")
     args = ap.parse_args()
 
     log("fetch + normalize (Monarch)...")
@@ -311,10 +323,10 @@ def main() -> None:
 
     judged = False
     if not args.no_judge:
-        log("judge (Laya, local)...")
+        log(f"judge ({args.judge})...")
         import time as _t
         t0 = _t.time()
-        n = judge_edges(edges, nodes)
+        n = judge_edges(edges, nodes, args.judge)
         log(f"  judged {n} edges in {_t.time() - t0:.1f}s")
         judged = True
 
@@ -330,7 +342,8 @@ def main() -> None:
     payload = {
         "_notice": ("REAL DATA generation built by backend/pipeline from Monarch Initiative "
                     "(aggregating MONDO, OMIM, Orphanet, HPOA) and PubMed. Inferred edges are "
-                    "atlas hypotheses judged by a local Laya model; they are not established facts."),
+                    "atlas hypotheses judged by a calibrated judge model; they are not "
+                    "established facts."),
         "generation": gen_id,
         "cluster_seed": CLUSTER,
         "nodes": list(nodes.values()),

@@ -22,8 +22,8 @@ graph is republished atomically and you never want to mix generations.
 | Fetch | `GET /v1/entities/{curie}` | one node + adjacency summary + hierarchy |
 | Traverse | `GET /v1/edges?from=&to=&node=&rel_types=&provenance=&min_valid=&judged_only=&limit=&offset=` | the workhorse: any edge query |
 | Path | `GET /v1/paths?from=&to=` | why-connected: route + known/inferred/uncertain + evidence states |
-| Judge | `POST /v1/judge {state, pack_id}` | on-demand judgment; 501 unless the deployment runs with ATLAS_JUDGE=laya |
-| Evals | `GET /v1/evals?judge=mock\|laya` | calibration report: how much to trust edge_valid |
+| Judge | `POST /v1/judge {state, pack_id}` | on-demand judgment; 501 unless the deployment runs with ATLAS_JUDGE=openai (or laya) |
+| Evals | `GET /v1/evals?judge=mock\|laya\|openai` | calibration report: how much to trust edge_valid |
 
 `GET /v1/meta` lists node/edge type counts for the current generation.
 

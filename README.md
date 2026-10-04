@@ -248,20 +248,30 @@ build target; the connector stubs below are its skeleton.
 2. **OpenAI** → `backend/app/services/ai_service.py`. Five methods with
    `TODO(openai)` markers: extraction, reconciliation, connection narration,
    evidence summaries, opportunity generation. No key needed today.
-3. **Laya (calibrated edge judge)** → `backend/app/services/decision_service.py`.
-   Already implemented: `backend/.venv/bin/pip install laya` (not in
-   requirements.txt, since it pulls torch+transformers, ~2 GB), then run the
-   backend with `ATLAS_JUDGE=laya` to judge edges with the real local model.
-   `scripts/judge_with_laya.py` batch-judges all edges and writes
-   `data/laya_judgments_zeroshot.json`; compare judges with
-   `GET /api/evals?judge=laya` vs `GET /api/evals` (a committed copy of the
-   zero-shot judgments ships with the repo, so the comparison works without
-   installing Laya).
-   Measured on this machine (M-series, CPU/MPS): 152 ms/edge for all 4 typed
-   questions in one forward pass; zero-shot on the 31-edge demo gold set:
-   accuracy 0.742, Brier 0.179, ECE 0.162. Zero-shot misses subtle traps
-   (the superseded legacy edge gets p(valid)=0.72), so fine-tune on a real
-   gold set and fit per-pack temperatures before gating automation on these
+3. **Calibrated edge judge** → `backend/app/services/decision_service.py`.
+   Two real judges are implemented behind the `ATLAS_JUDGE` env var:
+   - **OpenAI (default for the challenge)**: `ATLAS_JUDGE=openai` with
+     `OPENAI_API_KEY` set. Each pack question becomes one single-token
+     Chat Completions call with `logprobs`; the `top_logprobs` mass is
+     renormalized over the valid answers to recover a probability
+     distribution (`backend/app/services/openai_judge.py`). Default model
+     `gpt-4o-mini` (override `ATLAS_OPENAI_MODEL`); spend is estimated per
+     call and hard-capped by `ATLAS_OPENAI_BUDGET_USD` (default $5).
+     `scripts/judge_with_openai.py` batch-judges the demo edges
+     (~$0.002, 9 s) and writes `data/openai_judgments_zeroshot.json`.
+     Zero-shot on the 31-edge demo gold set: accuracy 0.935, Brier 0.067,
+     ECE 0.074 — and it correctly rejects all the trap edges Laya misses.
+   - **Laya (local baseline)**: `backend/.venv/bin/pip install laya` (not in
+     requirements.txt, since it pulls torch+transformers, ~2 GB), then run
+     with `ATLAS_JUDGE=laya`. `scripts/judge_with_laya.py` writes
+     `data/laya_judgments_zeroshot.json`. Measured here (M-series, CPU/MPS):
+     152 ms/edge for all 4 typed questions in one forward pass; zero-shot
+     accuracy 0.742, Brier 0.179, ECE 0.162, and it misses subtle traps
+     (the superseded legacy edge gets p(valid)=0.72).
+   Compare all three with `GET /api/evals?judge=mock|laya|openai`
+   (committed copies of both zero-shot judgment files ship with the repo, so
+   the comparison works without a key or model download). Fit per-pack
+   temperatures against a real gold set before gating automation on these
    probabilities. Pipeline: extractor proposes an edge with a `state`
    snippet → `judge_edge()` fills the decision block → eval harness verifies
    calibration against the gold set.
@@ -275,9 +285,10 @@ build target; the connector stubs below are its skeleton.
 2. **PubMed ingestion for the pilot cluster**: fetch abstracts, run
    `AIService.extract_relationships` (OpenAI structured output), attach each
    proposed edge's abstract snippet as `state`.
-3. **Swap the mock judge for Laya**: `pip install laya`, implement
-   `judge_edge` per the docstring, build a ~200-edge real gold set, run the
-   eval harness, fit per-pack temperatures.
+3. **Judge selection**: the OpenAI logprobs judge is the default
+   (`--judge openai` in the pipeline, `ATLAS_JUDGE=openai` in the API);
+   build a ~200-edge real gold set, run the eval harness, fit per-pack
+   temperatures. Laya remains available as a local, zero-cost baseline.
 4. **ClinVar/ClinicalTrials/Orphanet connectors** for variants, studies, and
    patient organizations on the pilot cluster.
 5. **Replace similarity stub**: `related_diseases` currently reads stored

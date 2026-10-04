@@ -144,27 +144,28 @@ class JudgeRequest(BaseModel):
 def judge(req: JudgeRequest):
     """Judge an arbitrary state with a question pack.
 
-    Requires the serving process to have Laya available (ATLAS_JUDGE=laya).
-    Without it, returns 501 so clients can degrade gracefully; stored edge
+    Requires a real judge on the serving process: ATLAS_JUDGE=openai (OpenAI
+    logprobs judge, needs OPENAI_API_KEY) or ATLAS_JUDGE=laya (local Laya).
+    Without one, returns 501 so clients can degrade gracefully; stored edge
     judgments are unaffected (they are precomputed into the graph).
     """
     import os
-    if os.environ.get("ATLAS_JUDGE") != "laya":
+    if os.environ.get("ATLAS_JUDGE") not in ("laya", "openai"):
         raise HTTPException(501, "on-demand judging not enabled on this deployment "
-                                 "(set ATLAS_JUDGE=laya with the laya package installed)")
+                                 "(set ATLAS_JUDGE=openai with OPENAI_API_KEY, or "
+                                 "ATLAS_JUDGE=laya with the laya package installed)")
     from ..services.decision_service import get_decision_service
     svc = get_decision_service()
     pack = svc.packs.get(req.pack_id)
     if pack is None:
         raise HTTPException(404, f"unknown question pack: {req.pack_id}")
-    from laya import Router as _R  # noqa
     result = svc._router.predict(req.state, pack["questions"])  # type: ignore[attr-defined]
     return {"generation_id": get_store().generation, "pack_id": req.pack_id,
             "answers": result["answers"]}
 
 
 @router.get("/evals")
-def evals(judge: str = Query("mock", pattern="^(mock|laya)$")):
+def evals(judge: str = Query("mock", pattern="^(mock|laya|openai)$")):
     r = run_evals(judge)
     return {"generation_id": get_store().generation, **r.model_dump()}
 

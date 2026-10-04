@@ -7,11 +7,14 @@ Metrics over judged edges (those with an edge_valid probability):
 
 Scores the stored (mock) judge by default. If data/laya_judgments_zeroshot.json
 exists (produced by scripts/judge_with_laya.py), judge="laya" scores the real
-zero-shot Laya judgments against the same gold labels.
+zero-shot Laya judgments against the same gold labels. Likewise,
+judge="openai" scores data/openai_judgments_zeroshot.json (produced by
+scripts/judge_with_openai.py).
 
 Run standalone:  python -m app.services.evals   (from backend/)
-Served at:       GET /api/evals            (mock)
-                 GET /api/evals?judge=laya (real zero-shot Laya, if file present)
+Served at:       GET /api/evals              (mock)
+                 GET /api/evals?judge=laya   (real zero-shot Laya, if file present)
+                 GET /api/evals?judge=openai (OpenAI logprobs judge, if file present)
 """
 from __future__ import annotations
 
@@ -26,8 +29,14 @@ DATA_DIR = Path(_os.environ.get("ATLAS_DATA_DIR") or Path(__file__).resolve().pa
 N_BINS = 5
 
 
-def _laya_probs() -> dict[str, float] | None:
-    f = DATA_DIR / "laya_judgments_zeroshot.json"
+_JUDGMENT_FILES = {
+    "laya": "laya_judgments_zeroshot.json",
+    "openai": "openai_judgments_zeroshot.json",
+}
+
+
+def _stored_probs(judge: str) -> dict[str, float] | None:
+    f = DATA_DIR / _JUDGMENT_FILES[judge]
     if not f.exists():
         return None
     return {k: v["edge_valid"] for k, v in json.loads(f.read_text())["judgments"].items()}
@@ -37,11 +46,12 @@ def run_evals(judge: str = "mock") -> EvalReport:
     store = get_store()
     gold = {g["edge_id"]: g["label"]
             for g in json.loads((DATA_DIR / "gold_labels.json").read_text())["labels"]}
-    if judge == "laya":
-        probs = _laya_probs()
+    if judge in _JUDGMENT_FILES:
+        probs = _stored_probs(judge)
         if probs is None:
             return EvalReport(n=0, accuracy=0, brier=0, ece=0, bins=[],
-                              notes="no Laya judgments found; run scripts/judge_with_laya.py first")
+                              notes=f"no {judge} judgments found; run "
+                                    f"scripts/judge_with_{judge}.py first")
         pairs = [(probs[eid], label) for eid, label in gold.items() if eid in probs]
     else:
         pairs = [(store.edges[eid].edge_valid, label)
@@ -76,9 +86,12 @@ def run_evals(judge: str = "mock") -> EvalReport:
                "High ECE / trap misses are expected zero-shot; fine-tune and fit per-pack "
                "temperatures before gating automation."
                if judge == "laya" else
+               "OpenAI logprobs judge (single-token answers, renormalized top_logprobs) vs the "
+               "same gold set. Fit per-pack temperatures before gating automation."
+               if judge == "openai" else
                "Mock-judge probabilities vs hand-labeled demo gold set (includes deliberate "
-               "miscalibrated trap edges). Compare with ?judge=laya once "
-               "scripts/judge_with_laya.py has been run.")
+               "miscalibrated trap edges). Compare with ?judge=laya or ?judge=openai once "
+               "the corresponding judge script has been run.")
         ),
     )
 

@@ -1,0 +1,102 @@
+{
+  "_notice": "Zero-shot judgments from the OpenAI logprobs judge over the demo edges, produced by scripts/judge_with_openai.py. Regenerable; kept so evals can compare judges without an API key.",
+  "model": "openai/gpt-4o-mini",
+  "question_pack": "edge-validate-v1",
+  "judged_at": "2026-10-03",
+  "estimated_cost_usd": 0.0022,
+  "judgments": {
+    "DEMO-EDGE-001": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-002": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-003": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-004": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-005": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-006": {
+      "edge_valid": 0.9993
+    },
+    "DEMO-EDGE-007": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-008": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-009": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-010": {
+      "edge_valid": 0.9933
+    },
+    "DEMO-EDGE-011": {
+      "edge_valid": 0.0
+    },
+    "DEMO-EDGE-014": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-015": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-016": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-017": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-018": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-019": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-020": {
+      "edge_valid": 0.0
+    },
+    "DEMO-EDGE-021": {
+      "edge_valid": 0.6225
+    },
+    "DEMO-EDGE-022": {
+      "edge_valid": 0.9998
+    },
+    "DEMO-EDGE-023": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-078": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-079": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-080": {
+      "edge_valid": 1.0
+    },
+    "DEMO-EDGE-081": {
+      "edge_valid": 0.0
+    },
+    "DEMO-EDGE-082": {
+      "edge_valid": 0.0
+    },
+    "DEMO-EDGE-083": {
+      "edge_valid": 0.0
+    },
+    "DEMO-EDGE-084": {
+      "edge_valid": 0.0759
+    },
+    "DEMO-EDGE-085": {
+      "edge_valid": 0.0293
+    },
+    "DEMO-EDGE-086": {
+      "edge_valid": 0.0
+    },
+    "DEMO-EDGE-087": {
+      "edge_valid": 0.0009
+    }
+  }
+}
