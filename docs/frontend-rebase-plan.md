@@ -83,7 +83,7 @@ Implementation notes:
   them live, add thin FastAPI endpoints; until then the UI runs on local
   state exactly like the prototype.
 
-## Phase 3 — Atlas/physician-research app (zip2 → App Router)
+## Phase 3 — Emmatics/physician-research app (zip2 → App Router)
 
 Port each TanStack route to a Next.js page, swapping data access:
 
@@ -115,7 +115,7 @@ Porting mechanics:
 
 ## Phase 4 — Navigation and reconciliation
 
-- Top-level nav: Atlas (public), Physician partition (existing
+- Top-level nav: Emmatics (public), Physician partition (existing
   `/physician/*` workbench stays as-is), Patient (`/patient`).
 - The existing `/physician` triage/paths workbench is repo-native and is NOT
   replaced by zip2; zip2 is the public knowledge-graph layer. Patient app links

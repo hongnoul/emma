@@ -11,7 +11,7 @@ ChatTab mic button
   → GET {API_BASE}/v1/voice/signed-url        (backend holds the API key)
   → WebSocket session via @elevenlabs/react
 Agent (ElevenLabs cloud)
-  → server tool webhook: GET /v1/voice/tools/atlas-brief?q=...
+  → server tool webhook: GET /v1/voice/tools/emmatics-brief?q=...
       (search → detail → patient-gated evidence, one call per question)
   → client tool: switch_tab {tab}             (drives the phone UI)
 ```
@@ -48,10 +48,10 @@ Rules:
 
 ### 2. Add the server tool
 
-- Type: Webhook, Name: `atlas_brief`
+- Type: Webhook, Name: `emmatics_brief`
 - Description: "Look up a disease, symptom cluster, or research topic in the
   Emmatics. Returns a spoken brief plus patient-vetted evidence."
-- Method: GET, URL: `https://<your-api-host>/v1/voice/tools/atlas-brief`
+- Method: GET, URL: `https://<your-api-host>/v1/voice/tools/emmatics-brief`
 - Query param: `q` (string, required) — "disease name or topic to look up"
 
 ### 3. Add the client tool
@@ -79,7 +79,7 @@ Frontend needs nothing new (`NEXT_PUBLIC_API_BASE` already points at the API).
 ```
 curl $API/v1/voice/status           # configured: true
 curl $API/v1/voice/signed-url       # signed_url: wss://...
-curl "$API/v1/voice/tools/atlas-brief?q=ciliopathy"
+curl "$API/v1/voice/tools/emmatics-brief?q=ciliopathy"
 ```
 
 Then open `/patient?tab=chat`, press the mic, allow the microphone, talk.
@@ -87,7 +87,7 @@ Transcripts appear as chat bubbles; "show me my community" should flip tabs.
 
 ## Files
 
-- `backend/app/routers/voice.py` — signed-url + atlas-brief tool
+- `backend/app/routers/voice.py` — signed-url + emmatics-brief tool
 - `frontend/components/patient-voice.tsx` — provider, session hook, mic button
 - `frontend/app/(emmatics)/patient/page.tsx` — ChatTab wiring
 

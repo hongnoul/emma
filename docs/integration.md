@@ -1,6 +1,6 @@
 # Integrating a new frontend or agent
 
-The atlas exposes **six generic primitives**; every feature is a composition
+Emmatics exposes **six generic primitives**; every feature is a composition
 of them. You never need a new backend endpoint for a new view.
 
 ## Setup (frontend teammate, 3 steps)
@@ -88,8 +88,9 @@ reimplement thresholds client-side:
 
 ## MCP (agents)
 
-Same capabilities as tools: `atlas_search, atlas_get, atlas_connections,
-atlas_explain, atlas_evals, atlas_judge`.
+Same capabilities as tools: `emmatics_search, emmatics_get, emmatics_connections,
+emmatics_explain, emmatics_evals, emmatics_judge`
+(legacy `atlas_*` aliases still work).
 
 ```bash
 cd backend && .venv/bin/python -m app.mcp_server          # stdio
@@ -99,7 +100,7 @@ cd backend && .venv/bin/python -m app.mcp_server          # stdio
 Claude Desktop config:
 
 ```json
-{"mcpServers": {"atlas": {
+{"mcpServers": {"emmatics": {
   "command": "/path/to/emma/backend/.venv/bin/python",
   "args": ["-m", "app.mcp_server"],
   "cwd": "/path/to/emma/backend",

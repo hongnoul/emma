@@ -55,7 +55,7 @@ that node; a "start triage" CTA floats over the densest amber region. The hero
 `s`/`t` are indices into `nodes` to keep the file small. `deg` = judged-edge
 degree, used for point sizing.
 
-## Hero component (`frontend/components/AtlasHero.tsx`)
+## Hero component (`frontend/components/EmmaticsHero.tsx`)
 
 - **Renderer: plain `<canvas>` 2D.** 6k points + 3k lines is nothing; no
   deck.gl/regl dependency needed. Draw links first (alpha by `v`, color by
@@ -97,7 +97,7 @@ Re-run the script whenever `/v1/meta` generation changes.
 ## Build order (for the implementing session)
 
 1. ~~`backend/pipeline/umap_hero.py` + artifact~~ **done, checked in.**
-2. `AtlasHero.tsx` with static render + fallback.
+2. `EmmaticsHero.tsx` with static render + fallback.
 3. Interactions (hover/click/zoom), wire into `/physician/page.tsx` replacing
    the header+bands section.
 4. Entrance animation + band-chip link highlighting last (polish).

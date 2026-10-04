@@ -1,6 +1,6 @@
 # EHR Integration Strategy: claim "works with each hospital's EHR" honestly
 
-Goal: any physician running the Atlas inside their hospital gets patient
+Goal: any physician running Emmatics inside their hospital gets patient
 context from that hospital's EHR automatically, with one build.
 
 ## The one-sentence answer
@@ -24,12 +24,12 @@ per-hospital custom work, storing PHI.
 Hospital EHR (Epic / Oracle / Meditech)
   | SMART launch (patient + encounter context) + OAuth2
   v
-Atlas SMART shim (frontend, no PHI stored)
+Emmatics SMART shim (frontend, no PHI stored)
   | FHIR R4 read: Patient, Condition, Observation, FamilyMemberHistory,
   |   MedicationRequest, DocumentReference, MolecularSequence / Genomics
   v
 backend/app/connectors/fhir.py  (NEW, scaffolded in this PR)
-  | normalize codes -> Atlas entities
+  | normalize codes -> Emmatics entities
   v
 existing /v1/* primitives (unchanged)
   Resolve (ICD-10 / SNOMED -> MONDO) -> Traverse -> Path -> Judge -> Evals
@@ -42,7 +42,7 @@ is analyzed in-memory per request.
 
 Code mapping used:
 
-| FHIR resource | Codes in the wild | Atlas target |
+| FHIR resource | Codes in the wild | Emmatics target |
 |---|---|---|
 | Condition | ICD-10-CM, SNOMED CT | Disease (MONDO) via `/v1/entities?q=` synonym/xref lookup |
 | Observation (phenotype, vitals, labs) | LOINC, SNOMED CT | Phenotype (HPO) candidates for symptom-search composition |
@@ -95,7 +95,7 @@ probabilities; the physician decides.
 2. Launch the shim with `launch` + `patient` context, fetch
    Patient + Condition + Observation for the test patient.
 3. POST the Bundle to the deployed Fly API, screenshot phenotypes
-   auto-filled and the atlas path explanation with the trust block.
+   auto-filled and the Emmatics path explanation with the trust block.
 4. Put the two screenshots + sandbox patient ID in the pitch appendix.
 
 Validation status (Oct 2026): endpoint + edge-case suite and the full

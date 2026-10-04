@@ -25,7 +25,7 @@ pipeline; nothing after the publisher knows source formats.
          nightly)        nightly)     weekly)           monthly, pinned)
             │ raw + manifest {source, version, fetched_at, checksum}
             ▼
-        object store    atlas-raw/{source}/{version}/...
+        object store    emmatics-raw/{source}/{version}/...
             ▼
         [normalizers]   per-source → staging (source-local IDs)
             ▼
