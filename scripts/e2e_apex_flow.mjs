@@ -140,6 +140,31 @@ try {
   const landed = await waitFor(send, `location.pathname === '/physician' && location.search.includes('q=marfan')`);
   check("Enter lands on /physician?q=marfan", landed === true, await evalJs(send, `location.href`));
 
+  // -- 3b. crossfade: mesh backdrop lingers under the fading shell ---------
+  // Immediately after the client-side nav the HeroMesh canvas (inside the
+  // fixed -z-10 backdrop) must still be mounted while .physician-canvas
+  // animates in; by ~linger+animation end it must be unmounted.
+  const crossfade = await evalJs(send, `(() => {
+    const mesh = document.querySelector('div.fixed.-z-10 canvas');
+    const shell = document.querySelector('.physician-canvas');
+    const anim = shell ? getComputedStyle(shell).animationName : null;
+    return { meshMounted: !!mesh, shell: !!shell, anim };
+  })()`);
+  check("mesh canvas lingers under physician shell", crossfade?.meshMounted === true,
+    JSON.stringify(crossfade));
+  check("physician shell fade-in animation active", crossfade?.anim === "physician-canvas-in",
+    String(crossfade?.anim));
+  await sleep(900); // linger 450ms + fade 450ms + margin
+  const after = await evalJs(send, `(() => ({
+    meshMounted: !!document.querySelector('div.fixed.-z-10 canvas'),
+    bg: getComputedStyle(document.querySelector('.physician-canvas')).backgroundColor,
+  }))()`);
+  check("mesh unmounts after linger window", after?.meshMounted === false, JSON.stringify(after));
+  // Opaque = no alpha channel in the serialized color (rgb()/oklab() without
+  // a "/ a" or 4th component; transparent would be rgba(0,0,0,0)).
+  const opaque = !!after?.bg && after.bg !== "rgba(0, 0, 0, 0)" && !/\/|rgba/.test(after.bg);
+  check("shell background settles opaque", opaque, String(after?.bg));
+
   const seeded = await waitFor(send, `(() => {
     const inputs = [...document.querySelectorAll('input')];
     return inputs.some(i => i.value === 'marfan');
