@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!-- Atlas EHR launch shim: SMART on FHIR R4 -> POST Bundle -> candidate phenotypes.
+     Zero-build single file. Register THIS file's URL as the SMART redirect URI
+     in the hospital EHR (Epic/Oracle/Meditech) or a sandbox (SMART Health IT,
+     Epic sandbox). No PHI is stored; the Bundle is POSTed in-memory to the
+     Atlas /v1/ehr/analyze-bundle endpoint and never logged. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atlas · EHR launch</title>
+<script src="https://cdn.jsdelivr.net/npm/fhirclient@2.5.2/build/fhir-client.js"></script>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 720px; margin: 2rem auto; padding: 0 1rem; color: #1e293b; }
+  .card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 1rem; margin: 0.75rem 0; background: #fff; }
+  .tag { font-family: monospace; font-size: 11px; background: #f1f5f9; border-radius: 4px; padding: 1px 6px; }
+  button { background: #4f46e5; color: #fff; border: 0; border-radius: 6px; padding: 8px 16px; cursor: pointer; }
+  input { border: 1px solid #cbd5e1; border-radius: 6px; padding: 7px 10px; width: 100%; box-sizing: border-box; }
+  .muted { color: #64748b; font-size: 13px; }
+  li { margin: 4px 0; font-size: 14px; }
+</style>
+</head>
+<body>
+<h1>Atlas · EHR launch</h1>
+<p class="muted">SMART on FHIR R4 shim. Reads this patient's Conditions + Observations,
+  asks the Atlas which phenotypes/diseases they suggest, and hands checked items
+  to the physician workbench. Candidate proposals only, never diagnoses.</p>
+
+<div id="standalone" class="card" style="display:none">
+  <p><b>Standalone launch</b> (no EHR context). Paste the FHIR server URL:</p>
+  <input id="iss" placeholder="https://launch.smarthealthit.org/v/r4/fhir">
+  <p><button onclick="standalone()">Connect + login</button></p>
+  <p class="muted">Or <a href="#" onclick="demo();return false">try with a demo Bundle</a> (no login).</p>
+</div>
+
+<div id="status" class="card">Waiting for SMART context…</div>
+<div id="results"></div>
+
+<script>
+const API = "https://rare-disease-atlas-api.fly.dev"; // override ?api= for local dev
+const apiBase = new URLSearchParams(location.search).get("api") || API;
+
+function show(html) { document.getElementById("status").innerHTML = html; }
+function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+
+async function analyze(bundle, label) {
+  show("Analyzing " + bundle.entry.length + " resources from " + esc(label) + "…");
+  const r = await fetch(apiBase + "/v1/ehr/analyze-bundle", {
+    method: "POST", headers: {"content-type": "application/json"},
+    body: JSON.stringify(bundle),
+  });
+  if (!r.ok) throw new Error("analyze-bundle: " + r.status + " " + (await r.text()).slice(0, 200));
+  render(await r.json(), label);
+}
+
+function render(a, label) {
+  const checked = (list, kinds) => list.map((c, i) =>
+    `<li><label><input type="checkbox" checked data-q="${esc(c.display || c.code)}" data-t="${kinds}"> ` +
+    `<b>${esc(c.display || c.code)}</b> <span class="tag">${esc(c.system_hint)}:${esc(c.code)}</span>` +
+    (c.from ? ` <span class="muted">via ${esc(c.from)}</span>` : "") + `</label></li>`).join("");
+  document.getElementById("results").innerHTML =
+    `<div class="card"><b>Patient context</b> (${esc(label)}) — ` +
+    `${a.counts.resources} resources, ${a.counts.medications} meds, ${a.counts.familyHistoryEntries} family entries` +
+    `<h3>Chart conditions → disease candidates</h3><ul>${checked(a.condition_candidates, "Disease") || "<li class=muted>none</li>"}</ul>` +
+    `<h3>Chart observations → phenotype candidates</h3><ul>${checked(a.phenotype_candidates, "Phenotype") || "<li class=muted>none</li>"}</ul>` +
+    (a.gene_candidates.length ? `<h3>Genetics → gene candidates</h3><ul>${checked(a.gene_candidates, "Gene")}</ul>` : "") +
+    `<p><button onclick="openAtlas()">Open in physician workbench →</button></p>` +
+    `<p class="muted">${esc(a.disclaimer)}</p></div>`;
+  show("Ready. Uncheck anything that does not describe this patient, then continue.");
+}
+
+function openAtlas() {
+  const qs = [...document.querySelectorAll("#results input:checked")]
+    .map(el => el.dataset.q).filter(Boolean).slice(0, 8).join(", ");
+  alert("Accepted phenotypes:\n" + qs + "\n\nPaste these into Atlas symptom search (entities → edges → paths).");
+}
+
+async function pullBundle(client) {
+  const pid = client.patient.id;
+  const [conds, obs, famh, meds] = await Promise.all([
+    client.request("Condition?patient=" + pid + "&_count=50").catch(() => ({entry: []})),
+    client.request("Observation?patient=" + pid + "&_count=100").catch(() => ({entry: []})),
+    client.request("FamilyMemberHistory?patient=" + pid).catch(() => ({entry: []})),
+    client.request("MedicationRequest?patient=" + pid + "&_count=20").catch(() => ({entry: []})),
+  ]);
+  const entry = [...(conds.entry || []), ...(obs.entry || []), ...(famh.entry || []), ...(meds.entry || [])];
+  return { resourceType: "Bundle", type: "collection", entry };
+}
+
+async function demo() {
+  await analyze({ resourceType: "Bundle", type: "collection", entry: [
+    { resource: { resourceType: "Patient", id: "demo", gender: "female" } },
+    { resource: { resourceType: "Condition", code: { coding: [{ system: "http://hl7.org/fhir/sid/icd-10-cm", code: "G71.0", display: "Muscular dystrophy" }] } } },
+    { resource: { resourceType: "Observation", code: { coding: [{ system: "http://snomed.info/sct", code: "299287009", display: "Generalized muscle weakness" }] } } },
+  ]}, "demo Bundle");
+}
+
+function standalone() {
+  const iss = document.getElementById("iss").value.trim();
+  if (!iss) return alert("Enter a FHIR server URL");
+  FHIR.oauth2.authorize({ clientId: "atlas-demo", scope: "launch openid fhirUser patient/*.read", iss,
+    redirectUri: location.href.split("?")[0] });
+}
+
+(async () => {
+  try {
+    if (new URLSearchParams(location.search).has("launch") || new URLSearchParams(location.search).has("code")) {
+      const client = await FHIR.oauth2.ready();
+      const bundle = await pullBundle(client);
+      const pt = await client.patient.read().catch(() => ({}));
+      await analyze(bundle, "EHR patient " + (client.patient.id || "") + (pt.name ? " (" + (pt.name[0].given || []).join(" ") + " " + (pt.name[0].family || "") + ")" : ""));
+    } else {
+      document.getElementById("standalone").style.display = "";
+      show("No SMART launch context. Connect to a sandbox above, or use the demo Bundle.");
+    }
+  } catch (e) { show("Launch failed: " + esc(e.message) + ". Try standalone mode below."); document.getElementById("standalone").style.display = ""; }
+})();
+</script>
+</body>
+</html>
