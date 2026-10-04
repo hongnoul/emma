@@ -98,12 +98,14 @@ probabilities; the physician decides.
    auto-filled and the atlas path explanation with the trust block.
 4. Put the two screenshots + sandbox patient ID in the pitch appendix.
 
-Validation status (Oct 2026): endpoint + edge-case suite (21 checks) and
-the full Bundle -> entities -> edges -> trust-gated path chain pass
-against the default demo graph (synthetic DEMO-* vocabulary resolves
-end to end; real ICD-10/SNOMED strings need the MONDO/HPO-synonym real
-graph, `ATLAS_GRAPH_PATH=data/graph.real.json`, to resolve by name).
-No PHI is stored; Bundle bodies are in-memory only.
+Validation status (Oct 2026): endpoint + edge-case suite and the full
+Bundle -> entities -> edges -> trust-gated path chain pass on both
+graphs. Real clinical display strings (Niemann-Pick disease,
+Splenomegaly, Hepatomegaly) resolve to MONDO/HPO entities on the real
+graph (`ATLAS_GRAPH_PATH=data/graph.real.json`); the synthetic demo
+graph resolves its own DEMO-* vocabulary. `scripts/smoke_test.py` covers
+the EHR endpoints as regression tests. No PHI is stored; Bundle bodies
+are in-memory only.
 
 ### Phase 2 — hospital pilot (IT-light)
 - Hospital IT allowlists one redirect URI and issues a client ID

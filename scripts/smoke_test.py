@@ -74,5 +74,52 @@ check("evals: n>0 and metrics in range",
 packs = get("/api/question-packs")
 check("question packs served", "edge-validate-v1" in packs)
 
+# EHR integration (SMART on FHIR R4): stateless Bundle -> Atlas candidates
+import urllib.error
+
+
+def post(path, payload):
+    req = urllib.request.Request(f"{BASE}{path}", data=json.dumps(payload).encode(),
+                                 headers={"content-type": "application/json"}, method="POST")
+    try:
+        with urllib.request.urlopen(req, timeout=10) as r:
+            return r.status, json.loads(r.read())
+    except urllib.error.HTTPError as e:
+        return e.code, {}
+
+
+s = get("/v1/ehr/status")
+check("ehr status connectable, no PHI storage",
+      s.get("ehr") == "connectable" and s.get("phi_storage", "").startswith("none")
+      and s.get("writes_to_chart") is False)
+
+sc = get("/v1/ehr/smart-config")
+check("ehr smart-config has launch URL + scopes",
+      sc.get("smart_app_url", "").endswith("/ehr-launch.html")
+      and "Condition.read" in sc.get("scopes", "") and "Observation.read" in sc.get("scopes", ""))
+
+bundle = {"resourceType": "Bundle", "type": "collection", "entry": [
+    {"resource": {"resourceType": "Patient", "id": "p1", "gender": "female"}},
+    {"resource": {"resourceType": "Condition", "code": {"coding": [
+        {"system": "http://hl7.org/fhir/sid/icd-10-cm", "code": "E75.2",
+         "display": "Congenital Myopathy"}]}}},
+    {"resource": {"resourceType": "Observation", "code": {"coding": [
+        {"system": "http://snomed.info/sct", "code": "2",
+         "display": "Proximal muscle weakness"}]}}},
+]}
+code, a = post("/v1/ehr/analyze-bundle", bundle)
+check("ehr analyze-bundle 200 with candidates + atlas queries",
+      code == 200 and len(a.get("condition_candidates", [])) == 1
+      and len(a.get("phenotype_candidates", [])) == 1
+      and all(q.get("q") and q.get("types") for q in a.get("atlas_queries", []))
+      and "not diagnoses" in a.get("disclaimer", ""))
+
+first_q = a["atlas_queries"][0]
+hits = get(f"/v1/entities?q={urllib.parse.quote(first_q['q'])}&types={first_q['types']}&limit=3")
+check("ehr-suggested query resolves to a graph entity", hits.get("total", 0) > 0)
+
+code, _ = post("/v1/ehr/analyze-bundle", {"resourceType": "Bundle", "entry": []})
+check("ehr empty bundle rejected (422)", code == 422)
+
 print(f"\n{len(failures)} failures" if failures else "\nAll checks passed.")
 sys.exit(1 if failures else 0)

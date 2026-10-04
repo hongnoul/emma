@@ -24,14 +24,17 @@ class SmartConfig(BaseModel):
                    "patient/FamilyMemberHistory.read patient/MedicationRequest.read "
                    "patient/DocumentReference.read")
     atlas_analyze_endpoint: str = "/v1/ehr/analyze-bundle"
-    issuer_note: str = ("Register one redirect URI per hospital EHR "
-                        "(Epic/Oracle/Meditech). Same build, new client ID.")
+    launch_shim: str = "/ehr-launch.html"
+    issuer_note: str = ("Register the launch_shim URL as the SMART redirect URI "
+                        "in each hospital EHR (Epic/Oracle/Meditech). Same build, new client ID.")
 
 
 @router.get("/smart-config", response_model=SmartConfig)
 def smart_config():
-    base = os.environ.get("ATLAS_PUBLIC_BASE", "https://rare-disease-atlas-api.fly.dev")
-    return SmartConfig(smart_app_url=f"{base}/physician/ehr")
+    api_base = os.environ.get("ATLAS_PUBLIC_BASE", "https://rare-disease-atlas-api.fly.dev")
+    web_base = os.environ.get("ATLAS_WEB_BASE", "https://rare-disease-atlas-khaki.vercel.app")
+    return SmartConfig(smart_app_url=f"{web_base}/ehr-launch.html",
+                       atlas_analyze_endpoint=f"{api_base}/v1/ehr/analyze-bundle")
 
 
 @router.get("/status")
