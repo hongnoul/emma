@@ -97,3 +97,14 @@ Transcripts appear as chat bubbles; "show me my community" should flip tabs.
   severity, doses) with the consent gate enforced in the prompt.
 - Bahasa Indonesia voice + language detection for the Adira persona.
 - Spoken daily-support toast and "read this study" on the research feed.
+
+## Fastest path: one command
+
+Instead of the dashboard steps above:
+
+```bash
+ELEVENLABS_API_KEY=sk_... ./scripts/provision-voice-agent.sh
+```
+
+Creates both tools + the agent via the ElevenLabs API, enables auth, sets
+Fly secrets, waits for redeploy, and verifies the signed-url handshake.
