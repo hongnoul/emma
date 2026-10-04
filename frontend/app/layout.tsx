@@ -15,6 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Link href="/" className="font-semibold">Rare Disease Atlas</Link>
           <Link href="/" className="text-slate-600 hover:text-slate-900">Search</Link>
           <Link href="/evals" className="text-slate-600 hover:text-slate-900">Evals</Link>
+          <Link href="/physician" className="text-indigo-700 hover:text-indigo-900 font-medium">Physician</Link>
           <span className="ml-auto text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-0.5">
             Research prototype · not medical advice
           </span>
