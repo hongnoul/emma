@@ -49,7 +49,7 @@ export default function PhysicianHome() {
       </header>
 
       {bands && (
-        <section className="grid grid-cols-3 gap-4 max-w-2xl">
+        <section className="grid max-w-2xl grid-cols-3 gap-2 sm:gap-4">
           {[
             ["established ≥ 0.90", bands.established, "bg-primary text-primary-foreground"],
             ["review 0.40–0.90", bands.review, "bg-secondary text-secondary-foreground border"],
