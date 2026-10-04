@@ -140,7 +140,7 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
     };
     document.addEventListener("visibilitychange", onVis);
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches || new URLSearchParams(location.search).has("forceReduced");
 
     fetch("/atlas-umap.json")
       .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json() as Promise<HeroData>; })
