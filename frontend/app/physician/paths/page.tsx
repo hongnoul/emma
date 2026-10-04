@@ -66,7 +66,7 @@ function PathsInner() {
         <EntityPicker label="From" value={from} onPick={(id) => setParam("from", id)} />
         <EntityPicker label="To" value={to} onPick={(id) => setParam("to", id)} />
       </div>
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         {(["researcher", "patient"] as const).map((a) => (
           <Button key={a} size="sm" variant={audience === a ? "default" : "outline"}
             onClick={() => setParam("audience", a)}>
