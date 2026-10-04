@@ -104,8 +104,12 @@ real graphs (real clinical strings like Niemann-Pick disease,
 Splenomegaly, Hepatomegaly resolve to MONDO/HPO; NPC1 resolves to
 HGNC). On the production bulk graph the same flow resolves 3/3 test
 queries, with one data gap noted: Fabry disease (MONDO:0010526) is
-absent from the bulk build (present in the 10-disease real graph) and
-should be checked at next bulk rebuild. `scripts/smoke_test.py` covers
+absent from the bulk build — root-caused to upstream sources, not the
+pipeline: it exists in mondo.obo but has zero rows in both
+phenotype.hpoa and genes_to_disease.txt, so the "annotated diseases
+only" filter (`bulk_run.py:195`) excludes it. Options at next rebuild:
+ClinVar/Orphanet connector or manual annotation overlay. Present in
+the 10-disease real graph regardless. `scripts/smoke_test.py` covers
 the EHR endpoints as regression tests.
 **Deploy note: production Fly API predates the EHR routes
 (`GET /v1/ehr/status` returns 404 there); redeploy with
