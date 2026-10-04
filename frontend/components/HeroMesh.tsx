@@ -1,20 +1,24 @@
 "use client";
 // HeroMesh: full-bleed ambient background for the apex landing page.
-// Renders the atlas UMAP artifact (/atlas-umap.json) as a living mesh on a
-// white background: judged links as soft colored strands, diseases as faint
-// ink points. The canvas itself is click-through (pointer-events: none) so
-// the BubbleSelector flow buttons always win; interactivity is implemented
+// Renders the atlas UMAP artifact (/atlas-umap.json) wrapped onto a big
+// transparent sphere: judged links as soft colored strands (chords through
+// the glass), diseases as faint ink points. The sphere's radius exceeds the
+// viewport so it bleeds past every edge and the canvas clips the overflow.
+// The canvas itself is click-through (pointer-events: none) so the
+// BubbleSelector flow buttons always win; interactivity is implemented
 // by listening on window and hit-testing against node positions.
 //
-// Motion: ambient sinusoidal drift ("breath"), cursor wake (global parallax
-// plus local repel), and a semantic alpha pulse on the review band only.
-// Hue never animates: green/amber/red keep their triage meaning.
+// Motion: slow constant spin, cursor-steered yaw/pitch, ambient sinusoidal
+// drift ("breath"), local repel near the cursor, and a semantic alpha pulse
+// on the review band only. Depth fades back-hemisphere geometry so the
+// sphere reads as see-through. Hue never animates: green/amber/red keep
+// their triage meaning.
 //
 // Hover: nearest disease node under the cursor gets a ring highlight, its
 // judged links brighten, and a small card (anchored to the node, following
 // its drift) names the disease and links to /disease/[id] and triage.
-// Hit-testing uses pre-repel base positions and the hovered node is exempt
-// from repel, so nodes don't flee the cursor that is trying to reach them.
+// Hit-testing uses pre-repel base positions, skips the back hemisphere, and
+// the hovered node is exempt from repel, so nodes don't flee the cursor.
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -35,8 +39,14 @@ const W1 = 0.9;         // drift angular freq, rad/s (~0.14 Hz)
 const W2 = 0.7;
 const RADIUS = 140;     // cursor repel radius, px
 const PUSH = 26;        // max repel displacement, px
-const PARALLAX = 14;    // max global shift opposite cursor, px
 const ENTRANCE_MS = 900;
+// Sphere tuning
+const SPHERE = 0.58;    // sphere radius as a fraction of max(W, H)
+const SPIN = 0.05;      // constant yaw, rad/s
+const YAW = 0.6;        // cursor-x steering range, rad
+const PITCH = 0.45;     // cursor-y steering range, rad
+const TILT = 0.35;      // base pitch, rad
+const DEPTH_A = [0.18, 0.5, 1]; // alpha multiplier per depth bucket (back/mid/front)
 // Hover tuning
 const HIT_JUDGED = 20;  // px: prefer judged nodes within this radius
 const HIT_ANY = 12;     // px: otherwise any node within this radius
@@ -160,6 +170,20 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
         };
         const xs = normalize(data.nodes.map((n) => n.x));
         const ys = normalize(data.nodes.map((n) => n.y));
+        // Wrap the flat (u,v) map onto a unit sphere: u -> longitude (full
+        // wrap, so half the map faces away at any moment), v -> latitude
+        // clamped to +/-1.2 rad so clusters never pile up at the poles.
+        const ux = new Float32Array(N), uy = new Float32Array(N), uz = new Float32Array(N);
+        for (let i = 0; i < N; i++) {
+          const lon = xs[i] * Math.PI * 2;
+          const lat = (ys[i] - 0.5) * 2.4;
+          ux[i] = Math.cos(lat) * Math.sin(lon);
+          uy[i] = Math.sin(lat);
+          uz[i] = Math.cos(lat) * Math.cos(lon);
+        }
+        // Rotated depth per node, +1 = nearest. Drives alpha and hit-testing.
+        const depth = new Float32Array(N);
+        const bucketOf = (z: number) => (z < -0.25 ? 0 : z < 0.3 ? 1 : 2);
         // Per-point phase so the drift doesn't move in lockstep
         const phase = new Float32Array(N);
         for (let i = 0; i < N; i++) phase[i] = Math.random() * Math.PI * 2;
@@ -191,6 +215,7 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
           let best = -1, bestD = HIT_ANY * HIT_ANY;
           let bestJ = -1, bestJD = HIT_JUDGED * HIT_JUDGED;
           for (let i = 0; i < N; i++) {
+            if (depth[i] <= 0.05) continue; // back hemisphere is not clickable
             const dx = bx0[i] - mx, dy = by0[i] - my;
             const d = dx * dx + dy * dy;
             if (d < bestD) { bestD = d; best = i; }
@@ -211,28 +236,35 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
         };
 
         const layout = (t: number, e: number, W: number, H: number) => {
-          const pad = -40; // overscan so the mesh bleeds past every edge
-          const spanW = W - 2 * pad, spanH = H - 2 * pad;
           // Ease cursor toward target; fall back to center when unseen
           const gx = target.seen ? target.x : W / 2;
           const gy = target.seen ? target.y : H / 2;
           smooth.x += (gx - smooth.x) * 0.08;
           smooth.y += (gy - smooth.y) * 0.08;
-          // Global parallax: whole mesh drifts opposite the cursor
-          const ox = ((smooth.x / Math.max(W, 1)) - 0.5) * -2 * PARALLAX * e;
-          const oy = ((smooth.y / Math.max(H, 1)) - 0.5) * -2 * PARALLAX * e;
+          // Sphere radius exceeds the half-viewport so edges clip (overflow
+          // hidden comes free from the canvas bounds). Entrance scales it up.
+          const R = Math.max(W, H) * SPHERE * e;
+          const cxp = W / 2, cyp = H / 2;
+          // Constant spin plus cursor steering of yaw/pitch
+          const yaw = t * SPIN + ((smooth.x / Math.max(W, 1)) - 0.5) * YAW;
+          const pitch = TILT + ((smooth.y / Math.max(H, 1)) - 0.5) * PITCH;
+          const cyaw = Math.cos(yaw), syaw = Math.sin(yaw);
+          const cpit = Math.cos(pitch), spit = Math.sin(pitch);
           const driftScale = AMP * e;
           const seen = target.seen ? 1 : 0;
           const hi = hoverIdx.current;
           for (let i = 0; i < N; i++) {
-            const nx = 0.5 + (xs[i] - 0.5) * e;
-            const ny = 0.5 + (ys[i] - 0.5) * e;
-            let bx = pad + nx * spanW;
-            let by = pad + ny * spanH;
+            // Rotate: yaw about Y, then pitch about X; orthographic project
+            const x1 = ux[i] * cyaw + uz[i] * syaw;
+            const z1 = uz[i] * cyaw - ux[i] * syaw;
+            const y2 = uy[i] * cpit - z1 * spit;
+            depth[i] = uy[i] * spit + z1 * cpit;
+            let bx = cxp + x1 * R;
+            let by = cyp + y2 * R;
             // Ambient wave
             bx += Math.sin(t * W1 + ys[i] * 3.1 + phase[i]) * driftScale;
             by += Math.cos(t * W2 + xs[i] * 3.1 + phase[i] * 0.7) * driftScale;
-            bx0[i] = bx + ox; by0[i] = by + oy;
+            bx0[i] = bx; by0[i] = by;
             // Local repel around the smoothed cursor; the hovered node is
             // exempt so it stays pinned under the pointer.
             if (seen && i !== hi) {
@@ -246,45 +278,63 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
                 by += (ry / d) * push;
               }
             }
-            px[i] = bx + ox;
-            py[i] = by + oy;
+            px[i] = bx;
+            py[i] = by;
           }
         };
 
-        const strokeBand = (idx: Int32Array, style: string) => {
+        // Reused per-frame depth buckets (avoid allocation in the hot loop)
+        const linkBuckets: number[][] = [[], [], []];
+        const pointBuckets: number[][] = [[], [], []];
+        const strokeBand = (idx: Int32Array, rgb: string, alpha: number) => {
           if (idx.length === 0) return;
-          ctx.strokeStyle = style;
-          ctx.lineWidth = 0.7;
-          ctx.beginPath();
+          for (const b of linkBuckets) b.length = 0;
           for (let k = 0; k < idx.length; k += 2) {
-            ctx.moveTo(px[idx[k]], py[idx[k]]);
-            ctx.lineTo(px[idx[k + 1]], py[idx[k + 1]]);
+            const z = (depth[idx[k]] + depth[idx[k + 1]]) * 0.5;
+            linkBuckets[bucketOf(z)].push(idx[k], idx[k + 1]);
           }
-          ctx.stroke();
+          ctx.lineWidth = 0.7;
+          for (let b = 0; b < 3; b++) {
+            const arr = linkBuckets[b];
+            if (arr.length === 0) continue;
+            ctx.strokeStyle = `rgba(${rgb},${alpha * DEPTH_A[b]})`;
+            ctx.beginPath();
+            for (let k = 0; k < arr.length; k += 2) {
+              ctx.moveTo(px[arr[k]], py[arr[k]]);
+              ctx.lineTo(px[arr[k + 1]], py[arr[k + 1]]);
+            }
+            ctx.stroke();
+          }
+        };
+        const fillPoints = (idx: Int32Array, rgb: string, alpha: number, r: number) => {
+          if (idx.length === 0) return;
+          for (const b of pointBuckets) b.length = 0;
+          for (let k = 0; k < idx.length; k++) {
+            pointBuckets[bucketOf(depth[idx[k]])].push(idx[k]);
+          }
+          for (let b = 0; b < 3; b++) {
+            const arr = pointBuckets[b];
+            if (arr.length === 0) continue;
+            const rr = r * (0.7 + 0.3 * b); // smaller when far: depth cue
+            ctx.fillStyle = `rgba(${rgb},${alpha * DEPTH_A[b]})`;
+            ctx.beginPath();
+            for (let k = 0; k < arr.length; k++) {
+              const i = arr[k];
+              ctx.moveTo(px[i] + rr, py[i]);
+              ctx.arc(px[i], py[i], rr, 0, Math.PI * 2);
+            }
+            ctx.fill();
+          }
         };
 
         const paint = (e: number, reviewAlpha: number) => {
-          // Links: one batched path per triage band
-          strokeBand(bands.accept, `rgba(${LINK_COLOR.accept},${0.16 * e})`);
-          strokeBand(bands.review, `rgba(${LINK_COLOR.review},${reviewAlpha * e})`);
-          strokeBand(bands.low, `rgba(${LINK_COLOR.low},${0.13 * e})`);
-          // Points: judged nodes slightly stronger
-          ctx.fillStyle = `rgba(100,116,139,${0.18 * e})`; // slate-500
-          ctx.beginPath();
-          for (let k = 0; k < plainIdx.length; k++) {
-            const i = plainIdx[k];
-            ctx.moveTo(px[i] + 1.2, py[i]);
-            ctx.arc(px[i], py[i], 1.2, 0, Math.PI * 2);
-          }
-          ctx.fill();
-          ctx.fillStyle = `rgba(67,56,202,${0.4 * e})`; // indigo-700
-          ctx.beginPath();
-          for (let k = 0; k < judgedIdx.length; k++) {
-            const i = judgedIdx[k];
-            ctx.moveTo(px[i] + 1.9, py[i]);
-            ctx.arc(px[i], py[i], 1.9, 0, Math.PI * 2);
-          }
-          ctx.fill();
+          // Links: batched per triage band x depth bucket (back fades out)
+          strokeBand(bands.accept, LINK_COLOR.accept, 0.18 * e);
+          strokeBand(bands.review, LINK_COLOR.review, (reviewAlpha + 0.02) * e);
+          strokeBand(bands.low, LINK_COLOR.low, 0.15 * e);
+          // Points: judged nodes slightly stronger; back hemisphere ghosts
+          fillPoints(plainIdx, "100,116,139", 0.22 * e, 1.2); // slate-500
+          fillPoints(judgedIdx, "67,56,202", 0.45 * e, 1.9);  // indigo-700
 
           // Hover highlight: brighten links touching the node, ring the node
           const hi = hoverIdx.current;
@@ -324,18 +374,16 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
         };
 
         if (reduced) {
-          // Static frame: settled entrance, no drift or cursor response.
+          // Static frame: settled entrance, no spin or cursor response.
           // Hover still works (positions are static). Repaint on resize and
           // on hover change so the highlight renders.
           const renderStatic = () => {
             const size = sizeCanvas();
             if (!size) return;
-            const pad = -40;
-            for (let i = 0; i < N; i++) {
-              px[i] = pad + xs[i] * (size.W - 2 * pad);
-              py[i] = pad + ys[i] * (size.H - 2 * pad);
-              bx0[i] = px[i]; by0[i] = py[i];
-            }
+            // t=0, settled entrance; cursor unseen so smooth stays centered
+            smooth.x = size.W / 2;
+            smooth.y = size.H / 2;
+            layout(0, 1, size.W, size.H);
             paint(1, 0.17);
           };
           renderStatic();
@@ -377,7 +425,11 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
           running = false;
         }
       })
-      .catch(() => {}); // decorative: fail silently to a plain white hero
+      .catch((err) => {
+        // decorative: fail silently to a plain white hero, but surface the
+        // reason in dev so motion/hover bugs aren't invisible
+        if (process.env.NODE_ENV !== "production") console.error("[HeroMesh]", err);
+      });
 
     return () => {
       cancelled = true;
