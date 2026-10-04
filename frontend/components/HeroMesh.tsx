@@ -129,14 +129,26 @@ export default function HeroMesh({
     focusIdRef.current = focusIdOf(pathname);
     focusCtl.current(focusIdRef.current);
     const onPhys = pathname.startsWith("/physician");
-    if (onPhys && !prevPathRef.current?.startsWith("/physician")) {
-      unfoldRef.current = { active: true, start: performance.now() };
+    if (onPhys && !prevPathRef.current?.startsWith("/physician") && !unfoldRef.current.active) {
+      // Fallback arm (e.g. history nav): meshBus.onHandoff below usually
+      // armed this already at navigation initiation.
+      unfoldRef.current = { active: true, start: 0 };
     } else if (!onPhys) {
       unfoldRef.current.active = false;
     }
     prevPathRef.current = pathname;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+  // Arm at navigation initiation (ApexHero stamps markHandoff before
+  // router.push): the unfold starts this same frame instead of waiting for
+  // the route commit, which can land late when the destination page's mount
+  // work starves the main thread.
+  // start stays 0 until the first frame actually paints (lazy start in the
+  // loop): a cold-route mount can starve the main thread long enough to
+  // consume the whole window before any frame runs.
+  useEffect(() => meshBus.onHandoff(() => {
+    unfoldRef.current = { active: true, start: 0 };
+  }), []);
   // Filter plumbing: props land in refs so the one-shot canvas effect never
   // re-runs; the closure rebinds applyFilterRef once data loads.
   const applyFilterRef = useRef<(q: string, ids: string[] | null) => void>(() => {});
@@ -936,6 +948,7 @@ export default function HeroMesh({
             // normal layout so spin/drift fade out as flatness takes over.
             const uf = unfoldRef.current;
             if (uf.active) {
+              if (uf.start === 0) uf.start = now; // lazy start: first painted frame
               const upRaw = Math.min(1, (now - uf.start) / UNFOLD_MS);
               const up = easeInOut(upRaw);
               const stage = meshBus.getStage();
@@ -958,6 +971,10 @@ export default function HeroMesh({
                 depth[i] += (1 - depth[i]) * up;
               }
               window.__meshUnfold = upRaw;
+              if (upRaw >= 1) {
+                uf.active = false;
+                meshBus.markUnfoldDone(); // MeshBackdrop unmounts us now
+              }
             }
             // Ease the filter crossfade toward its target
             flt.strength += (flt.target - flt.strength) * 0.12;

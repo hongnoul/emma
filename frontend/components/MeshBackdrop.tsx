@@ -8,11 +8,11 @@ import { usePathname } from "next/navigation";
 import HeroMesh from "@/components/HeroMesh";
 import { meshBus, MeshFilter } from "@/lib/mesh-bus";
 
-// How long the mesh stays mounted after navigating into /physician: long
-// enough to cover HeroMesh's ~650ms unfold departure plus the shell's
-// background fade (see globals.css .physician-canvas), so the sphere
-// visibly unfolds into the map before the workbench paints over it.
-const PHYSICIAN_LINGER_MS = 800;
+// Linger cap after navigating into /physician. The normal unmount trigger
+// is HeroMesh's unfold-done signal (the sphere finished unfolding into the
+// map); the cap only catches pathological cases (artifact missing, rAF
+// never running) so the decorative canvas can't linger forever.
+const PHYSICIAN_LINGER_MAX_MS = 2500;
 
 export default function MeshBackdrop() {
   const pathname = usePathname();
@@ -40,8 +40,9 @@ export default function MeshBackdrop() {
   }
   useEffect(() => {
     if (!linger) return;
-    const t = setTimeout(() => setLinger(false), PHYSICIAN_LINGER_MS);
-    return () => clearTimeout(t);
+    const done = meshBus.onUnfoldDone(() => setLinger(false));
+    const t = setTimeout(() => setLinger(false), PHYSICIAN_LINGER_MAX_MS);
+    return () => { done(); clearTimeout(t); };
   }, [linger]);
   if (onPhysician && !linger) return null;
   return (

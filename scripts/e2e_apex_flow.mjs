@@ -132,6 +132,19 @@ try {
   check("pinned bubble shows open cue", pin?.openCue === true);
 
   // -- 3. query + Enter -> /physician?q= seeded ----------------------------
+  // The unfold is decorative: it only plays when the mesh artifact has
+  // loaded before departure. Cold caches (first hit after a server restart)
+  // can race it, so wait until the backdrop canvas is actually drawing.
+  const meshReady = await waitFor(send, `(() => {
+    const c = document.querySelector('div.fixed.-z-10 canvas');
+    if (!c) return false;
+    try {
+      const d = c.getContext('2d').getImageData(0, 0, 120, 120).data;
+      for (let i = 3; i < d.length; i += 4) if (d[i] > 0) return true;
+    } catch { /* tainted/zero-size */ }
+    return false;
+  })()`, 10000, 200);
+  check("apex mesh drawing before handoff", meshReady === true);
   await evalJs(send, `(() => {
     const input = document.querySelector('[data-apex-search] input');
     const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
