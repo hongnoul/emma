@@ -1,13 +1,15 @@
 "use client";
-// Physician partition home. The UMAP hero ("map of rare disease space") is
+// Physician partition home: the UMAP hero ("map of rare disease space") is
 // the entry point — judged links colored by band, click-through into triage.
 // If the hero artifact is missing we fall back to the static header + band
-// cards (zero regression). Below it, search-first: two server-backed views
-// share one list: with no query, /v1/attention ranks nodes by judged
-// review-band edges (the worklist); typing searches /v1/entities with the
-// same resolution the rest of the app uses (name > synonym > description).
-// Nothing fetches the whole graph, so this works on the bulk generation
-// (17k nodes / 84k edges) exactly like the demo one.
+// cards (zero regression).
+//
+// Below the hero, one search-first node section works at any generation size:
+// with no query, /v1/attention ranks nodes by judged review-band edges (exact,
+// computed server-side in one O(edges) pass); typing searches /v1/entities
+// with the same resolution the rest of the app uses (name > synonym >
+// description). Nothing fetches the whole graph, so the bulk generation
+// (17k nodes / 84k edges) behaves exactly like the demo one.
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { v1, Meta, EdgesResponse, AttentionItem, EntityHit } from "@/lib/v1";
@@ -29,16 +31,8 @@ type Row = {
 export default function PhysicianHome() {
   const [meta, setMeta] = useState<Meta | null>(null);
   const [bands, setBands] = useState<{ established: number; review: number; hidden: number } | null>(null);
-  const [attention, setAttention] = useState<AttentionItem[] | null>(null);
-  const [hits, setHits] = useState<EntityHit[] | null>(null);
-  const [query, setQuery] = useState("");
-  const [activeType, setActiveType] = useState<string>("all");
-  const [searching, setSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [heroFailed, setHeroFailed] = useState(false);
-  const seq = useRef(0);
-
-  const typesParam = activeType === "all" ? "" : activeType;
 
   useEffect(() => {
     v1.meta().then(setMeta).catch((e) => setError(String(e)));
@@ -51,47 +45,9 @@ export default function PhysicianHome() {
     ).catch(() => { /* non-fatal */ });
   }, []);
 
-  // Default view: the attention worklist for the current type filter.
-  useEffect(() => {
-    setAttention(null);
-    v1.attention({ types: typesParam, limit: 100 })
-      .then((r) => setAttention(r.items))
-      .catch((e) => setError(String(e)));
-  }, [typesParam]);
-
-  // Search view: debounced server-side entity resolution.
-  useEffect(() => {
-    const q = query.trim();
-    if (!q) { setHits(null); setSearching(false); return; }
-    setSearching(true);
-    const id = ++seq.current;
-    const t = setTimeout(() => {
-      v1.entities(q, typesParam, 50)
-        .then((r) => { if (seq.current === id) { setHits(r.items); setSearching(false); } })
-        .catch((e) => { if (seq.current === id) { setError(String(e)); setSearching(false); } });
-    }, 250);
-    return () => clearTimeout(t);
-  }, [query, typesParam]);
-
-  const rows: Row[] | null = useMemo(() => {
-    if (query.trim()) {
-      return hits?.map((h) => ({
-        id: h.node.id, name: h.node.name, type: h.node.type,
-        description: h.node.description,
-        degree: Object.values(h.connections ?? {}).reduce((s, n) => s + n, 0),
-        match: h.match,
-      })) ?? null;
-    }
-    return attention?.map((a) => ({
-      id: a.node.id, name: a.node.name, type: a.node.type,
-      description: a.node.description, degree: a.degree, review: a.review,
-    })) ?? null;
-  }, [query, hits, attention]);
-
   if (error) return <p className="text-sm font-medium">{error}</p>;
 
   const judgeLive = meta?.judge && meta.judge !== "none";
-  const searchMode = Boolean(query.trim());
 
   return (
     <div className="space-y-6">
@@ -134,69 +90,7 @@ export default function PhysicianHome() {
         </section>
       )}
 
-      {/* ---- main section: search / attention list ---- */}
-      <section className="space-y-3">
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-lg font-semibold">
-            {searchMode ? "Search results" : "Needs attention"}
-            {rows && <span className="ml-2 text-sm font-normal text-muted-foreground">{rows.length}</span>}
-          </h2>
-          <Input
-            className="h-9 w-full max-w-xs"
-            placeholder="Search diseases, genes, phenotypes…"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
-
-        <div className="flex flex-wrap gap-1.5">
-          <TypePill label="all" active={activeType === "all"} onClick={() => setActiveType("all")} />
-          {TYPE_ORDER.filter((t) => (meta?.node_types?.[t] ?? 0) > 0).map((t) => (
-            <TypePill key={t} label={`${t} (${meta!.node_types[t].toLocaleString()})`} active={activeType === t}
-              onClick={() => setActiveType(activeType === t ? "all" : t)} />
-          ))}
-        </div>
-
-        {!rows || searching ? (
-          <p className="text-sm text-muted-foreground">{searching ? "Searching…" : "Loading…"}</p>
-        ) : rows.length === 0 ? (
-          <p className="text-sm text-muted-foreground">
-            {searchMode ? "No entities match." : "No judged edges need review in this view."}
-          </p>
-        ) : (
-          <ul className="divide-y divide-border overflow-hidden rounded-xl border bg-background">
-            {rows.map((r) => (
-              <li key={r.id}>
-                <Link
-                  href={`/physician/triage?node=${encodeURIComponent(r.id)}&lo=0&hi=1`}
-                  className="block px-4 py-2.5 transition hover:bg-muted"
-                >
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span className="font-medium">
-                      {r.name}
-                      <Badge variant="secondary" className="ml-2 align-middle text-[10px]">{r.type}</Badge>
-                      {r.match && r.match !== "name" && (
-                        <span className="ml-2 text-[10px] text-muted-foreground">matched {r.match}</span>
-                      )}
-                    </span>
-                    <span className="shrink-0 font-mono text-xs text-muted-foreground">
-                      {r.degree != null ? `${r.degree} edge${r.degree === 1 ? "" : "s"}` : "–"}
-                      {r.review != null && r.review > 0 && (
-                        <span className="ml-2 rounded border px-1.5 py-0.5 text-[10px] text-foreground">
-                          triage {r.review} →
-                        </span>
-                      )}
-                    </span>
-                  </div>
-                  {r.description && (
-                    <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{r.description}</p>
-                  )}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
+      {meta && <NodeSection meta={meta} />}
 
       <p className="text-xs text-muted-foreground max-w-2xl">
         Decision semantics: p(valid) is a calibrated probability, not a fact claim.
@@ -204,6 +98,126 @@ export default function PhysicianHome() {
         gating clinical workflows on any threshold.
       </p>
     </div>
+  );
+}
+
+/* ------------- search-first node section: /v1/attention + /v1/entities ---- */
+
+function NodeSection({ meta }: { meta: Meta }) {
+  const [attention, setAttention] = useState<AttentionItem[] | null>(null);
+  const [hits, setHits] = useState<EntityHit[] | null>(null);
+  const [query, setQuery] = useState("");
+  const [activeType, setActiveType] = useState<string>("all");
+  const [searching, setSearching] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const seq = useRef(0);
+
+  const typesParam = activeType === "all" ? "" : activeType;
+
+  // Default view: the attention worklist for the current type filter.
+  useEffect(() => {
+    setAttention(null);
+    v1.attention({ types: typesParam, limit: 100 })
+      .then((r) => setAttention(r.items))
+      .catch((e) => setError(String(e)));
+  }, [typesParam]);
+
+  // Search view: debounced server-side entity resolution.
+  useEffect(() => {
+    const q = query.trim();
+    if (q.length < 2) { setHits(null); setSearching(false); return; }
+    setSearching(true);
+    const id = ++seq.current;
+    const t = setTimeout(() => {
+      v1.entities(q, typesParam, 50)
+        .then((r) => { if (seq.current === id) { setHits(r.items); setSearching(false); } })
+        .catch((e) => { if (seq.current === id) { setError(String(e)); setSearching(false); } });
+    }, 250);
+    return () => clearTimeout(t);
+  }, [query, typesParam]);
+
+  const searchMode = query.trim().length >= 2;
+
+  const rows: Row[] | null = useMemo(() => {
+    if (searchMode) {
+      return hits?.map((h) => ({
+        id: h.node.id, name: h.node.name, type: h.node.type,
+        description: h.node.description,
+        degree: Object.values(h.connections ?? {}).reduce((s, n) => s + n, 0),
+        match: h.match,
+      })) ?? null;
+    }
+    return attention?.map((a) => ({
+      id: a.node.id, name: a.node.name, type: a.node.type,
+      description: a.node.description, degree: a.degree, review: a.review,
+    })) ?? null;
+  }, [searchMode, hits, attention]);
+
+  if (error) return <p className="text-sm font-medium">{error}</p>;
+
+  return (
+    <section className="space-y-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-lg font-semibold">
+          {searchMode ? "Search results" : "Needs attention"}
+          {rows && <span className="ml-2 text-sm font-normal text-muted-foreground">{rows.length}</span>}
+        </h2>
+        <Input
+          className="h-9 w-full max-w-xs"
+          placeholder="Search diseases, genes, phenotypes…"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </div>
+
+      <div className="flex flex-wrap gap-1.5">
+        <TypePill label="all" active={activeType === "all"} onClick={() => setActiveType("all")} />
+        {TYPE_ORDER.filter((t) => (meta.node_types?.[t] ?? 0) > 0).map((t) => (
+          <TypePill key={t} label={`${t} (${meta.node_types[t].toLocaleString()})`} active={activeType === t}
+            onClick={() => setActiveType(activeType === t ? "all" : t)} />
+        ))}
+      </div>
+
+      {!rows || searching ? (
+        <p className="text-sm text-muted-foreground">{searching ? "Searching…" : "Loading…"}</p>
+      ) : rows.length === 0 ? (
+        <p className="text-sm text-muted-foreground">
+          {searchMode ? "No entities match." : "No judged edges need review in this view."}
+        </p>
+      ) : (
+        <ul className="divide-y divide-border overflow-hidden rounded-xl border bg-background">
+          {rows.map((r) => (
+            <li key={r.id}>
+              <Link
+                href={`/physician/triage?node=${encodeURIComponent(r.id)}${searchMode ? "&lo=0&hi=1" : ""}`}
+                className="block px-4 py-2.5 transition hover:bg-muted"
+              >
+                <div className="flex items-baseline justify-between gap-3">
+                  <span className="font-medium">
+                    {r.name}
+                    <Badge variant="secondary" className="ml-2 align-middle text-[10px]">{r.type}</Badge>
+                    {r.match && r.match !== "name" && (
+                      <span className="ml-2 text-[10px] text-muted-foreground">matched {r.match}</span>
+                    )}
+                  </span>
+                  <span className="shrink-0 font-mono text-xs text-muted-foreground">
+                    {r.degree != null ? `${r.degree} edge${r.degree === 1 ? "" : "s"}` : "–"}
+                    {r.review != null && r.review > 0 && (
+                      <span className="ml-2 rounded border px-1.5 py-0.5 text-[10px] text-foreground">
+                        triage {r.review} →
+                      </span>
+                    )}
+                  </span>
+                </div>
+                {r.description && (
+                  <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">{r.description}</p>
+                )}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
   );
 }
 
