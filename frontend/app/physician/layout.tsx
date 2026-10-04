@@ -14,7 +14,7 @@ const TABS = [
 
 export default function PhysicianLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="-mx-6 -my-8 min-h-screen bg-muted/40">
+    <div className="-m-4 min-h-screen overflow-hidden rounded-2xl bg-muted/40 sm:-m-8">
       <div className="border-b bg-background px-6 py-2 flex items-center gap-5 text-sm">
         <span className="font-semibold">Physician partition</span>
         {TABS.map((t) => (

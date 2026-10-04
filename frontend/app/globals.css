@@ -23,10 +23,11 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
-  --radius: 0.625rem;
+  --radius: 1rem;
 }
 
 @theme inline {
+  --font-serif: var(--font-serif-display), ui-serif, Georgia, serif;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -58,6 +59,9 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  h1, h2 {
+    @apply font-serif tracking-tight;
   }
 }
 
