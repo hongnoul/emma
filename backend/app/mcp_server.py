@@ -23,7 +23,7 @@ from .services.evals import run_evals
 from .services.graph_store import get_store
 
 mcp = FastMCP(
-    "rare-disease-atlas",
+    "emmatics",
     instructions=(
         "Evidence-backed rare-disease knowledge graph. Diseases, genes, and "
         "phenotypes are connected by typed edges; inferred connections carry "

@@ -2,7 +2,7 @@
 
 Embeds every disease by its IC-weighted phenotype profile with umap-learn
 (https://github.com/lmcinnes/umap), attaches the judged PHENOTYPE_SIMILAR
-edges, and writes frontend/public/atlas-umap.json keyed by generation_id.
+edges, and writes frontend/public/emmatics-umap.json keyed by generation_id.
 
 Run:  backend/.venv/bin/python backend/pipeline/umap_hero.py
 Deps: umap-learn scipy scikit-learn (pipeline-only, not the API image).
@@ -19,7 +19,7 @@ from collections import defaultdict
 from pathlib import Path
 
 API = "https://rare-disease-atlas-api.fly.dev"
-OUT = Path(__file__).resolve().parents[2] / "frontend" / "public" / "atlas-umap.json"
+OUT = Path(__file__).resolve().parents[2] / "frontend" / "public" / "emmatics-umap.json"
 PAGE = 500
 
 

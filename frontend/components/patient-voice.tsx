@@ -4,7 +4,7 @@
 // Flow: mic button → GET {API_BASE}/v1/voice/signed-url (key stays on the
 // backend) → WebSocket session via @elevenlabs/react. Transcripts stream
 // into the existing chat bubbles through onMessage; client tools let the
-// agent drive the UI (switch tabs). Atlas answers come from the server
+// agent drive the UI (switch tabs). Emmatics answers come from the server
 // tool /v1/voice/tools/atlas-brief, which only speaks evidence that
 // passed the patient-audience trust gate.
 import { useCallback, useState } from "react";

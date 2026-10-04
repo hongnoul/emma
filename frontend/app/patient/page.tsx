@@ -20,7 +20,7 @@ import {
 
 // The prototype pinned MONDO:0020066 (Ehlers-Danlos) for its live research
 // feed. Our atlas content varies by deployment, so the ID is configurable
-// and the feed falls back to the first disease the atlas returns.
+// and the feed falls back to the first disease Emmatics returns.
 const FEED_DISEASE_ID =
   process.env.NEXT_PUBLIC_PATIENT_DISEASE_ID ?? "MONDO:0020066";
 
@@ -595,7 +595,7 @@ function ChatTabInner({
     setInput("");
     setTyping(true);
     (async () => {
-      // Live atlas lookup first (repo backend), canned replies as fallback —
+      // Live Emmatics lookup first (repo backend), canned replies as fallback —
       // same behavior as the prototype.
       const hit = await searchFirst(text);
       if (hit?.id) {
@@ -617,7 +617,7 @@ function ChatTabInner({
             ...m,
             {
               from: "ai",
-              text: `I found "${detail.disease?.name ?? hit.name}" in Emmatics.${
+              text: `I found "${detail.disease?.name ?? hit.name}" in the Emmatics knowledge graph.${
                 genes ? ` Linked genes: ${genes}.` : ""
               }${phenos ? ` Key phenotypes: ${phenos}.` : ""}${
                 nPubs

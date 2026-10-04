@@ -211,7 +211,7 @@ def assemble_candidates(nodes, edges, disease_genes, disease_phenos, pub_snippet
                 "rel_type": "SHARES_MECHANISM", "provenance": "inferred",
                 "description": (f"{nodes[a]['name']} and {nodes[b]['name']} are both lysosomal "
                                 f"disorders sharing {len(shared)} annotated phenotypes."),
-                "source_db": "atlas-inference", "source_id": f"pheno-overlap:{a}|{b}",
+                "source_db": "emmatics-inference", "source_id": f"pheno-overlap:{a}|{b}",
                 "supporting_publications": [], "contradictory_evidence": [],
                 "state": (f"Both {nodes[a]['name']} (genes: {ga}) and {nodes[b]['name']} (genes: {gb}) "
                           f"are lysosomal disorders. Shared HPO phenotypes: {', '.join(labels)}. "

@@ -287,7 +287,7 @@ def main():
             "rel_type": "PHENOTYPE_SIMILAR", "provenance": "inferred",
             "description": (f"{diseases[a]['name']} and {diseases[b]['name']} share an "
                             f"unusually similar phenotype profile (similarity {sim:.2f})."),
-            "source_db": "atlas-inference", "source_id": f"phenosim:{a}|{b}",
+            "source_db": "emmatics-inference", "source_id": f"phenosim:{a}|{b}",
             "supporting_publications": [], "contradictory_evidence": [],
         }
         if rec:

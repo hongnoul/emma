@@ -204,7 +204,7 @@ def edge(source, target, rel_type, description, *, provenance="curated", source_
         "id": f"DEMO-EDGE-{_edge_counter:03d}",
         "source": source, "target": target, "rel_type": rel_type,
         "provenance": provenance, "description": description,
-        "source_db": source_db or ("atlas-inference" if provenance == "inferred" else "DEMO-DB"),
+        "source_db": source_db or ("emmatics-inference" if provenance == "inferred" else "DEMO-DB"),
         "source_id": source_id or f"DEMO-REC-{_edge_counter:03d}",
         "supporting_publications": pubs or [],
         "contradictory_evidence": contradictory or [],

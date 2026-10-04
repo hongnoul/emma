@@ -16,7 +16,7 @@ Agent (ElevenLabs cloud)
   → client tool: switch_tab {tab}             (drives the phone UI)
 ```
 
-Every atlas claim the agent speaks passed `trust.gate(audience="patient")`:
+Every Emmatics claim the agent speaks passed `trust.gate(audience="patient")`:
 established-only at calibrated ≥0.90 with replicated evidence and no serious
 contradiction. Suppressed edges are never put in the agent's context.
 
@@ -33,7 +33,7 @@ speaking with Adira, who is on day 118 of treatment under Dr. Santoso.
 Rules:
 - You are NOT a diagnostician. Never diagnose, never adjust medication.
   Symptoms get logged and routed to Dr. Santoso.
-- For any disease or research question, call the atlas_brief tool and speak
+- For any disease or research question, call the emmatics_brief tool and speak
   only from its spoken_brief and facts. If facts are empty, say the evidence
   has not yet passed the patient-safety review and keep it general.
 - Always name your source briefly ("according to the Emmatics").
@@ -89,7 +89,7 @@ Transcripts appear as chat bubbles; "show me my community" should flip tabs.
 
 - `backend/app/routers/voice.py` — signed-url + atlas-brief tool
 - `frontend/components/patient-voice.tsx` — provider, session hook, mic button
-- `frontend/app/(atlas)/patient/page.tsx` — ChatTab wiring
+- `frontend/app/(emmatics)/patient/page.tsx` — ChatTab wiring
 
 ## Voice check-in (phase 2, built)
 

@@ -36,7 +36,7 @@ def status():
                            and os.environ.get("ELEVENLABS_AGENT_ID")),
         "agent_id_set": bool(os.environ.get("ELEVENLABS_AGENT_ID")),
         "api_key_set": bool(os.environ.get("ELEVENLABS_API_KEY")),
-        "tools": ["/v1/voice/tools/atlas-brief"],
+        "tools": ["/v1/voice/tools/emmatics-brief"],
     }
 
 
@@ -82,7 +82,8 @@ def webrtc_token():
 
 # ---------------------------------------------------------------- agent tools
 
-@router.get("/tools/atlas-brief")
+@router.get("/tools/atlas-brief", include_in_schema=False)  # legacy alias
+@router.get("/tools/emmatics-brief")
 def atlas_brief(q: str = Query(..., min_length=1),
                 max_facts: int = Query(6, ge=1, le=12)):
     """One-shot voice-friendly brief: search → detail → patient-gated evidence.

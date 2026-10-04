@@ -42,7 +42,7 @@ that node; a "start triage" CTA floats over the densest amber region. The hero
    not the API image — the API never needs them).
 4. Also pull the 2,882 judged edges (`rel_types=PHENOTYPE_SIMILAR&judged_only=true`)
    and keep `{id, source, target, edge_valid}`.
-5. Emit `frontend/public/atlas-umap.json` (~400 KB, gzips well):
+5. Emit `frontend/public/emmatics-umap.json` (~400 KB, gzips well):
 
 ```json
 {
@@ -72,7 +72,7 @@ degree, used for point sizing.
   clickable chips that *highlight the corresponding links on the canvas on
   hover* — this fuses the existing band cards into the hero instead of
   stacking sections.
-- **Fallback:** if `atlas-umap.json` 404s or `generation_id` mismatches
+- **Fallback:** if `emmatics-umap.json` 404s or `generation_id` mismatches
   `v1.meta()`, render the current static header + band cards (zero regression),
   and log a console warning to regenerate the artifact.
 
@@ -85,7 +85,7 @@ facts" footer. No cluster labels claiming nosology.
 ## Status: pipeline DONE and validated against prod
 
 `backend/pipeline/umap_hero.py` ran against prod on 2026-10-03 (~30s total,
-UMAP fit ~5s). Artifact checked in at `frontend/public/atlas-umap.json`
+UMAP fit ~5s). Artifact checked in at `frontend/public/emmatics-umap.json`
 (518 KB raw, ~160 KB gzipped): 4,721 nodes, 2,882 links, generation
 `20261003T224627Z`. Band split of the links: 182 accept / 2,608 review /
 92 low — the hero is visually dominated by the amber review band, which is

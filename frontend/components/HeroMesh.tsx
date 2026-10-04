@@ -1,6 +1,6 @@
 "use client";
 // HeroMesh: full-bleed ambient background for the apex landing page.
-// Renders the atlas UMAP artifact (/atlas-umap.json) wrapped onto a big
+// Renders the Emmatics UMAP artifact (/emmatics-umap.json) wrapped onto a big
 // transparent sphere: judged links as soft colored strands (chords through
 // the glass), diseases as faint ink points. The sphere's radius exceeds the
 // viewport so it bleeds past every edge and the canvas clips the overflow.
@@ -236,7 +236,7 @@ export default function HeroMesh({
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches || new URLSearchParams(location.search).has("forceReduced");
 
-    fetch("/atlas-umap.json")
+    fetch("/emmatics-umap.json")
       .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json() as Promise<HeroData>; })
       .then((data) => {
         if (cancelled) return;

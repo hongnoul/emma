@@ -4,7 +4,7 @@
 // (backend/pipeline/umap_hero.py), with judged PHENOTYPE_SIMILAR links colored
 // by triage band. Canvas 2D: links first, then points. Hover = tooltip,
 // click node -> /physician/triage?node=, click link -> /physician/edge/[id].
-// Design: docs/hero-umap-plan.md. Artifact: /atlas-umap.json (keyed by
+// Design: docs/hero-umap-plan.md. Artifact: /emmatics-umap.json (keyed by
 // generation_id; if it mismatches the live API we still render but note it).
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -40,7 +40,7 @@ export default function EmmaticsHero() {
   const entranceRaf = useRef<number>(0); // entrance loop (must not be cancelled by schedule)
 
   useEffect(() => {
-    fetch("/atlas-umap.json")
+    fetch("/emmatics-umap.json")
       .then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json(); })
       .then(setData)
       .catch(() => setFailed(true));
