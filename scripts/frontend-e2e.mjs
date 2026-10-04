@@ -1,6 +1,8 @@
 // Real-browser acceptance pass over the ported frontend pages (home, disease,
 // research, paper, patient). Needs a running backend (:8000) and frontend.
 // Usage: npm i playwright-core && E2E_BASE=http://localhost:3000 node scripts/frontend-e2e.mjs
+import { chromium } from 'playwright-core';
+
 const exe = [
   `${process.env.HOME}/Library/Caches/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-mac-arm64/chrome-headless-shell`,
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
