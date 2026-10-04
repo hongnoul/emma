@@ -3,7 +3,6 @@
 // (physician / patient / explorer). The card-shell app lives under
 // app/(atlas)/ and keeps its own chrome.
 import Link from "next/link";
-import { Cross } from "lucide-react";
 import HeroMesh from "@/components/HeroMesh";
 import BubbleSelector from "@/components/BubbleSelector";
 
@@ -39,20 +38,9 @@ export default function Apex() {
     <div className="relative min-h-screen overflow-hidden bg-white">
       <HeroMesh />
 
-      {/* minimal brand mark, no nav chrome */}
-      <div className="pointer-events-none absolute left-6 top-6 z-10 flex items-center gap-2.5 sm:left-8 sm:top-8">
-        <span className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-          <Cross className="size-4" />
-        </span>
-        <span className="font-serif text-lg font-semibold tracking-tight">Rare Disease Atlas</span>
-      </div>
-
       {/* hero copy + bubble selector over the mesh */}
       <section className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 py-24 text-center">
-        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-muted-foreground">
-          Disease · Gene · Variant · Phenotype
-        </p>
-        <h1 className="mt-5 font-serif text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
+        <h1 className="font-serif text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
           Every rare-disease link,
           <br />
           with its evidence.
