@@ -8,6 +8,7 @@
 import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { api, DiseaseDetail, RelatedDisease, GraphNode, GraphEdge, pct } from "@/lib/api";
+import { meshBus } from "@/lib/mesh-bus";
 import MeshStage from "@/components/MeshStage";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -69,6 +70,15 @@ export default function DiseasePage({ params }: { params: Promise<{ id: string }
       .then(([d, r, e]) => { setDetail(d); setRelated(r); setEvidence(e); })
       .catch((e) => setError(String(e)));
   }, [id]);
+
+  // Feed the API's related diseases to the focus ring: nodes without judged
+  // links in the static mesh artifact still show their real local graph.
+  useEffect(() => {
+    meshBus.setFocusRelated(
+      related.map((r) => ({ id: r.disease.id, v: r.similarity, name: r.disease.name })),
+    );
+    return () => meshBus.setFocusRelated(null);
+  }, [related]);
 
   if (error)
     return (

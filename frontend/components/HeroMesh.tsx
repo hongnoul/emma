@@ -151,6 +151,7 @@ export default function HeroMesh({
     // Assigned in the animated path; null (reduced motion) = navigate directly
     let startZoom: ((i: number) => void) | null = null;
     let zoomActive = false;
+    let extraCleanup: (() => void) | null = null;
     const canHover = window.matchMedia("(hover: hover)").matches;
 
     // Smoothed cursor in canvas-relative px; target updated on pointermove.
@@ -304,6 +305,36 @@ export default function HeroMesh({
           arr.push({ j: b, v });
         };
         for (const l of data.links) { pushN(l.s, l.t, l.v); pushN(l.t, l.s, l.v); }
+        // Effective focus neighborhood: artifact links unioned with the
+        // API's related diseases (pushed over meshBus by the disease page).
+        // Nodes without judged artifact links still get their real graph.
+        const RING_MAX = 10;
+        let fNbr: { j: number; v: number }[] = [];
+        let fNbrFor = -1;
+        // API-sourced display names for ring neighbors (artifact names can
+        // be bare MONDO ids); indexed by node index.
+        const apiName = new Map<number, string>();
+        const rebuildFocusNbr = () => {
+          fNbrFor = zoom.i;
+          if (zoom.i < 0) { fNbr = []; return; }
+          const seen = new Set<number>();
+          const out: { j: number; v: number }[] = [];
+          for (const e of nbr.get(zoom.i) ?? []) {
+            if (!seen.has(e.j)) { seen.add(e.j); out.push(e); }
+          }
+          for (const r of meshBus.getFocusRelated() ?? []) {
+            const j = idToIdx.get(r.id);
+            if (j === undefined) continue;
+            if (r.name) apiName.set(j, r.name);
+            if (j !== zoom.i && !seen.has(j)) {
+              seen.add(j);
+              out.push({ j, v: r.v });
+            }
+          }
+          fNbr = out.slice(0, RING_MAX);
+        };
+        const unsubRelated = meshBus.onFocusRelated(() => { fNbrFor = -2; });
+        extraCleanup = unsubRelated;
 
         // ---- Filter state ----
         // Lowercased search keys + id lookup, built once. recompute() refills
@@ -508,8 +539,9 @@ export default function HeroMesh({
           // stack labels), distance clamped to the stage, blended by zoom
           // depth, so the section reads as the node's local graph.
           if (zooming && zp > 0.01) {
+            if (fNbrFor !== zoom.i) rebuildFocusNbr();
             const fx = px[zoom.i], fy = py[zoom.i];
-            const ns = nbr.get(zoom.i);
+            const ns = fNbr;
             if (ns && ns.length > 0) {
               const m = ns.length;
               // Sort by current angle once per frame (m is small)
@@ -631,7 +663,7 @@ export default function HeroMesh({
           // sized by judged degree and, once settled, name labels.
           if (zoom.i >= 0 && zp > 0.01) {
             const fi = zoom.i;
-            const ns = nbr.get(fi) ?? [];
+            const ns = fNbr;
             const fa = zp * e;
             ctx.lineWidth = 1.3;
             for (const { j, v } of ns) {
@@ -656,7 +688,7 @@ export default function HeroMesh({
               ctx.textBaseline = "middle";
               for (const { j } of ns) {
                 const n = nodes[j];
-                const name = n.n.startsWith("MONDO:") ? n.id : n.n;
+                const name = apiName.get(j) ?? (n.n.startsWith("MONDO:") ? n.id : n.n);
                 const label = name.length > 26 ? name.slice(0, 25) + "\u2026" : name;
                 const left = px[j] < px[fi];
                 ctx.textAlign = left ? "right" : "left";
@@ -744,8 +776,7 @@ export default function HeroMesh({
           if (zoom.i < 0) return -1;
           const R2n = 14 * 14;
           let best = -1, bestD = R2n;
-          const ns = nbr.get(zoom.i) ?? [];
-          for (const { j } of ns) {
+          for (const { j } of fNbr) {
             const dx = px[j] - mx, dy = py[j] - my;
             const d = dx * dx + dy * dy;
             if (d < bestD) { bestD = d; best = j; }
@@ -859,6 +890,7 @@ export default function HeroMesh({
     return () => {
       cancelled = true;
       cancelAnimationFrame(raf);
+      extraCleanup?.();
       applyFilterRef.current = () => {};
       io.disconnect();
       staticRO?.disconnect();

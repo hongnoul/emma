@@ -9,8 +9,10 @@ export interface MeshFilter { q: string; ids: string[] | null }
 let filter: MeshFilter = { q: "", ids: null };
 let matchCount: number | null = null;
 let stageEl: HTMLElement | null = null;
+let related: { id: string; v: number; name?: string }[] | null = null;
 const filterSubs = new Set<(f: MeshFilter) => void>();
 const countSubs = new Set<(n: number | null) => void>();
+const relatedSubs = new Set<(l: { id: string; v: number; name?: string }[] | null) => void>();
 
 export const meshBus = {
   setFilter(q: string, ids: string[] | null) {
@@ -35,4 +37,16 @@ export const meshBus = {
   // element's live rect every frame, so the node tracks layout and scroll.
   setStage(el: HTMLElement | null) { stageEl = el; },
   getStage: () => stageEl,
+  // Focus extras: API-sourced related diseases (id + p(valid)) for the
+  // focused node. The mesh unions these into the ring so pages whose nodes
+  // lack judged links in the static artifact still show their local graph.
+  setFocusRelated(list: { id: string; v: number; name?: string }[] | null) {
+    related = list;
+    relatedSubs.forEach((fn) => fn(related));
+  },
+  getFocusRelated: () => related,
+  onFocusRelated(fn: (l: { id: string; v: number; name?: string }[] | null) => void) {
+    relatedSubs.add(fn);
+    return () => { relatedSubs.delete(fn); };
+  },
 };
