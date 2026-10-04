@@ -87,9 +87,11 @@ print(json.dumps({"tool_config": {
   "parameters": {
     "type": "object",
     "properties": {
-      "symptoms": {"type": "array", "items": {"type": "string"},
+      "symptoms": {"type": "array",
+        "items": {"type": "string", "description": "one symptom name"},
         "description": "subset of: Fatigue, Joint pain, Dizziness, Rash, Poor sleep, Steady"},
-      "side_effects": {"type": "array", "items": {"type": "string"},
+      "side_effects": {"type": "array",
+        "items": {"type": "string", "description": "one side effect name"},
         "description": "subset of: Nausea, Headache, Drowsiness, None"},
       "severity": {"type": "number",
         "description": "overall symptom severity 0-10"},
@@ -104,22 +106,8 @@ PY
 CHECKIN_TOOL_ID=$(el POST /v1/convai/tools "$CHECKIN_TOOL" | jqpy "['id']")
 echo "   fill_checkin: $CHECKIN_TOOL_ID"
 
-say "2c/5 Creating language_detection system tool…"
-LANG_TOOL=$(python3 <<'PY'
-import json
-print(json.dumps({"tool_config": {
-  "type": "system",
-  "name": "language_detection",
-  "description": "",
-  "params": {"system_tool_type": "language_detection"}
-}}))
-PY
-)
-LANG_TOOL_ID=$(el POST /v1/convai/tools "$LANG_TOOL" | jqpy "['id']")
-echo "   language_detection: $LANG_TOOL_ID"
-
 say "3/5 Creating agent…"
-AGENT=$(python3 - "$ATLAS_TOOL_ID" "$SWITCH_TOOL_ID" "$CHECKIN_TOOL_ID" "$LANG_TOOL_ID" <<'PY'
+AGENT=$(python3 - "$ATLAS_TOOL_ID" "$SWITCH_TOOL_ID" "$CHECKIN_TOOL_ID" <<'PY'
 import json, sys
 prompt = """You are Rarepath, a warm voice companion for rare-disease patients. You are speaking with Adira, who is on day 118 of treatment under Dr. Santoso.
 
@@ -141,7 +129,15 @@ print(json.dumps({
       "language": "en",
       "prompt": {
         "prompt": prompt,
-        "tool_ids": [sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]]
+        "tool_ids": [sys.argv[1], sys.argv[2], sys.argv[3]],
+        "built_in_tools": {
+          "language_detection": {
+            "type": "system",
+            "name": "language_detection",
+            "description": "",
+            "params": {"system_tool_type": "language_detection"}
+          }
+        }
       }
     },
     "language_presets": {
