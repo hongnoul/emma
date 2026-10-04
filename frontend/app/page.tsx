@@ -2,7 +2,6 @@
 // ambient background and bubble buttons as the client-facing flow selector
 // (physician / patient / explorer). The card-shell app lives under
 // app/(atlas)/ and keeps its own chrome.
-import Link from "next/link";
 import HeroMesh from "@/components/HeroMesh";
 import BubbleSelector from "@/components/BubbleSelector";
 
@@ -56,13 +55,6 @@ export default function Apex() {
         <div className="mt-12 w-full">
           <BubbleSelector items={FLOWS} />
         </div>
-
-        <p className="mt-14 text-[11px] text-muted-foreground/70">
-          Research prototype · not medical advice ·{" "}
-          <Link href="/evals" className="pointer-events-auto underline-offset-2 hover:underline">
-            evals
-          </Link>
-        </p>
       </section>
     </div>
   );
