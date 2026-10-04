@@ -79,7 +79,6 @@ export default function PatientApp() {
   // Voice check-in: drafted in ChatTab (fill_checkin client tool), consumed
   // once by ResearchTab. Never auto-submitted.
   const [checkinDraft, setCheckinDraft] = useState<CheckinDraft | null>(null);
-  const frameRef = useRef<HTMLDivElement>(null);
 
   // Deep link support: /patient?tab=chat (post-hydration to avoid SSG mismatch)
   useEffect(() => {
@@ -123,105 +122,92 @@ export default function PatientApp() {
   }, []);
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
-      <div
-        ref={frameRef}
-        onScroll={(e) => {
-          e.currentTarget.scrollTop = 0;
-        }}
-        className="relative aspect-[9/16] h-[min(92vh,900px)] max-w-full overflow-hidden rounded-[2.75rem] border-[10px] border-foreground bg-background text-foreground shadow-2xl"
-      >
-        {/* Ambient blobs (grayscale port of brand/warm/sage washes) */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-foreground/10 blur-[80px] blob1" />
-          <div className="absolute -right-20 top-1/3 h-72 w-72 rounded-full bg-foreground/[0.07] blur-[80px] blob2" />
-          <div className="absolute -bottom-10 left-10 h-64 w-64 rounded-full bg-foreground/[0.05] blur-[80px] blob3" />
-        </div>
+    // Real app shell: dynamic viewport height (dvh handles mobile URL-bar
+    // collapse), full-bleed on phones, centered readable column on desktop.
+    <div className="relative flex h-dvh flex-col overflow-hidden bg-background text-foreground">
+      {/* Ambient blobs (grayscale port of brand/warm/sage washes) */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute -left-24 -top-24 h-80 w-80 rounded-full bg-foreground/10 blur-[80px] blob1" />
+        <div className="absolute -right-20 top-1/3 h-72 w-72 rounded-full bg-foreground/[0.07] blur-[80px] blob2" />
+        <div className="absolute -bottom-10 left-10 h-64 w-64 rounded-full bg-foreground/[0.05] blur-[80px] blob3" />
+      </div>
 
-        <div className="absolute inset-0 z-10 flex min-h-0 flex-col overflow-hidden">
-          {/* Status bar */}
-          <div className="flex items-center justify-between px-6 pt-2.5 text-[11px] font-semibold">
-            <span>9:41</span>
-            <span className="h-5 w-24 rounded-full bg-foreground" />
-            <span>●●● 100%</span>
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-xl flex-col pt-[env(safe-area-inset-top)]">
+        {/* Header */}
+        <header className="glass mx-3 mt-3 flex items-center justify-between rounded-2xl px-3.5 py-2.5 sm:px-5 sm:py-3">
+          <div className="flex items-center gap-2">
+            <span className="grid size-7 place-items-center rounded-lg bg-primary text-sm font-semibold text-primary-foreground">
+              ✚
+            </span>
+            <span className="font-display text-[15px] font-semibold tracking-tight sm:text-[17px]">
+              Rarepath
+            </span>
           </div>
+          <div className="flex items-center gap-2">
+            <span className="glass-soft flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium text-foreground/70 sm:text-[11px]">
+              <span className="size-1.5 rounded-full bg-foreground" />
+              Day 118
+            </span>
+            <span className="grid size-7 place-items-center rounded-full bg-primary/15 font-display text-xs text-primary">
+              A
+            </span>
+          </div>
+        </header>
 
-          {/* Header */}
-          <header className="glass mx-3 mt-2 flex items-center justify-between rounded-2xl px-3.5 py-2.5">
-            <div className="flex items-center gap-2">
-              <span className="grid size-7 place-items-center rounded-lg bg-primary text-sm font-semibold text-primary-foreground">
-                ✚
-              </span>
-              <span className="font-display text-[15px] font-semibold tracking-tight">
-                Rarepath
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="glass-soft flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium text-foreground/70">
-                <span className="size-1.5 rounded-full bg-foreground" />
-                Day 118
-              </span>
-              <span className="grid size-7 place-items-center rounded-full bg-primary/15 font-display text-xs text-primary">
-                A
-              </span>
-            </div>
-          </header>
+        {/* Daily-support toast */}
+        {toast && (
+          <button
+            onClick={() => setToast(null)}
+            className="rise glass absolute left-3 right-3 top-20 z-30 flex items-start gap-2 rounded-2xl p-3 text-left text-[12px] leading-snug"
+          >
+            <span className="grid size-7 shrink-0 place-items-center rounded-full bg-foreground/15 text-foreground">
+              ✦
+            </span>
+            <span>
+              <span className="block font-semibold">Daily support</span>
+              {toast.replace("✦ ", "")}
+            </span>
+          </button>
+        )}
 
-          {/* Daily-support toast */}
-          {toast && (
-            <button
-              onClick={() => setToast(null)}
-              className="rise glass absolute left-3 right-3 top-24 z-30 flex items-start gap-2 rounded-2xl p-3 text-left text-[12px] leading-snug"
-            >
-              <span className="grid size-7 shrink-0 place-items-center rounded-full bg-foreground/15 text-foreground">
-                ✦
-              </span>
-              <span>
-                <span className="block font-semibold">Daily support</span>
-                {toast.replace("✦ ", "")}
-              </span>
-            </button>
+        <main className="no-scrollbar min-h-0 flex-1 overflow-y-auto px-3 pb-4 pt-3 sm:px-4">
+          {tab === "journey" && <JourneyTab onGo={setTab} />}
+          {tab === "home" && <OverviewTab onGo={setTab} />}
+          {tab === "chat" && (
+            <ChatTab onGo={setTab} onDraftCheckin={setCheckinDraft} />
           )}
+          {tab === "community" && <CommunityTab />}
+          {tab === "research" && (
+            <ResearchTab
+              draft={checkinDraft}
+              onDraftConsumed={() => setCheckinDraft(null)}
+            />
+          )}
+        </main>
 
-          <main className="no-scrollbar min-h-0 flex-1 overflow-y-auto px-3 pb-4 pt-3">
-            {tab === "journey" && <JourneyTab onGo={setTab} />}
-            {tab === "home" && <OverviewTab onGo={setTab} />}
-            {tab === "chat" && (
-              <ChatTab onGo={setTab} onDraftCheckin={setCheckinDraft} />
-            )}
-            {tab === "community" && <CommunityTab />}
-            {tab === "research" && (
-              <ResearchTab
-                draft={checkinDraft}
-                onDraftConsumed={() => setCheckinDraft(null)}
-              />
-            )}
-          </main>
-
-          {/* Bottom tab bar */}
-          <nav className="glass mx-3 mb-3 grid grid-cols-5 rounded-2xl py-2">
-            {(
-              [
-                ["journey", "◎", "Journey"],
-                ["home", "⌂", "Overview"],
-                ["chat", "◈", "AI"],
-                ["community", "❋", "Community"],
-                ["research", "▤", "Research"],
-              ] as [Tab, string, string][]
-            ).map(([key, icon, label]) => (
-              <button
-                key={key}
-                onClick={() => setTab(key)}
-                className={`flex flex-col items-center gap-0.5 text-[10px] font-medium ${
-                  tab === key ? "text-primary" : "text-foreground/45"
-                }`}
-              >
-                <span className="text-base leading-none">{icon}</span>
-                {label}
-              </button>
-            ))}
-          </nav>
-        </div>
+        {/* Bottom tab bar (safe-area aware for phones with home indicators) */}
+        <nav className="glass mx-3 mb-[max(0.75rem,env(safe-area-inset-bottom))] grid grid-cols-5 rounded-2xl py-2">
+          {(
+            [
+              ["journey", "◎", "Journey"],
+              ["home", "⌂", "Overview"],
+              ["chat", "◈", "AI"],
+              ["community", "❋", "Community"],
+              ["research", "▤", "Research"],
+            ] as [Tab, string, string][]
+          ).map(([key, icon, label]) => (
+            <button
+              key={key}
+              onClick={() => setTab(key)}
+              className={`flex min-h-11 flex-col items-center justify-center gap-0.5 text-[10px] font-medium sm:text-[11px] ${
+                tab === key ? "text-primary" : "text-foreground/45"
+              }`}
+            >
+              <span className="text-base leading-none">{icon}</span>
+              {label}
+            </button>
+          ))}
+        </nav>
       </div>
     </div>
   );
