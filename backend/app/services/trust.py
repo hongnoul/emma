@@ -129,9 +129,13 @@ def fit_temperature(probs: dict[str, float], targets: dict[str, float] | None = 
 # ---- gating ----
 
 def band(p_valid: float | None) -> str:
-    """established / review / hidden under the expert 90/40 policy."""
+    """established / review / hidden under the expert 90/40 policy.
+
+    None (curated annotation, no judgment) is its own band: curated edges
+    are database facts, not hypotheses, so they never render as hidden.
+    """
     if p_valid is None:
-        return "hidden"
+        return "curated"
     if p_valid >= ESTABLISHED_THRESHOLD:
         return "established"
     if p_valid >= HIDE_THRESHOLD:
@@ -142,15 +146,21 @@ def band(p_valid: float | None) -> str:
 def gate(edge_valid: float | None, contradicted: float | None = None,
          evidence_expected: float | None = None,
          pack_id: str = "edge-validate-v1",
-         audience: str = "patient") -> dict:
+         audience: str = "patient",
+         provenance: str | None = None) -> dict:
     """Audience-aware gate for one edge.
 
     patient: established only at >=0.90 AND replicated evidence AND no
       serious contradiction; hidden below 0.40; middle band gets caveat.
     researcher: same bands, but solid-yet-contradicted edges show with a
       warning instead of suppressing (Q18).
+    curated (provenance=curated, no judgment): always show — curated
+      annotations are database facts, not model hypotheses.
     """
     if edge_valid is None:
+        if provenance == "curated":
+            return {"action": "show", "band": "curated",
+                    "reason": "curated annotation from a source database; not a model hypothesis"}
         return {"action": "hidden", "band": "hidden", "reason": "no judgment available"}
     b = band(edge_valid)
     contra = contradicted or 0.0

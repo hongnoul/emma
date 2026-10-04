@@ -161,7 +161,7 @@ def path(from_id: str = Query(..., alias="from"), to_id: str = Query(..., alias=
     for e in c.evidence_edges:
         ev = e.evidence_level.expected if e.evidence_level else None
         pack = e.decision_meta.question_pack if e.decision_meta else "edge-validate-v1"
-        g = _trust.gate(e.edge_valid, e.contradicted, ev, pack, audience)
+        g = _trust.gate(e.edge_valid, e.contradicted, ev, pack, audience, e.provenance)
         gated.append({"edge_id": e.id, **g,
                       "band": g["band"], "p_valid": e.edge_valid})
         if e.edge_valid is not None:
