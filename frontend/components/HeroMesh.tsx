@@ -50,12 +50,18 @@ const DEPTH_A = [0.18, 0.5, 1]; // alpha multiplier per depth bucket (back/mid/f
 // Hover tuning
 const HIT_JUDGED = 20;  // px: prefer judged nodes within this radius
 const HIT_ANY = 12;     // px: otherwise any node within this radius
+// Click-zoom tuning: camera dollies into the clicked node, pans it to
+// center, dims unrelated geometry, then fades to white and navigates.
+const ZOOM_MS = 700;
+const ZOOM_SCALE = 4;   // sphere radius multiplier at full zoom
+const easeInOut = (p: number) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2);
 
 interface HoverInfo { i: number; id: string; name: string; deg: number }
 
 export default function HeroMesh({ className = "" }: { className?: string }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
+  const fadeRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const [hover, setHover] = useState<HoverInfo | null>(null);
   // Shared with the data closure below
@@ -79,6 +85,9 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
     // Assigned once data loads; hit test in canvas-relative px
     let hitTest: ((x: number, y: number) => number) | null = null;
     let nodes: HeroNode[] = [];
+    // Assigned in the animated path; null (reduced motion) = navigate directly
+    let startZoom: ((i: number) => void) | null = null;
+    let zoomActive = false;
     const canHover = window.matchMedia("(hover: hover)").matches;
 
     // Smoothed cursor in canvas-relative px; target updated on pointermove.
@@ -94,6 +103,8 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
         const n = nodes[i];
         setHover({ i, id: n.id, name: n.n.startsWith("MONDO:") ? n.id : n.n, deg: n.deg });
         placeCard.current(i);
+        router.prefetch(`/disease/${encodeURIComponent(n.id)}`); // seamless handoff
+
       } else {
         setHover(null);
       }
@@ -103,6 +114,7 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
     const setApplyHover = (fn: (i: number) => void) => { applyHover = fn; };
 
     const onMove = (e: PointerEvent) => {
+      if (zoomActive) return; // camera is locked during the zoom
       const rect = cv.getBoundingClientRect();
       if (rect.width === 0) return;
       const x = e.clientX - rect.left, y = e.clientY - rect.top;
@@ -117,11 +129,13 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
     };
     const onLeave = () => { target.seen = false; applyHover(-1); };
     const onClick = (e: MouseEvent) => {
+      if (zoomActive) return;
       const i = hoverIdx.current;
       if (i < 0 || !nodes[i]) return;
       const el = e.target as Element | null;
       if (el?.closest?.("a,button,[data-hover-card]")) return;
-      router.push(`/disease/${encodeURIComponent(nodes[i].id)}`);
+      if (startZoom) startZoom(i);
+      else router.push(`/disease/${encodeURIComponent(nodes[i].id)}`);
     };
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("click", onClick);
@@ -224,6 +238,11 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
           return bestJ >= 0 ? bestJ : best;
         };
 
+        // Click-zoom camera state. i >= 0 while a zoom is in flight; yaw/pitch
+        // freeze at click time so the only motion is the dolly + pan.
+        const zoom = { i: -1, t0: 0, yaw: 0, pitch: 0, sx: 0, sy: 0, done: false };
+        let lastYaw = 0, lastPitch = TILT; // refreshed every layout pass
+
         placeCard.current = (i: number) => {
           const el = cardRef.current;
           if (!el || i < 0) return;
@@ -235,7 +254,7 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
           el.style.transform = `translate3d(${Math.max(8, x)}px, ${Math.max(8, y)}px, 0)`;
         };
 
-        const layout = (t: number, e: number, W: number, H: number) => {
+        const layout = (t: number, e: number, W: number, H: number, zp = 0) => {
           // Ease cursor toward target; fall back to center when unseen
           const gx = target.seen ? target.x : W / 2;
           const gy = target.seen ? target.y : H / 2;
@@ -243,15 +262,28 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
           smooth.y += (gy - smooth.y) * 0.08;
           // Sphere radius exceeds the half-viewport so edges clip (overflow
           // hidden comes free from the canvas bounds). Entrance scales it up.
-          const R = Math.max(W, H) * SPHERE * e;
+          const R = Math.max(W, H) * SPHERE * e * (1 + (ZOOM_SCALE - 1) * zp);
           const cxp = W / 2, cyp = H / 2;
-          // Constant spin plus cursor steering of yaw/pitch
-          const yaw = t * SPIN + ((smooth.x / Math.max(W, 1)) - 0.5) * YAW;
-          const pitch = TILT + ((smooth.y / Math.max(H, 1)) - 0.5) * PITCH;
+          // Constant spin plus cursor steering of yaw/pitch; frozen mid-zoom
+          const zooming = zoom.i >= 0;
+          const yaw = zooming ? zoom.yaw : t * SPIN + ((smooth.x / Math.max(W, 1)) - 0.5) * YAW;
+          const pitch = zooming ? zoom.pitch : TILT + ((smooth.y / Math.max(H, 1)) - 0.5) * PITCH;
+          lastYaw = yaw; lastPitch = pitch;
           const cyaw = Math.cos(yaw), syaw = Math.sin(yaw);
           const cpit = Math.cos(pitch), spit = Math.sin(pitch);
-          const driftScale = AMP * e;
-          const seen = target.seen ? 1 : 0;
+          // Pan so the clicked node glides from where it was clicked to the
+          // viewport center while the sphere inflates around it.
+          let panX = 0, panY = 0;
+          if (zooming) {
+            const zi = zoom.i;
+            const x1 = ux[zi] * cyaw + uz[zi] * syaw;
+            const z1 = uz[zi] * cyaw - ux[zi] * syaw;
+            const y2 = uy[zi] * cpit - z1 * spit;
+            panX = zoom.sx + (cxp - zoom.sx) * zp - (cxp + x1 * R);
+            panY = zoom.sy + (cyp - zoom.sy) * zp - (cyp + y2 * R);
+          }
+          const driftScale = AMP * e * (1 - zp); // drift settles as we dive in
+          const seen = target.seen && !zooming ? 1 : 0;
           const hi = hoverIdx.current;
           for (let i = 0; i < N; i++) {
             // Rotate: yaw about Y, then pitch about X; orthographic project
@@ -262,8 +294,8 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
             let bx = cxp + x1 * R;
             let by = cyp + y2 * R;
             // Ambient wave
-            bx += Math.sin(t * W1 + ys[i] * 3.1 + phase[i]) * driftScale;
-            by += Math.cos(t * W2 + xs[i] * 3.1 + phase[i] * 0.7) * driftScale;
+            bx += Math.sin(t * W1 + ys[i] * 3.1 + phase[i]) * driftScale + panX;
+            by += Math.cos(t * W2 + xs[i] * 3.1 + phase[i] * 0.7) * driftScale + panY;
             bx0[i] = bx; by0[i] = by;
             // Local repel around the smoothed cursor; the hovered node is
             // exempt so it stays pinned under the pointer.
@@ -327,17 +359,20 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
           }
         };
 
-        const paint = (e: number, reviewAlpha: number) => {
+        const paint = (e: number, reviewAlpha: number, zp = 0) => {
+          // Unrelated geometry recedes during the zoom; highlight holds
+          const dim = e * (1 - 0.75 * zp);
           // Links: batched per triage band x depth bucket (back fades out)
-          strokeBand(bands.accept, LINK_COLOR.accept, 0.18 * e);
-          strokeBand(bands.review, LINK_COLOR.review, (reviewAlpha + 0.02) * e);
-          strokeBand(bands.low, LINK_COLOR.low, 0.15 * e);
+          strokeBand(bands.accept, LINK_COLOR.accept, 0.18 * dim);
+          strokeBand(bands.review, LINK_COLOR.review, (reviewAlpha + 0.02) * dim);
+          strokeBand(bands.low, LINK_COLOR.low, 0.15 * dim);
           // Points: judged nodes slightly stronger; back hemisphere ghosts
-          fillPoints(plainIdx, "100,116,139", 0.22 * e, 1.2); // slate-500
-          fillPoints(judgedIdx, "67,56,202", 0.45 * e, 1.9);  // indigo-700
+          fillPoints(plainIdx, "100,116,139", 0.22 * dim, 1.2); // slate-500
+          fillPoints(judgedIdx, "67,56,202", 0.45 * dim, 1.9);  // indigo-700
 
-          // Hover highlight: brighten links touching the node, ring the node
-          const hi = hoverIdx.current;
+          // Hover highlight: brighten links touching the node, ring the node.
+          // During a zoom the clicked node owns the highlight.
+          const hi = zoom.i >= 0 ? zoom.i : hoverIdx.current;
           if (hi >= 0) {
             ctx.lineWidth = 1.2;
             for (const l of data.links) {
@@ -402,16 +437,41 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
         smooth.x = cv.clientWidth / 2;
         smooth.y = cv.clientHeight / 2;
 
+        startZoom = (i: number) => {
+          zoomActive = true;
+          zoom.i = i;
+          zoom.t0 = performance.now();
+          zoom.yaw = lastYaw;
+          zoom.pitch = lastPitch;
+          zoom.sx = bx0[i];
+          zoom.sy = by0[i];
+          applyHover(-1); // drop the card; the canvas ring carries the focus
+        };
+
         const loop = (now: number) => {
           if (cancelled || !running) return;
           const size = sizeCanvas();
           if (size) {
             const t = (now - t0) / 1000;
             const e = 1 - Math.pow(1 - Math.min(1, (now - t0) / ENTRANCE_MS), 3); // easeOutCubic
-            layout(t, e, size.W, size.H);
+            // Zoom progress: eased dolly, white fade over the last 40%, then
+            // navigate once the fade fully covers the hero.
+            let zp = 0;
+            if (zoom.i >= 0) {
+              const raw = Math.min(1, (now - zoom.t0) / ZOOM_MS);
+              zp = easeInOut(raw);
+              if (fadeRef.current) {
+                fadeRef.current.style.opacity = String(Math.min(1, Math.max(0, (raw - 0.6) / 0.4)));
+              }
+              if (raw >= 1 && !zoom.done) {
+                zoom.done = true;
+                router.push(`/disease/${encodeURIComponent(nodes[zoom.i].id)}`);
+              }
+            }
+            layout(t, e, size.W, size.H, zp);
             // Review band breathes 0.12..0.22 on a 4s cycle; accept/low hold steady
             const reviewAlpha = 0.17 + 0.05 * Math.sin((t * Math.PI * 2) / 4);
-            paint(e, reviewAlpha);
+            paint(e, reviewAlpha, zp);
             // Card follows its node's drift
             if (hoverIdx.current >= 0) placeCard.current(hoverIdx.current);
           }
@@ -455,6 +515,14 @@ export default function HeroMesh({ className = "" }: { className?: string }) {
         ref={canvasRef}
         aria-hidden
         className={`pointer-events-none absolute inset-0 h-full w-full ${className}`}
+      />
+      {/* White fade that covers the hero at the end of a click-zoom so the
+          route change lands on a matching white frame. Opacity is driven
+          imperatively from the animation loop. */}
+      <div
+        ref={fadeRef}
+        aria-hidden
+        className="pointer-events-none absolute inset-0 z-30 bg-white opacity-0"
       />
       {/* Hover card: anchored to the hovered node, follows its drift.
           pointer-events-auto so the user can mouse into it and click. */}
