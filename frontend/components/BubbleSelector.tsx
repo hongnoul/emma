@@ -38,7 +38,13 @@ export default function BubbleSelector({
     const labels = labelRefs.current.filter(Boolean) as HTMLSpanElement[];
     if (!bubbles.length) return;
 
-    gsap.set(bubbles, { scale: 0, transformOrigin: '50% 50%' });
+    // bake the per-item rotation into the tween from frame one so the pill
+    // pops in already tilted (no orientation snap when CSS takes over)
+    const isDesktop = window.innerWidth >= 900;
+    bubbles.forEach((bubble, i) => {
+      const rot = isDesktop ? (items[i]?.rotation ?? 0) : 0;
+      gsap.set(bubble, { scale: 0, rotation: rot, transformOrigin: '50% 50%' });
+    });
     gsap.set(labels, { y: 24, autoAlpha: 0 });
 
     bubbles.forEach((bubble, i) => {
@@ -63,7 +69,7 @@ export default function BubbleSelector({
     return () => {
       gsap.killTweensOf([...bubbles, ...labels]);
     };
-  }, [animationEase, animationDuration, staggerDelay]);
+  }, [animationEase, animationDuration, staggerDelay, items]);
 
   return (
     <>
