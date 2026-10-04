@@ -40,10 +40,13 @@ export default function Apex() {
 
       {/* hero copy + bubble selector over the mesh */}
       <section className="relative z-10 mx-auto flex min-h-screen max-w-5xl flex-col items-center justify-center px-6 py-24 text-center">
-        <h1 className="font-serif text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
-          Every rare-disease link,
-          <br />
-          with its evidence.
+        <h1 className="flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.svg"
+            alt="Emmatics"
+            className="h-40 w-auto sm:h-56"
+          />
         </h1>
         <p className="mt-6 max-w-2xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg">
           4,700 diseases positioned by phenotype profile. Every connection shows
