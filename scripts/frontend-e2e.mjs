@@ -93,7 +93,7 @@ await page.waitForSelector('text=Rarepath AI', { timeout: 5000 });
 check('patient: chat tab renders', true);
 await page.fill('form input', 'lysosomal');
 await page.press('form input', 'Enter');
-await page.waitForSelector('text=Rare Disease Atlas · live', { timeout: 20000 });
+await page.waitForSelector('text=Emmatics · live', { timeout: 20000 });
 const aiMsg = await page.locator('div.rise >> text=/I found/').last().textContent();
 check('patient: live atlas chat reply', aiMsg.includes('Demo Lysosomal Storage Disorder A') && aiMsg.includes('LYSA1'), aiMsg.slice(0,90));
 // canned fallback
@@ -119,7 +119,7 @@ await page.click('button:has-text("Submit & share with research")');
 await page.waitForSelector('text=Thank you, Adira', { timeout: 5000 });
 check('patient: check-in submit confirmation', true);
 // live research feed (backend evidence)
-const feedOk = await page.waitForSelector('text=Rare Disease Atlas · live', { timeout: 20000 }).then(() => true).catch(() => false);
+const feedOk = await page.waitForSelector('text=Emmatics · live', { timeout: 20000 }).then(() => true).catch(() => false);
 const feedItems = await page.locator('li.glass-soft').count();
 check('patient: live research feed from backend', feedOk, `${feedItems} feed items`);
 

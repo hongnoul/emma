@@ -9,7 +9,7 @@ Source material (unpacked locally, not committed):
   minified output. The minifier kept template-literal classNames and copy
   strings intact, so this is tractable.
 - Physician/researcher side: `~/Downloads/273e4877-caee-4313-a4d5-3d11d65c9901.zip`
-  → `/tmp/emma_zip2` ("Rare Disease Atlas"). Full TanStack Start source:
+  → `/tmp/emma_zip2` ("Emmatics"). Full TanStack Start source:
   routes `index`, `disease.$mondoId`, `graph.$mondoId`, `research.$mondoId`,
   `researcher.$profileId`, `paper.$pmid`, `sources`; components
   `GraphCanvas`, `EvidenceList`, `DiseaseInsights`, `AiPanels`,

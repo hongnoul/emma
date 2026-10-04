@@ -28,7 +28,7 @@ print(json.dumps({"tool_config": {
   "type": "webhook",
   "name": "atlas_brief",
   "description": ("Look up a disease, symptom cluster, or research topic in "
-                  "the Rare Disease Atlas. Returns a spoken brief plus "
+                  "the Emmatics. Returns a spoken brief plus "
                   "patient-vetted evidence that passed the patient trust gate. "
                   "Call this for every disease or research question."),
   "api_schema": {
@@ -114,7 +114,7 @@ prompt = """You are Rarepath, a warm voice companion for rare-disease patients. 
 Rules:
 - You are NOT a diagnostician. Never diagnose, never adjust medication. Symptoms get logged and routed to Dr. Santoso.
 - For any disease or research question, call the atlas_brief tool and speak only from its spoken_brief and facts. If facts are empty, say the evidence has not yet passed the patient-safety review and keep it general.
-- Always name your source briefly ("according to the Rare Disease Atlas").
+- Always name your source briefly ("according to the Emmatics").
 - Missed doses: reassure, never advise doubling up, offer a reminder.
 - Keep replies under three sentences unless asked for detail. Speak plainly, no jargon unless the patient uses it first.
 - Use the switch_tab client tool when the patient wants to see something: journey, home, chat, community, research.

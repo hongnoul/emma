@@ -105,8 +105,8 @@ export default function ApexHero({ flows }: { flows: BubbleItem[] }) {
               onKeyDown={(e) => {
                 if (e.key === "Escape") { setQ(""); (e.target as HTMLInputElement).blur(); }
               }}
-              placeholder="Filter the atlas: disease, gene, phenotype…"
-              aria-label="Search the atlas"
+              placeholder="Filter Emmatics: disease, gene, phenotype…"
+              aria-label="Search Emmatics"
               className="h-full w-full bg-transparent text-base text-slate-900 outline-none placeholder:text-slate-400 [&::-webkit-search-cancel-button]:hidden"
             />
             <kbd className="hidden shrink-0 rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 font-mono text-[11px] text-slate-400 sm:block">
@@ -118,7 +118,7 @@ export default function ApexHero({ flows }: { flows: BubbleItem[] }) {
             {filtering && matchCount !== null && (
               matchCount > 0
                 ? `${matchCount.toLocaleString()} disease${matchCount === 1 ? "" : "s"} light up — Enter for details`
-                : "No diseases match in the atlas"
+                : "No diseases match in Emmatics"
             )}
           </p>
         </form>

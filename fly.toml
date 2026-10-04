@@ -1,4 +1,4 @@
-# Fly.io config for the Rare Disease Atlas API.
+# Fly.io config for the Emmatics API.
 # Deploy: fly launch --copy-config --no-deploy && fly deploy
 # The image bakes the published graph generation; redeploy to publish a new one.
 app = "rare-disease-atlas-api"

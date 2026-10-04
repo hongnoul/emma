@@ -25,9 +25,9 @@ const FLOWS = [
   },
   {
     label: "Explorer",
-    sub: "search the atlas",
+    sub: "search Emmatics",
     href: "/search",
-    ariaLabel: "Search the atlas",
+    ariaLabel: "Search Emmatics",
     rotation: 8,
     hoverStyles: { bgColor: "#8b5cf6", textColor: "#ffffff" },
   },

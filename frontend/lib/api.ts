@@ -1,4 +1,4 @@
-// Single API client for the Rare Disease Atlas backend.
+// Single API client for the Emmatics backend.
 // All pages go through these functions; swap API_BASE for deployment.
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:8000";

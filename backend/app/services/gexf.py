@@ -24,7 +24,7 @@ def to_gexf(store: GraphStore) -> str:
     lines = [
         '<?xml version="1.0" encoding="UTF-8"?>',
         '<gexf xmlns="http://gexf.net/1.3" xmlns:viz="http://gexf.net/1.3/viz" version="1.3">',
-        '  <meta><creator>Rare Disease Atlas (synthetic demo data)</creator>'
+        '  <meta><creator>Emmatics (synthetic demo data)</creator>'
         '<description>All nodes and edges are demonstration data.</description></meta>',
         '  <graph defaultedgetype="directed">',
         '    <attributes class="node">',

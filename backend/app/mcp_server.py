@@ -1,4 +1,4 @@
-"""Rare Disease Atlas MCP server.
+"""Emmatics MCP server.
 
 Exposes the same service layer as the REST API as MCP tools, so agents are
 first-class clients alongside browser frontends.

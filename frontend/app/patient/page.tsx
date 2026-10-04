@@ -617,14 +617,14 @@ function ChatTabInner({
             ...m,
             {
               from: "ai",
-              text: `I found "${detail.disease?.name ?? hit.name}" in the Rare Disease Atlas.${
+              text: `I found "${detail.disease?.name ?? hit.name}" in Emmatics.${
                 genes ? ` Linked genes: ${genes}.` : ""
               }${phenos ? ` Key phenotypes: ${phenos}.` : ""}${
                 nPubs
                   ? ` There are ${nPubs} linked publications & studies.`
                   : ""
               } Want me to add this to your check-in for Dr. Santoso?`,
-              src: `Rare Disease Atlas · live · ${hit.id}`,
+              src: `Emmatics · live · ${hit.id}`,
             },
           ]);
           setTyping(false);
@@ -1200,7 +1200,7 @@ function ResearchTab({
             Live research feed
           </span>
           <span className="rounded-full bg-primary/10 px-2.5 py-1 text-[10px] font-semibold text-primary">
-            Rare Disease Atlas · live
+            Emmatics · live
           </span>
         </div>
         <p className="mt-1 text-[11px] text-foreground/55">
@@ -1215,7 +1215,7 @@ function ResearchTab({
           )}
           {feed !== null && feed.length === 0 && (
             <li className="text-[12px] text-foreground/50">
-              Live feed is warming up — the atlas caches new lookups for up to
+              Live feed is warming up — Emmatics caches new lookups for up to
               7 days.
             </li>
           )}

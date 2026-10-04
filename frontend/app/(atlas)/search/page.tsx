@@ -47,14 +47,14 @@ function SearchHome() {
           Every rare-disease link, with its evidence.
         </h1>
         <p className="max-w-2xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-          The atlas matches diseases through biology, evidence, and shared
+          Emmatics matches diseases through biology, evidence, and shared
           research — each connection shows where it came from, and whether it
           is established or inferred.
         </p>
         <div className="flex flex-col gap-3 pt-1">
           <Button size="lg" className="h-13 w-full rounded-full text-base font-semibold"
             onClick={() => searchRef.current?.focus()}>
-            Search the atlas
+            Search Emmatics
           </Button>
           <Button asChild size="lg" variant="outline" className="h-13 w-full rounded-full text-base">
             <Link href="/physician">Open the physician workbench</Link>
@@ -75,7 +75,7 @@ function SearchHome() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
           />
-          {loading && <p className="mt-2 text-sm text-muted-foreground">Searching the atlas…</p>}
+          {loading && <p className="mt-2 text-sm text-muted-foreground">Searching Emmatics…</p>}
           {error && (
             <p className="mt-2 text-sm font-medium">
               {error} — is the backend running on :8000?
@@ -115,7 +115,7 @@ function SearchHome() {
               </ul>
             ) : (
               <p className="mt-3 text-sm text-muted-foreground">
-                No results. The atlas says so rather than guessing.
+                No results. Emmatics says so rather than guessing.
               </p>
             )
           )}
@@ -136,7 +136,7 @@ function SearchHome() {
 
       {/* journey card */}
       <section className="rounded-2xl border bg-muted/30 p-4 sm:p-6">
-        <h2 className="text-xl font-semibold">How the atlas works</h2>
+        <h2 className="text-xl font-semibold">How Emmatics works</h2>
         <ol className="mt-4 space-y-0">
           {[
             ["Discover connections", "Search links a disease to genes, variants, phenotypes, and related diseases."],

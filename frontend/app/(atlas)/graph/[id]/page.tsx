@@ -132,7 +132,7 @@ export default function GraphPage({ params }: { params: Promise<{ id: string }> 
               <p>{sel.edge.description}</p>
               <p className="text-xs">
                 <span className={`rounded px-1.5 py-0.5 ${sel.edge.provenance === "inferred" ? "border border-dashed text-muted-foreground" : "bg-secondary text-secondary-foreground border"}`}>
-                  {sel.edge.provenance === "inferred" ? "ATLAS-INFERRED CONNECTION" : "DIRECT / CURATED EVIDENCE"}
+                  {sel.edge.provenance === "inferred" ? "EMMATICS-INFERRED CONNECTION" : "DIRECT / CURATED EVIDENCE"}
                 </span>
               </p>
               <dl className="text-xs text-muted-foreground space-y-1">

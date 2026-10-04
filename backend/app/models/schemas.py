@@ -1,4 +1,4 @@
-"""Pydantic models for Rare Disease Atlas.
+"""Pydantic models for Emmatics.
 
 The evidence schema is Laya-ready: edges carry probability distributions
 (rel_probs, evidence_level, contradicted, edge_valid) instead of a single

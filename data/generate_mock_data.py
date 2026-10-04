@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the demonstration dataset for Rare Disease Atlas.
+"""Generate the demonstration dataset for Emmatics.
 
 ALL DATA PRODUCED HERE IS SYNTHETIC DEMONSTRATION DATA.
 Identifiers use DEMO-* prefixes on purpose; none of the publications,

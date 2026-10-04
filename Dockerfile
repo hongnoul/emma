@@ -1,4 +1,4 @@
-# Rare Disease Atlas API — serving container.
+# Emmatics API — serving container.
 # Judgments are precomputed into the graph JSON at build time, so this image
 # needs no model, no GPU: it's a stateless reader (~200 MB).
 FROM python:3.12-slim

@@ -31,7 +31,7 @@ export default function PhysicianHome() {
       <header className="space-y-2">
         <h1 className="text-2xl font-semibold">Evidence interrogation workbench</h1>
         <p className="text-sm text-muted-foreground max-w-2xl">
-          Every inferred connection in the atlas carries a calibrated decision block
+          Every inferred connection in Emmatics carries a calibrated decision block
           from a typed-judgment model. This partition is for interrogating those
           judgments: triage the uncertain band, ablate evidence to see what carries
           a belief, and re-examine weak hops in inference paths.

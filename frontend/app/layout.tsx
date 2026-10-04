@@ -6,7 +6,7 @@ import MeshBackdrop from "@/components/MeshBackdrop";
 const serif = Fraunces({ subsets: ["latin"], variable: "--font-serif-display" });
 
 export const metadata: Metadata = {
-  title: "Rare Disease Atlas",
+  title: "Emmatics",
   description: "Connecting rare diseases through biology, evidence, and shared research. Demonstration prototype with synthetic data.",
 };
 

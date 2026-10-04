@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { Cross } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 // Floating pill header shared by the card-shell (atlas) and full-bleed
@@ -9,10 +8,9 @@ export default function AtlasHeader() {
     <header className="px-3 pt-3 md:px-6">
       <div className="mx-auto flex max-w-5xl items-center gap-3 rounded-2xl border bg-background px-4 py-3 shadow-sm">
         <Link href="/" className="flex items-center gap-2.5">
-          <span className="flex size-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            <Cross className="size-4" />
-          </span>
-          <span className="font-serif text-lg font-semibold tracking-tight">Rare Disease Atlas</span>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.svg" alt="Emmatics" className="size-9" />
+          <span className="font-serif text-lg font-semibold tracking-tight">Emmatics</span>
         </Link>
         <nav className="ml-6 hidden items-center gap-5 text-sm md:flex">
           <Link href="/search" className="text-muted-foreground hover:text-foreground">Search</Link>

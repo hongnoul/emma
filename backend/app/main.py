@@ -1,4 +1,4 @@
-"""Rare Disease Atlas API. Demo data only; see data/generate_mock_data.py."""
+"""Emmatics API. Demo data only; see data/generate_mock_data.py."""
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -8,7 +8,7 @@ from .routers.research import router as research_router
 from .routers.v1 import router as v1_router
 from .routers.voice import router as voice_router
 
-app = FastAPI(title="Rare Disease Atlas API", version="0.1.0",
+app = FastAPI(title="Emmatics API", version="0.1.0",
               description="Prototype backed by synthetic demonstration data.")
 import os
 _raw = os.environ.get("ATLAS_CORS_ORIGINS", "*")
@@ -25,7 +25,7 @@ app.include_router(voice_router)
 @app.get("/", include_in_schema=False)
 def root():
     return {
-        "service": "Rare Disease Atlas API",
+        "service": "Emmatics API",
         "docs": "/docs",
         "openapi": "/openapi.json",
         "meta": "/v1/meta",

@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Rare Disease Atlas · Physician",
+  title: "Emmatics · Physician",
   description: "Evidence interrogation workbench: triage judged edges, ablate evidence, tighten inference paths.",
 };
 

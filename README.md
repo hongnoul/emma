@@ -1,4 +1,4 @@
-# Rare Disease Atlas
+# Emmatics
 
 Prototype knowledge-graph atlas connecting rare diseases through genes,
 phenotypes, mechanisms, pathways, publications, studies, researchers,

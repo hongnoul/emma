@@ -106,7 +106,7 @@ export default function DiseasePage({ params }: { params: Promise<{ id: string }
           {/* Caption pinned under the docked node */}
           <div className="absolute inset-x-0 bottom-0 text-center">
             <p className="font-mono text-[11px] uppercase tracking-wide text-muted-foreground">
-              atlas position · {d?.disease.identifier ?? id}
+              Emmatics position · {d?.disease.identifier ?? id}
             </p>
           </div>
         </MeshStage>
@@ -246,7 +246,7 @@ export default function DiseasePage({ params }: { params: Promise<{ id: string }
                       {r.disease.name}
                     </Link>
                     <Badge variant={r.connecting_edge.provenance === "inferred" ? "outline" : "default"}>
-                      {r.connecting_edge.provenance === "inferred" ? "Atlas-inferred" : "Curated"} · p(valid) {pct(r.similarity)}
+                      {r.connecting_edge.provenance === "inferred" ? "Emmatics-inferred" : "Curated"} · p(valid) {pct(r.similarity)}
                     </Badge>
                   </div>
                   <p className="text-sm text-muted-foreground mt-1">
